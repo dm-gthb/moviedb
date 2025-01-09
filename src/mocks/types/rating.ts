@@ -6,7 +6,7 @@ export type RatingMovie = {
   releaseDate: string;
   title: string;
   genreIds: number[];
-}
+};
 
 export type Rating = {
   id: string;

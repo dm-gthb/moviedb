@@ -1,4 +1,4 @@
-import { endpoints } from './constants';
+import { endpoints } from '../services/endpoints.service.ts';
 import { AuthRequestBody, AuthResponseBody } from './handlers/types';
 
 const localStorageKey = '__moviedb_auth_token__';

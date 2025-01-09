@@ -2,7 +2,7 @@ import { delay, http, HttpResponse, StrictResponse } from 'msw';
 import * as userService from '../data-services/user.ts';
 import { getToken, getUser } from './utils.ts';
 import { AuthRequestBody, AuthResponseBody } from './types.ts';
-import { endpoints } from '../constants.ts';
+import { endpoints } from '../../services/endpoints.service.ts';
 import { getErrorMessage } from '../utils.ts';
 
 const DELAY_MS = 1000;

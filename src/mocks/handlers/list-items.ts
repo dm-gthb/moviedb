@@ -9,7 +9,7 @@ import {
   DeleteListItemParams,
 } from './types.ts';
 import { getUser } from './utils.ts';
-import { endpoints } from '../constants.ts';
+import { endpoints } from '../../services/endpoints.service.ts';
 
 const DELAY_MS = 1000;
 

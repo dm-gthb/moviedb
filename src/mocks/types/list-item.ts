@@ -6,7 +6,7 @@ export type ListItemMovie = {
   releaseDate: string;
   title: string;
   genreIds: number[];
-}
+};
 
 export type ListItem = {
   id: string;

@@ -1,6 +1,6 @@
-import { ListItem } from '../types/list-item';
+import { ListItem, ListItemMovie } from '../types/list-item';
 import { MovieCredits, MovieDetails, MovieItem } from '../types/movie';
-import { Rating } from '../types/rating';
+import { Rating, RatingMovie } from '../types/rating';
 import { AuthData, AuthenticatedUser } from '../types/user';
 
 export type GetMovieItemsResponseBody = {
@@ -27,7 +27,7 @@ export type GetListItemsResponseBody = {
 };
 
 export type CreateListItemRequestBody = {
-  movie: MovieItem;
+  movie: ListItemMovie;
 };
 
 export type CreateListItemResponseBody = {
@@ -43,7 +43,7 @@ export type DeleteListItemResponseBody = {
 };
 
 export type CreateRatingRequestBody = {
-  movie: MovieItem;
+  movie: RatingMovie;
   rating: number;
 };
 

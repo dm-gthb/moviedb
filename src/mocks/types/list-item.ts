@@ -1,9 +1,17 @@
-import { MovieItem } from './movie';
+export type ListItemMovie = {
+  backdropPath: string | null;
+  id: number;
+  overview: string;
+  posterPath: string;
+  releaseDate: string;
+  title: string;
+  genreIds: number[];
+}
 
 export type ListItem = {
   id: string;
   type: 'favorite' | 'watchlist';
   movieId: number;
   ownerId: string;
-  movie: MovieItem;
+  movie: ListItemMovie;
 };

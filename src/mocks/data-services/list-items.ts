@@ -1,6 +1,5 @@
-import { ListItem } from '../types/list-item';
+import { ListItem, ListItemMovie } from '../types/list-item';
 import { StatusError } from '../utils';
-import { MovieItem } from '../types/movie';
 
 const listItemsKey = '__moviedb_list_items__';
 
@@ -43,7 +42,7 @@ export async function create({
   ownerId,
   type,
 }: {
-  movie: MovieItem;
+  movie: ListItemMovie;
   ownerId: string;
   type: 'favorite' | 'watchlist';
 }) {

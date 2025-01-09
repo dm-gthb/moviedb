@@ -1,5 +1,4 @@
-import { MovieItem } from '../types/movie';
-import { Rating } from '../types/rating';
+import { Rating, RatingMovie } from '../types/rating';
 import { StatusError } from '../utils';
 
 const listItemsKey = '__moviedb_rating__';
@@ -43,7 +42,7 @@ export async function create({
   ownerId,
   rating,
 }: {
-  movie: MovieItem;
+  movie: RatingMovie;
   ownerId: string;
   rating: number;
 }) {

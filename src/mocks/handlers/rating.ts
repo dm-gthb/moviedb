@@ -1,5 +1,4 @@
 import { delay, http, HttpResponse } from 'msw';
-import * as movieService from '../data-services/movies.ts';
 import * as ratingService from '../data-services/rating.ts';
 import { getUser } from './utils.ts';
 import {
@@ -39,9 +38,8 @@ export const rating = [
       const { updates } = await request.json();
       await ratingService.authorize(user.id, ratedItemId);
       const updatedItem = await ratingService.update(ratedItemId, updates);
-      const movie = (await movieService.read(updatedItem.movieId))!;
       await delay(DELAY_MS);
-      return HttpResponse.json({ rating: { ...updatedItem, movie } });
+      return HttpResponse.json({ rating: updatedItem });
     },
   ),
 

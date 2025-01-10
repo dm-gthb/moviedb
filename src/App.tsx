@@ -18,7 +18,7 @@ function App() {
       <main>
         <Routes>
           <Route path="/" element={<DiscoverPage />} />
-          <Route path={`${appRoute.search}`} element={<SearchPage />} />
+          <Route path={`${appRoute.search}/:searchTerm`} element={<SearchPage />} />
           <Route path={`${appRoute.watchlist}`} element={<WatchlistPage />} />
           <Route path={`${appRoute.favorites}`} element={<FavoritesPage />} />
           <Route path={`${appRoute.rating}`} element={<RatingPage />} />

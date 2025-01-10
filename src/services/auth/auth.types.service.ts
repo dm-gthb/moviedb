@@ -3,3 +3,8 @@ export type User = {
   username: string;
   token: string;
 };
+
+export type AuthData = {
+  username: string;
+  password: string;
+};

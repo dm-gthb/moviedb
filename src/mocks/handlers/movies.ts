@@ -79,7 +79,7 @@ export const movies = [
           statusText: 'movie not found',
         });
       }
-      await delay(DELAY_MS);
+      await delay(3000);
       return HttpResponse.json(generateMockDetails(movie));
     },
   ),

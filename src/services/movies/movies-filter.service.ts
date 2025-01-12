@@ -154,6 +154,7 @@ const useSearchParamsWithMoviesFilterDefaults = () => {
     }
   }
 
+  params.sort();
   return params;
 };
 

@@ -41,7 +41,7 @@ export const movies = [
       const url = new URL(request.url);
       const page = url.searchParams.get('page') ?? '1';
       const sortBy = url.searchParams.get('sort_by') ?? '';
-      const genre = url.searchParams.get('genre') ?? '';
+      const genre = url.searchParams.get('with_genres') ?? '';
       const year = url.searchParams.get('year') ?? undefined;
       const releaseDateGte =
         url.searchParams.get('primary_release_date.gte') ?? undefined;

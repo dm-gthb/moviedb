@@ -2,7 +2,7 @@ import { delay, http, HttpResponse, StrictResponse } from 'msw';
 import * as movieService from '../data-services/movies.ts';
 import * as creditService from '../data-services/credits.ts';
 import * as recommendationService from '../data-services/recommendations.ts';
-import { genresMap } from '../constants.ts';
+import { genresMap } from '../../services/movies/movies.constants.service.ts';
 import { endpoints } from '../../services/endpoints.service.ts';
 import { MovieDetails, MovieItem } from '../types/movie.ts';
 import {

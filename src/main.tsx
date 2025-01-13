@@ -14,7 +14,15 @@ async function enableMocking() {
   });
 }
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      throwOnError: (_error, query) => {
+        return typeof query.state.data === 'undefined';
+      },
+    },
+  },
+});
 
 enableMocking().then(() => {
   createRoot(document.getElementById('root')!).render(

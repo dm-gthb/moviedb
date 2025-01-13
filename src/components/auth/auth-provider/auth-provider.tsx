@@ -5,6 +5,7 @@ import { AuthData, User } from '../../../services/auth/auth.types.service';
 import api from '../../../services/api/api.service';
 import { AuthContext } from '../../../services/auth/auth-context.service';
 import { listItemsOptions } from '../../../queries/list-items.queries';
+import { ErrorMessage } from '../../shared/error-message/error-message';
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
@@ -47,7 +48,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }
 
   if (error) {
-    return <span>errror</span>;
+    return <ErrorMessage error={error} />;
   }
 
   return (

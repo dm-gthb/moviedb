@@ -1,6 +1,6 @@
 import { useSearchParams } from 'react-router';
 import { genresMap } from './movies.constants.service';
-import { Entries, getFormattedDate } from '../utils.service';
+import { Entries, getFormattedDate } from './movies.utils.service';
 
 type SelectName = 'sort' | 'releaseDates' | 'genre';
 type SearchParamName = keyof typeof moviesSearchParamName;

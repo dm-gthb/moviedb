@@ -3,6 +3,7 @@ import {
   cloneElement,
   createContext,
   Dispatch,
+  isValidElement,
   ReactNode,
   SetStateAction,
   useContext,
@@ -45,7 +46,7 @@ export function TabTrigger({
 }) {
   const { setActiveTab } = useContext(TabsContext);
   return Children.map(children, (child) => {
-    if (!React.isValidElement(child)) {
+    if (!isValidElement(child)) {
       return (
         <button
           className={className}

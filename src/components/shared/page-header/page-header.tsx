@@ -36,9 +36,7 @@ export function PageHeader() {
       </form>
       {user ? (
         <>
-          <Link to="/watchlist">watchlist</Link>
-          <Link to="/favorites">favorites</Link>
-          <Link to="/rating">my ratings</Link>
+          <Link to="/lists">my lists</Link>
           <button onClick={handleLogout}>logout</button>
         </>
       ) : (

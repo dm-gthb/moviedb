@@ -5,7 +5,7 @@ import { AuthRequestBody, AuthResponseBody } from './types.ts';
 import { endpoints } from '../../services/endpoints.service.ts';
 import { getErrorMessage } from '../utils.ts';
 
-const DELAY_MS = 1000;
+const DELAY_MS = import.meta.env.MODE === 'test' ? 0 : 1000;
 
 export const user = [
   http.post<never, AuthRequestBody>(
@@ -16,6 +16,7 @@ export const user = [
       try {
         user = await userService.authenticate({ username, password });
       } catch (error) {
+        await delay(DELAY_MS);
         return new HttpResponse(null, {
           status: 400,
           statusText: getErrorMessage(error),

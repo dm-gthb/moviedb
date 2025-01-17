@@ -1,10 +1,32 @@
 import { moviesData } from '../data/movies';
-import { MovieItem } from '../types/movie';
+import { generateMockDetails } from '../generate';
+import { BaseMovieData, MovieDetails, MovieItem } from '../types/movie';
 
-const movies = [...moviesData];
+let movies = moviesData.map((movieItem) => ({
+  ...movieItem,
+  ...generateMockDetails(movieItem),
+}));
 
-export async function read(movieId: number) {
-  return movies.find((movie) => movie.id === movieId);
+export async function read(movieId: number): Promise<MovieItem | undefined> {
+  const movie = movies.find((movie) => movie.id === movieId);
+  return movie ? { ...getBaseItem(movie), genre_ids: movie.genre_ids } : undefined;
+}
+
+export async function readWithDetails(
+  movieId: number,
+): Promise<MovieDetails | undefined> {
+  const movie = movies.find((movie) => movie.id === movieId);
+  if (!movie) {
+    return undefined;
+  }
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { genre_ids, ...movieDetails } = movie;
+  return movieDetails;
+}
+
+export async function create(movie: MovieItem & MovieDetails) {
+  movies.push(movie);
+  return movie;
 }
 
 export async function readMany({
@@ -77,4 +99,26 @@ export async function readMany({
 
 export async function query(search: string) {
   return movies.filter((b) => b.title.toLowerCase().includes(search.toLowerCase()));
+}
+
+export async function reset() {
+  movies = moviesData.map((m) => ({ ...m, ...generateMockDetails(m) }));
+}
+
+function getBaseItem(movie: MovieItem & MovieDetails): BaseMovieData {
+  return {
+    adult: movie.adult,
+    backdrop_path: movie.backdrop_path,
+    id: movie.id,
+    original_language: movie.original_language,
+    original_title: movie.original_title,
+    overview: movie.overview,
+    popularity: movie.popularity,
+    poster_path: movie.poster_path,
+    release_date: movie.release_date,
+    title: movie.title,
+    video: movie.video,
+    vote_average: movie.vote_average,
+    vote_count: movie.vote_count,
+  };
 }

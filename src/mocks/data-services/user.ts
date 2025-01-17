@@ -3,7 +3,7 @@ import { StatusError } from '../utils';
 
 const usersKey = '__moviedb_users__';
 
-const users: Record<string, User> = {};
+let users: Record<string, User> = {};
 
 const storeUsersData = () => {
   window.localStorage.setItem(usersKey, JSON.stringify(users));
@@ -49,11 +49,16 @@ export async function create({ username, password }: AuthData) {
 }
 
 export async function read(id: string) {
-  validateUser(id);
+  validateUserId(id);
   return sanitizeUser(users[id]);
 }
 
-function validateUser(id: string) {
+export async function reset() {
+  users = {};
+  storeUsersData();
+}
+
+function validateUserId(id: string) {
   load();
   if (!users[id]) {
     const error = new StatusError(`No user with the id "${id}"`);

@@ -11,7 +11,7 @@ import {
 import { getUser } from './utils.ts';
 import { endpoints } from '../../services/endpoints.service.ts';
 
-const DELAY_MS = 1000;
+const DELAY_MS = import.meta.env.MODE === 'test' ? 0 : 1000;
 
 export const listItems = [
   http.get<never, never, GetListItemsResponseBody>(

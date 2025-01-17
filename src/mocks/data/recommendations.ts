@@ -1,6 +1,6 @@
 import { MovieItem } from '../types/movie';
 
-export const recommendations: MovieItem[] = [
+export const defaultMockRecommendations: MovieItem[] = [
   {
     backdrop_path: '/2ndyL4HjM9JLMqBSgbyCM57aMWl.jpg',
     id: 1034541,
@@ -342,3 +342,7 @@ export const recommendations: MovieItem[] = [
     vote_count: 199,
   },
 ];
+
+export const recommendationsData: Record<number, MovieItem[]> = {
+  1: defaultMockRecommendations,
+};

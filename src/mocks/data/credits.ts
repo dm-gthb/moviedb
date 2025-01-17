@@ -1,6 +1,5 @@
 import { MovieCredits } from '../types/movie';
-
-export const credits: MovieCredits = {
+export const defaultMockCredits: MovieCredits = {
   cast: [
     {
       adult: false,
@@ -891,4 +890,7 @@ export const credits: MovieCredits = {
       job: 'Makeup Artist',
     },
   ],
+};
+export const creditsData: Record<number, MovieCredits> = {
+  1: defaultMockCredits,
 };

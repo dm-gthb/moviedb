@@ -1,7 +1,7 @@
 import { endpoints } from '../services/endpoints.service.ts';
 import { AuthRequestBody, AuthResponseBody } from './handlers/types';
 
-const localStorageKey = '__moviedb_auth_token__';
+export const localStorageKey = '__moviedb_auth_token__';
 
 export const getToken = async () => {
   return window.localStorage.getItem(localStorageKey);

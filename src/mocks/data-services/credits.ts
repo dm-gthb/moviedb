@@ -1,6 +1,17 @@
-import { credits } from '../data/credits';
+import { creditsData, defaultMockCredits } from '../data/credits';
 import { MovieCredits } from '../types/movie';
 
-export async function read(): Promise<MovieCredits> {
-  return credits;
+let credits = { ...creditsData };
+
+export async function read(movieId: number): Promise<MovieCredits> {
+  return credits[movieId] ?? defaultMockCredits;
+}
+
+export async function create(movieId: number, movieCredits: MovieCredits) {
+  credits[movieId] = movieCredits;
+  return movieCredits;
+}
+
+export async function reset() {
+  credits = { ...creditsData };
 }

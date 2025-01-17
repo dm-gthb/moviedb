@@ -2,9 +2,7 @@ import { delay, http, HttpResponse, StrictResponse } from 'msw';
 import * as movieService from '../data-services/movies.ts';
 import * as creditService from '../data-services/credits.ts';
 import * as recommendationService from '../data-services/recommendations.ts';
-import { genresMap } from '../../services/movies/movies.constants.service.ts';
 import { endpoints } from '../../services/endpoints.service.ts';
-import { MovieDetails, MovieItem } from '../types/movie.ts';
 import {
   GetMovieCreditsResponseBody,
   GetMovieDetailsResponseBody,
@@ -13,7 +11,7 @@ import {
 } from './types.ts';
 
 const ITEMS_PER_PAGE = 20;
-const DELAY_MS = 1000;
+const DELAY_MS = import.meta.env.MODE === 'test' ? 0 : 1000;
 
 export const movies = [
   http.get<never, never, GetMovieItemsResponseBody>(
@@ -72,15 +70,15 @@ export const movies = [
       params,
     }): Promise<HttpResponse | StrictResponse<GetMovieDetailsResponseBody>> => {
       const { movieId } = params;
-      const movie = await movieService.read(+movieId);
+      const movie = await movieService.readWithDetails(+movieId);
       if (!movie) {
         return new HttpResponse(null, {
           status: 404,
           statusText: 'movie not found',
         });
       }
-      await delay(3000);
-      return HttpResponse.json(generateMockDetails(movie));
+      await delay(DELAY_MS);
+      return HttpResponse.json(movie);
     },
   ),
 
@@ -90,7 +88,7 @@ export const movies = [
       params,
     }): Promise<HttpResponse | StrictResponse<GetMovieCreditsResponseBody>> => {
       const { movieId } = params;
-      const credits = await creditService.read();
+      const credits = await creditService.read(+movieId);
       if (!credits) {
         return new HttpResponse(null, {
           status: 404,
@@ -111,7 +109,7 @@ export const movies = [
       params,
     }): Promise<HttpResponse | StrictResponse<GetRecommendationsResponseBody>> => {
       const { movieId } = params;
-      const recommendedMovies = await recommendationService.read();
+      const recommendedMovies = await recommendationService.read(+movieId);
       if (!recommendedMovies) {
         return new HttpResponse(null, {
           status: 404,
@@ -123,17 +121,6 @@ export const movies = [
     },
   ),
 ];
-
-function generateMockDetails(movie: MovieItem): MovieDetails {
-  return {
-    ...movie,
-    genres: movie.genre_ids.map((id) => ({ id, name: genresMap[id] })),
-    runtime: 130,
-    homepage: 'https://developer.themoviedb.org/',
-    budget: 120000000,
-    status: 'Released',
-  };
-}
 
 function getSlice<T>(array: T[], page: number) {
   return array.slice(

@@ -1,4 +1,4 @@
-type BaseMovieData = {
+export type BaseMovieData = {
   adult: boolean;
   backdrop_path: string | null;
   id: number;
@@ -6,7 +6,7 @@ type BaseMovieData = {
   original_title: string;
   overview: string;
   popularity: number;
-  poster_path: string;
+  poster_path: string | null;
   release_date: string;
   title: string;
   video: boolean;
@@ -18,7 +18,7 @@ export type MovieItem = BaseMovieData & {
   genre_ids: number[];
 };
 
-export type MovieDetails = BaseMovieData & {
+export type AdditionalMovieData = {
   budget: number;
   genres: {
     id: number;
@@ -28,6 +28,8 @@ export type MovieDetails = BaseMovieData & {
   runtime: number;
   status: string;
 };
+
+export type MovieDetails = BaseMovieData & AdditionalMovieData;
 
 export type Cast = {
   adult: boolean;

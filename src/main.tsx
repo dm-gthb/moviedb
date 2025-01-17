@@ -5,8 +5,8 @@ import { AppProviders } from './app/app-providers.tsx';
 import './index.css';
 
 async function enableMocking() {
-  const { worker } = await import('./mocks/server.ts');
-  return worker.start({
+  const { server } = await import('./mocks/server/dev-server.ts');
+  return server.start({
     onUnhandledRequest: 'bypass',
   });
 }

@@ -12,8 +12,7 @@ beforeAll(() => {
   server.listen();
 });
 
-afterEach(async () => {
-  server.resetHandlers();
+beforeEach(async () => {
   await Promise.all([
     authService.logout(),
     userDataService.reset(),
@@ -23,6 +22,10 @@ afterEach(async () => {
     listItemsDataService.reset(),
     ratingDataService.reset(),
   ]);
+});
+
+afterEach(async () => {
+  server.resetHandlers();
 });
 
 afterAll(() => {

@@ -102,7 +102,7 @@ export async function query(search: string) {
 }
 
 export async function reset() {
-  movies = moviesData.map((m) => ({ ...m, ...generateMockDetails(m) }));
+  movies = [];
 }
 
 function getBaseItem(movie: MovieItem & MovieDetails): BaseMovieData {

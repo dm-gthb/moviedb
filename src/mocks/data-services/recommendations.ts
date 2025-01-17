@@ -13,5 +13,5 @@ export async function create(movieId: number, movieRecommendations: MovieItem[])
 }
 
 export async function reset() {
-  recommendations = { ...recommendationsData };
+  recommendations = {};
 }

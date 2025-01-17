@@ -1,4 +1,4 @@
-import { render, screen, waitForElementToBeRemoved } from '@testing-library/react';
+import { screen, waitForElementToBeRemoved } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {
   buildMovieCredits,
@@ -11,20 +11,8 @@ import * as authService from '../../mocks/auth-service';
 import * as movieDataService from '../../mocks/data-services/movies';
 import * as creditsDataService from '../../mocks/data-services/credits';
 import * as recommendationsDataService from '../../mocks/data-services/recommendations';
-import { AppProviders } from '../../app/app-providers';
 import App from '../../app/app';
-
-const waitForLoadingToFinish = async () =>
-  await waitForElementToBeRemoved(() => [
-    ...screen.queryAllByLabelText(/loading/i),
-    ...screen.queryAllByText(/loading/i),
-  ]);
-
-const renderMoviePage = async (movieId: number) => {
-  window.history.pushState({}, 'Test Movie Page', `/movie/${movieId}`);
-  render(<App />, { wrapper: AppProviders });
-  await waitForLoadingToFinish();
-};
+import { renderWithProviders } from '../../mocks/app-test-utils';
 
 const createMovieWithCreditsAndRecommendations = async () => {
   const movie = buildMovieItemWithDetails();
@@ -39,7 +27,8 @@ const createMovieWithCreditsAndRecommendations = async () => {
 test('renders movie data', async () => {
   const { movie, credits, recommendations } =
     await createMovieWithCreditsAndRecommendations();
-  await renderMoviePage(movie.id);
+
+  await renderWithProviders(<App />, { route: `/movie/${movie.id}` });
 
   expect(screen.getByRole('heading', { name: movie.title })).toBeInTheDocument();
   expect(screen.getByText(movie.vote_average.toFixed(1))).toBeInTheDocument();
@@ -74,7 +63,7 @@ test('authenticated user can add movie to list and delete from list', async () =
   window.localStorage.setItem(authService.localStorageKey, authenticatedUser.token);
 
   const { movie } = await createMovieWithCreditsAndRecommendations();
-  await renderMoviePage(movie.id);
+  await renderWithProviders(<App />, { route: `/movie/${movie.id}` });
 
   const addToFavoritesName = { name: /add to favorites/i };
   const removeFromFavoritesName = { name: /remove from favorites/i };
@@ -106,7 +95,7 @@ test('authenticated user can add movie to list and delete from list', async () =
 
 test("unauthenticated user can't add movie to favorites", async () => {
   const { movie } = await createMovieWithCreditsAndRecommendations();
-  await renderMoviePage(movie.id);
+  await renderWithProviders(<App />, { route: `/movie/${movie.id}` });
 
   const addToFavoritesButton = screen.getByRole('button', { name: /add to favorites/i });
   await userEvent.click(addToFavoritesButton);
@@ -119,7 +108,7 @@ test("unauthenticated user can't add movie to favorites", async () => {
 
 test("unauthenticated user can't add movie to watchlist", async () => {
   const { movie } = await createMovieWithCreditsAndRecommendations();
-  await renderMoviePage(movie.id);
+  await renderWithProviders(<App />, { route: `/movie/${movie.id}` });
 
   const addToFavoritesButton = screen.getByRole('button', { name: /add to watchlist/i });
   await userEvent.click(addToFavoritesButton);

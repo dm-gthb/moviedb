@@ -13,5 +13,5 @@ export async function create(movieId: number, movieCredits: MovieCredits) {
 }
 
 export async function reset() {
-  credits = { ...creditsData };
+  credits = {};
 }

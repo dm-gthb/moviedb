@@ -22,7 +22,7 @@ export function buildMovieItem(): MovieItem {
     id: faker.number.int(),
     original_language: faker.location.language().alpha2,
     original_title: faker.lorem.word(),
-    overview: faker.lorem.text(),
+    overview: faker.lorem.paragraph(),
     popularity: faker.number.float({ fractionDigits: 2 }),
     poster_path: '/' + faker.system.commonFileName('jpg'),
     release_date: faker.date.recent().toLocaleDateString(),

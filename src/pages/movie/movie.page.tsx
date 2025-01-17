@@ -21,6 +21,11 @@ export function MoviePage() {
         <h1>Movie Page</h1>
         <h2>{movie.data.title}</h2>
         <p>{isMoviePlaceholderData && <span>...moviePlaceholderData</span>}</p>
+        <p>{movie.data.voteAverage.toFixed(1)}</p>
+        <p>{movie.data.releaseDate}</p>
+        <p>{movie.data.runtime}</p>
+        <p>{movie.data.genres?.map(({ name }) => name).join(', ')}</p>
+        <img src={movie.data.posterPath} alt="movie poster" />
         <ListItemButtons movie={movie.data} />
         <RatingButtons movie={movie.data} />
       </>

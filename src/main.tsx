@@ -1,11 +1,8 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
-import { BrowserRouter } from 'react-router';
+import App from './app/app.tsx';
+import { AppProviders } from './app/app-providers.tsx';
 import './index.css';
-import App from './App.tsx';
-import { AuthProvider } from './components/auth/auth-provider/auth-provider.tsx';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 async function enableMocking() {
   const { worker } = await import('./mocks/server.ts');
@@ -14,27 +11,12 @@ async function enableMocking() {
   });
 }
 
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      throwOnError: (_error, query) => {
-        return typeof query.state.data === 'undefined';
-      },
-    },
-  },
-});
-
 enableMocking().then(() => {
   createRoot(document.getElementById('root')!).render(
     <StrictMode>
-      <BrowserRouter>
-        <QueryClientProvider client={queryClient}>
-          <AuthProvider>
-            <App />
-            <ReactQueryDevtools initialIsOpen={false} />
-          </AuthProvider>
-        </QueryClientProvider>
-      </BrowserRouter>
+      <AppProviders>
+        <App />
+      </AppProviders>
     </StrictMode>,
   );
 });

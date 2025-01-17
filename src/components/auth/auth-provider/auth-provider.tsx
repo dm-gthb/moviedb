@@ -9,12 +9,13 @@ import { ErrorMessage } from '../../shared/error-message/error-message';
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const queryClient = useQueryClient();
 
   useEffect(() => {
     setIsLoading(true);
+    setError(null);
     const getInitData = async () => {
       const token = await authService.getToken();
       if (token) {

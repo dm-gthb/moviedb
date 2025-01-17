@@ -11,6 +11,7 @@ import { RequireAuth } from './components/auth/require-auth/require-auth';
 import { ErrorBoundary } from 'react-error-boundary';
 import { ErrorMessage } from './components/shared/error-message/error-message';
 import { MoviesLists } from './pages/movies-lists/movies-lists.page';
+import { CheckAuth } from './components/auth/check-auth/check-auth';
 
 function App() {
   return (
@@ -29,8 +30,22 @@ function App() {
                 </RequireAuth>
               }
             />
-            <Route path={`${appRoute.login}`} element={<LoginPage />} />
-            <Route path={`${appRoute.signup}`} element={<SignupPage />} />
+            <Route
+              path={`${appRoute.login}`}
+              element={
+                <CheckAuth>
+                  <LoginPage />
+                </CheckAuth>
+              }
+            />
+            <Route
+              path={`${appRoute.signup}`}
+              element={
+                <CheckAuth>
+                  <SignupPage />
+                </CheckAuth>
+              }
+            />
             <Route path={`${appRoute.movie}/:id`} element={<MoviePage />} />
             <Route path="*" element={<NotFoundPage />} />
           </Routes>

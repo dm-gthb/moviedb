@@ -1,7 +1,6 @@
-import { FormEvent, useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router';
-import { useAuth } from '../../../services/auth/auth-context.service';
+import { FormEvent } from 'react';
 import { useAuthMutation } from '../../../queries/auth.query';
+import { useLocation, useNavigate } from 'react-router';
 
 const PASSWORD_MIN_LENGTH = 8;
 
@@ -16,15 +15,8 @@ interface AuthFormInterface extends HTMLFormElement {
 
 function AuthForm({ isSignup = false }: { isSignup?: boolean }) {
   const navigate = useNavigate();
-  const { user } = useAuth();
   const { state } = useLocation();
   const { mutate, isPending, isError, error } = useAuthMutation({ isSignup });
-
-  useEffect(() => {
-    if (user) {
-      navigate(state?.path || '/');
-    }
-  }, [user, navigate, state?.path]);
 
   const hanldeSubmit = (e: FormEvent<AuthFormInterface>) => {
     e.preventDefault();
@@ -37,7 +29,7 @@ function AuthForm({ isSignup = false }: { isSignup?: boolean }) {
       },
       {
         onSuccess: () => {
-          e.currentTarget.reset();
+          formEl.reset();
           navigate(state?.path || '/');
         },
       },

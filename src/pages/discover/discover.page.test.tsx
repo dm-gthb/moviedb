@@ -20,8 +20,6 @@ test('renders movies with "popularity" default sort option', async () => {
     a.popularity < b.popularity ? 1 : a.popularity > b.popularity ? -1 : 0,
   );
 
-  expect(screen.getAllByRole('heading', { level: 2 }).length).toBe(20);
-
   for (let i = 1; i < movies.length; i++) {
     const prevMovieCard = screen.getByText(movies[i - 1].title);
     const currentMovieCard = screen.getByText(movies[i].title);

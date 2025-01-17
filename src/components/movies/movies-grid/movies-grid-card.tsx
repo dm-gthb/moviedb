@@ -14,7 +14,7 @@ export function MoviesGridCard({ movie }: { movie: MovieItem }) {
         to={`/movie/${id}`}
         state={{ searchParams: searchParams.toString(), pathname }}
       >
-        <p>{title}</p>
+        <h2>{title}</h2>
       </Link>
       <ListItemButtons movie={movie} />
     </div>

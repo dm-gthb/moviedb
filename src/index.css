@@ -14,4 +14,8 @@
   .icon-base {
     @apply text-gray-900 dark:text-gray-50 hover:scale-125 transition-transform;
   }
+
+  .filter-element {
+    @apply p-4 w-max rounded border capitalize;
+  }
 }

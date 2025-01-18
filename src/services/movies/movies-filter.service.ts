@@ -3,11 +3,11 @@ import { genresMap } from './movies.constants.service';
 import { Entries, getFormattedDate } from './movies.utils.service';
 
 type SelectName = 'sort' | 'releaseDates' | 'genre';
-type SearchParamName = keyof typeof moviesSearchParamName;
+type SearchParamName = keyof typeof searchParamName;
 
 const MIN_RELEASE_DATE_YEAR = 1895;
 
-const moviesSearchParamName = {
+const searchParamName = {
   releaseDateGte: 'primary_release_date.gte',
   releaseDateLte: 'primary_release_date.lte',
   genre: 'with_genres',
@@ -15,19 +15,25 @@ const moviesSearchParamName = {
   includeAdult: 'include_adult',
 };
 
-const moviesSortOption = {
+const sortOption = {
   popularity: 'popularity.desc',
   vote: 'vote_count.desc',
   releaseDateAsc: 'primary_release_date.asc',
-  releaseDateDesc: 'primary_release_date.desc',
-  title: 'title.asc',
+  titleAsc: 'title.asc',
+};
+
+const sortOptionLabel: Record<keyof typeof sortOption, string> = {
+  popularity: 'Popularity',
+  vote: 'Vote Count',
+  releaseDateAsc: 'Release Date',
+  titleAsc: 'Alphabetical',
 };
 
 const defaultSearchParamValue: Record<SearchParamName, string> = {
   releaseDateGte: `${MIN_RELEASE_DATE_YEAR}-01-01`,
   releaseDateLte: getFormattedDate(new Date()),
   genre: '',
-  sortBy: moviesSortOption.popularity,
+  sortBy: sortOption.popularity,
   includeAdult: 'false',
 };
 
@@ -54,21 +60,28 @@ const createReleaseDatesOption = (title: string, yearsRange: [number, number]) =
 };
 
 const selectOption: Record<SelectName, { title: string; value: string }[]> = {
-  sort: Object.entries(moviesSortOption).map(([title, value]) => ({ title, value })),
+  sort: (Object.entries(sortOption) as Entries<typeof sortOption>).map(
+    ([title, value]) => ({
+      title: sortOptionLabel[title],
+      value,
+    }),
+  ),
   releaseDates: [
+    { title: 'all years', value: '' },
     ...getYearsFrom2020ToNow().map((year) =>
       createReleaseDatesOption(year.toString(), [year, year]),
     ),
-    createReleaseDatesOption('2010-2020', [2010, 2020]),
-    createReleaseDatesOption('2000-2010', [2000, 2010]),
-    createReleaseDatesOption('1990-2000', [1990, 2000]),
-    createReleaseDatesOption('1980-1990', [1980, 1990]),
+    createReleaseDatesOption('2010 - 2020', [2010, 2020]),
+    createReleaseDatesOption('2000 - 2010', [2000, 2010]),
+    createReleaseDatesOption('1990 - 2000', [1990, 2000]),
+    createReleaseDatesOption('1980 - 1990', [1980, 1990]),
     createReleaseDatesOption('before 1980', [MIN_RELEASE_DATE_YEAR, 1980]),
-    { title: 'all years', value: '' },
   ],
   genre: [
     { title: 'all genres', value: '' },
-    ...Object.entries(genresMap).map(([value, title]) => ({ title, value })),
+    ...Object.entries(genresMap)
+      .map(([value, title]) => ({ title, value }))
+      .sort((a, b) => (a.title > b.title ? 1 : -1)),
   ],
 };
 
@@ -81,8 +94,7 @@ const getSelectValue = ({
   selectName: SelectName;
   searchParams: URLSearchParams;
 }) => {
-  const get = (name: SearchParamName) =>
-    searchParams.get(moviesSearchParamName[name]) ?? '';
+  const get = (name: SearchParamName) => searchParams.get(searchParamName[name]) ?? '';
 
   const map = {
     releaseDates:
@@ -90,7 +102,7 @@ const getSelectValue = ({
         ? [get('releaseDateGte'), get('releaseDateLte')].join(',')
         : '',
     genre: get('genre'),
-    sort: get('sortBy') ?? defaultSearchParamValue['sortBy'],
+    sort: get('sortBy') || defaultSearchParamValue['sortBy'],
   };
 
   return map[selectName];
@@ -106,9 +118,8 @@ const updateSearchParamsWithSelectValue = ({
   searchParams: URLSearchParams;
 }) => {
   const set = (name: SearchParamName, value: string) =>
-    searchParams.set(moviesSearchParamName[name], value);
-  const remove = (name: SearchParamName) =>
-    searchParams.delete(moviesSearchParamName[name]);
+    searchParams.set(searchParamName[name], value);
+  const remove = (name: SearchParamName) => searchParams.delete(searchParamName[name]);
 
   const deleteReleaseDateParams = () => {
     remove('releaseDateGte');
@@ -148,7 +159,7 @@ const useSearchParamsWithMoviesFilterDefaults = () => {
   for (const [param, value] of Object.entries(defaultSearchParamValue) as Entries<
     typeof defaultSearchParamValue
   >) {
-    const paramName = moviesSearchParamName[param];
+    const paramName = searchParamName[param];
     if (value && !params.has(paramName)) {
       params.set(paramName, value);
     }

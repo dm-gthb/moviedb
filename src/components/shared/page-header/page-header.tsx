@@ -1,4 +1,4 @@
-import { FormEvent, useEffect, useState } from 'react';
+import { FormEvent, useEffect, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router';
 import {
   MagnifyingGlassIcon,
@@ -20,6 +20,13 @@ export function PageHeader() {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
   const [isSearchPanel, setIsSearchPanel] = useState(false);
+  const searchInput = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (isSearchPanel) {
+      searchInput.current?.focus();
+    }
+  }, [isSearchPanel]);
 
   const handleLogout = () => {
     logout();
@@ -68,13 +75,14 @@ export function PageHeader() {
       </nav>
       <form
         onSubmit={handleSubmit}
-        className={`flex shadow-md absolute left-[50%] translate-x-[-50%] w-full bg-white dark:bg-gray-950 pb-16 justify-center ${isSearchPanel ? 'visible' : 'collapse'}`}
+        className={`flex shadow-md absolute z-50 left-[50%] translate-x-[-50%] w-full bg-white dark:bg-gray-950 pb-16 justify-center ${isSearchPanel ? 'visible' : 'collapse'}`}
       >
         <input
           type="search"
           name="searchTerm"
           placeholder="search"
           className="p-4 border dark:bg-gray-950"
+          ref={searchInput}
         />
       </form>
     </header>

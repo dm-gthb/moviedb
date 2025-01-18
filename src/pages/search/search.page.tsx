@@ -6,21 +6,16 @@ export function SearchPage() {
   const { searchTerm } = useParams();
   const { data, isPending } = useMoviesSearch({ searchTerm });
 
-  if (isPending) {
-    return <span>...loading</span>;
-  }
-
-  if (!data?.results.length) {
-    return <span>no results for {searchTerm}</span>;
-  }
-
   return (
-    <div>
-      <h1>Results page</h1>
-      <p>search term: {searchTerm}</p>
-      <p>results:</p>
-      <div>
-        <MoviesGrid movies={data.results} />
+    <div className="max-w-7xl mx-auto px-8 pt-4 pb-10">
+      <h1 className="font-bold text-4xl md:text-5xl mb-5">Search Results</h1>
+      <p className="text-xl max-w-2xl mb-6">
+        Searching for: <span className='italic capitalize font-semibold'>"{searchTerm}"</span>
+      </p>
+
+      <div className="mb-10">
+        <MoviesGrid movies={data?.results} isPending={isPending} />
+        {!isPending && !data?.results.length && <span>{`No movies found for term ${searchTerm}.`}</span>}
       </div>
     </div>
   );

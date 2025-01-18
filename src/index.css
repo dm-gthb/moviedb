@@ -18,4 +18,8 @@
   .filter-element {
     @apply p-4 w-max rounded border capitalize;
   }
+
+  .overflow-ellipsis {
+    @apply text-ellipsis whitespace-nowrap overflow-hidden;
+  }
 }

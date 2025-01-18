@@ -1,7 +1,6 @@
 import { render, waitForElementToBeRemoved, screen } from '@testing-library/react';
 import { ReactElement } from 'react';
 import { BrowserRouter } from 'react-router';
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { AuthProvider } from '../components/auth/auth-provider/auth-provider';
 
@@ -32,7 +31,6 @@ export const renderWithProviders = async (
     <BrowserRouter>
       <QueryClientProvider client={createTestQueryClient()}>
         <AuthProvider>{ui}</AuthProvider>
-        <ReactQueryDevtools initialIsOpen={false} />
       </QueryClientProvider>
     </BrowserRouter>,
   );

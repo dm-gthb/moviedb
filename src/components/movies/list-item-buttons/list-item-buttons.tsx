@@ -14,6 +14,7 @@ import {
   MovieItem,
 } from '../../../services/movies/movies.types.service';
 import { getListItemMovie } from '../../../services/movies/movies.utils.service';
+import { ListItemButton as Button } from './list-item-button';
 
 export function ListItemButtons({
   movie,
@@ -26,10 +27,10 @@ export function ListItemButtons({
   return user ? (
     <AuthorizedUserButtons movie={getListItemMovie(movie)} />
   ) : (
-    <>
-      <button onClick={() => navigate(appRoute.login)}>add to favorites</button>
-      <button onClick={() => navigate(appRoute.login)}>add to watchlist</button>
-    </>
+    <div className="flex items-center gap-3">
+      <Button type="favorites" onClick={() => navigate(appRoute.login)} />
+      <Button type="watchlist" onClick={() => navigate(appRoute.login)} />
+    </div>
   );
 }
 
@@ -37,46 +38,40 @@ function AuthorizedUserButtons({ movie }: { movie: ListItemMovie }) {
   const { data } = useListItems();
   const favoriteItem = data?.favorites.find((item) => item.movieId === movie.id);
   const watchlistItem = data?.watchlist.find((item) => item.movieId === movie.id);
-
-  const addFavoriteMutation = useAddFavoriteMutation();
-  const deleteFavoriteMutation = useDeleteFavoriteMutation();
-
-  const addToWatchlistMutation = useAddToWatchlistMutation();
-  const deleteFromWatchlistMutation = useDeleteFromWatchlistMutation();
+  const addToFavorites = useAddFavoriteMutation();
+  const deleteFromFavorites = useDeleteFavoriteMutation();
+  const addToWatchlist = useAddToWatchlistMutation();
+  const deleteFromWatchlist = useDeleteFromWatchlistMutation();
 
   return (
-    <div>
+    <div className="flex align-middle gap-3">
       {favoriteItem ? (
-        <button
-          onClick={() => deleteFavoriteMutation.mutate({ listItemId: favoriteItem.id })}
-          disabled={deleteFavoriteMutation.isPending}
-        >
-          remove from favorites
-        </button>
+        <Button
+          type="favorites"
+          onClick={() => deleteFromFavorites.mutate({ listItemId: favoriteItem.id })}
+          disabled={deleteFromFavorites.isPending}
+          isActive
+        />
       ) : (
-        <button
-          onClick={() => addFavoriteMutation.mutate({ movie })}
-          disabled={addFavoriteMutation.isPending}
-        >
-          add to favorites
-        </button>
+        <Button
+          type="favorites"
+          onClick={() => addToFavorites.mutate({ movie })}
+          disabled={addToFavorites.isPending}
+        />
       )}
       {watchlistItem ? (
-        <button
-          onClick={() =>
-            deleteFromWatchlistMutation.mutate({ listItemId: watchlistItem.id })
-          }
-          disabled={deleteFromWatchlistMutation.isPending}
-        >
-          remove from watchlist
-        </button>
+        <Button
+          type="watchlist"
+          onClick={() => deleteFromWatchlist.mutate({ listItemId: watchlistItem.id })}
+          disabled={deleteFromWatchlist.isPending}
+          isActive
+        />
       ) : (
-        <button
-          onClick={() => addToWatchlistMutation.mutate({ movie })}
-          disabled={addToWatchlistMutation.isPending}
-        >
-          add to watchlist
-        </button>
+        <Button
+          type="watchlist"
+          onClick={() => addToWatchlist.mutate({ movie })}
+          disabled={addToWatchlist.isPending}
+        />
       )}
     </div>
   );

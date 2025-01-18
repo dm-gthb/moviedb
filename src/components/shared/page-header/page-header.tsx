@@ -1,6 +1,13 @@
+import { FormEvent, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router';
+import {
+  MagnifyingGlassIcon,
+  MoonIcon,
+  SunIcon,
+  XMarkIcon,
+} from '@heroicons/react/24/outline';
 import { useAuth } from '../../../services/auth/auth-context.service';
-import { FormEvent, useState } from 'react';
+import { appRoute } from '../../../services/router.service';
 
 interface SearchFormElements extends HTMLFormControlsCollection {
   searchTerm: HTMLInputElement;
@@ -24,34 +31,101 @@ export function PageHeader() {
     const searchTermValue = e.currentTarget.elements.searchTerm.value.trim();
 
     if (searchTermValue) {
-      navigate(`/search/${searchTermValue}`);
+      navigate(`${appRoute.search}/${searchTermValue}`);
       e.currentTarget.reset();
+      setIsSearchPanel(false);
     }
   };
 
   return (
-    <header>
-      <nav>
-        <Link to="/">Home</Link>
-        <div>
-          <button onClick={() => setIsSearchPanel(!isSearchPanel)}>
-            {isSearchPanel ? <span>hide search bar</span> : <span>show search bar</span>}
-          </button>
-          {user ? (
+    <header className="max-w-7xl mx-auto px-8">
+      <nav className="flex justify-between text-lg relative py-9">
+        <Link to="/" className="underline-animation">
+          Home
+        </Link>
+        <div className="flex items-center gap-6 sm:gap-8 md:gap-10">
+          {user && (
             <>
-              <Link to="/lists">my lists</Link>
-              <button onClick={handleLogout}>logout</button>
+              <Link to="/lists" className="underline-animation">
+                My Lists
+              </Link>
+              <button onClick={handleLogout} className="underline-animation">
+                Logout
+              </button>
             </>
-          ) : (
-            <Link to="/login">login</Link>
           )}
+          {!user && (
+            <Link to="/login" className="underline-animation">
+              Login
+            </Link>
+          )}
+          <ThemeToggler />
+          <SearchToggler
+            isSearchPanel={isSearchPanel}
+            onClick={() => setIsSearchPanel(!isSearchPanel)}
+          />
         </div>
       </nav>
-      {isSearchPanel && (
-        <form onSubmit={handleSubmit}>
-          <input type="search" name="searchTerm" placeholder="Search" />
-        </form>
-      )}
+      <form
+        onSubmit={handleSubmit}
+        className={`flex shadow-md absolute left-[50%] translate-x-[-50%] w-full bg-white dark:bg-gray-950 pb-16 justify-center ${isSearchPanel ? 'visible' : 'collapse'}`}
+      >
+        <input
+          type="search"
+          name="searchTerm"
+          placeholder="search"
+          className="p-4 border dark:bg-gray-950"
+        />
+      </form>
     </header>
+  );
+}
+
+function ThemeToggler() {
+  const [theme, setTheme] = useState('light');
+
+  useEffect(() => {
+    document.body.classList.remove('light', 'dark');
+    document.body.classList.add(theme);
+  }, [theme]);
+
+  return (
+    <button onClick={() => setTheme((t) => (t === 'light' ? 'dark' : 'light'))}>
+      {theme === 'light' ? (
+        <>
+          <MoonIcon width={24} height={24} className="icon-base" />
+          <span className="sr-only">Activate dark mode</span>
+        </>
+      ) : (
+        <>
+          <SunIcon width={24} height={24} className="icon-base" />
+          <span className="sr-only">Activate light mode</span>
+        </>
+      )}
+    </button>
+  );
+}
+
+function SearchToggler({
+  isSearchPanel,
+  onClick,
+}: {
+  isSearchPanel: boolean;
+  onClick: () => void;
+}) {
+  return (
+    <button onClick={onClick}>
+      {isSearchPanel ? (
+        <>
+          <XMarkIcon width={24} height={24} className="icon-base" />
+          <span className="sr-only">Dismiss search</span>
+        </>
+      ) : (
+        <>
+          <MagnifyingGlassIcon width={24} height={24} className="icon-base" />
+          <span className="sr-only">Search</span>
+        </>
+      )}
+    </button>
   );
 }

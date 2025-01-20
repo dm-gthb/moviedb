@@ -19,6 +19,7 @@ export default class Adapter {
       voteAverage: movie.vote_average,
       voteCount: movie.vote_count,
       genreIds: movie.genre_ids,
+      originalTitle: movie.original_title,
     };
   }
 
@@ -27,6 +28,8 @@ export default class Adapter {
       backdropPath: movie.backdrop_path,
       id: movie.id,
       originalLanguage: movie.original_language,
+      originalTitle: movie.original_title,
+      originCountry: movie.origin_country,
       overview: movie.overview,
       popularity: movie.popularity,
       posterPath: movie.poster_path,
@@ -36,6 +39,7 @@ export default class Adapter {
       voteCount: movie.vote_count,
       budget: movie.budget,
       genres: movie.genres,
+      genreIds: movie.genres.map(({ id }) => id),
       homepage: movie.homepage,
       runtime: movie.runtime,
       status: movie.status,

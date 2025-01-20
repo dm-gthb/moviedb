@@ -27,6 +27,7 @@ export type AdditionalMovieData = {
   homepage: string;
   runtime: number;
   status: string;
+  origin_country: string[];
 };
 
 export type MovieDetails = BaseMovieData & AdditionalMovieData;

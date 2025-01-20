@@ -1,21 +1,19 @@
-type BaseMovieItem = {
+export type MovieItem = {
   backdropPath: string | null;
   id: number;
   originalLanguage: string;
   overview: string;
   popularity: number;
-  posterPath: string;
+  posterPath: string | null;
   releaseDate: string;
   title: string;
   voteAverage: number;
   voteCount: number;
-};
-
-export type MovieItem = BaseMovieItem & {
   genreIds: number[];
+  originalTitle: string;
 };
 
-export type MovieDetails = BaseMovieItem & {
+export type MovieDetails = MovieItem & {
   budget?: number;
   genres?: {
     id: number;
@@ -24,6 +22,8 @@ export type MovieDetails = BaseMovieItem & {
   homepage?: string;
   runtime?: number;
   status?: string;
+  originCountry?: string[];
+  originalTitle?: string;
 };
 
 type Cast = {
@@ -62,7 +62,7 @@ export type ListItemMovie = {
   backdropPath: string | null;
   id: number;
   overview: string;
-  posterPath: string;
+  posterPath: string | null;
   releaseDate: string;
   title: string;
   genreIds: number[];

@@ -9,10 +9,7 @@ export const getListItemMovie = (
   posterPath: movie.posterPath,
   releaseDate: movie.releaseDate,
   title: movie.title,
-  genreIds:
-    'genreIds' in movie
-      ? movie.genreIds
-      : (movie?.genres?.map((genre) => genre.id) ?? []),
+  genreIds: movie.genreIds,
 });
 
 export function getFormattedDate(date: Date) {

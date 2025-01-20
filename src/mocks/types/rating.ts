@@ -2,7 +2,7 @@ export type RatingMovie = {
   backdropPath: string | null;
   id: number;
   overview: string;
-  posterPath: string;
+  posterPath: string | null;
   releaseDate: string;
   title: string;
   genreIds: number[];

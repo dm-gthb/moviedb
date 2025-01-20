@@ -13,6 +13,27 @@ import {
   MovieItem,
 } from '../../../services/movies/movies.types.service';
 import { getListItemMovie } from '../../../services/movies/movies.utils.service';
+import { StarIcon } from '@heroicons/react/24/outline';
+
+export function RatingToggler({ onClick }: { onClick: () => void }) {
+  return (
+    <button
+      onClick={(e) => {
+        e.stopPropagation();
+        e.preventDefault();
+        onClick();
+      }}
+      className="flex shrink-0 p-3.5 group bg-gray-800 hover:bg-gray-700 hover:scale-105 transition rounded-full"
+      disabled={false}
+    >
+      <StarIcon width={24} height={24} className="text-white dark:text-gray-100" />
+      <span className="sr-only">
+        Toggle rating range
+        {/* todo update */}
+      </span>
+    </button>
+  );
+}
 
 export function RatingButtons({
   movie,

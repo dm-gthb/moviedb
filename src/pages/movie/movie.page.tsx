@@ -1,53 +1,90 @@
-import { useParams } from 'react-router';
+import { useLocation, useParams } from 'react-router';
 import { useMovieDetails } from '../../queries/movies.queries';
 import { ListItemButtons } from '../../components/movies/list-item-buttons/list-item-buttons';
-import { RatingButtons } from '../../components/movies/rating-buttons/rating-buttons';
+import { RatingToggler } from '../../components/movies/rating-buttons/rating-buttons';
+import { MoviePoster } from '../../components/movies/movie-poster/movie-poster';
+import { AverageVout } from '../../components/movies/average-vout/average-vout';
+import { genresMap } from '../../services/movies/movies.constants.service';
+import { useEffect } from 'react';
+import { InfoGrid } from '../../components/movies/info-grid/info-grid';
+import { getCategorizedMovieData } from '../../services/movies/movie-categorized-data.service';
+import { imageUrl, BackdropSize } from '../../services/movies/movies.constants.service';
 
 export function MoviePage() {
   const { id: paramsId } = useParams();
   const queries = useMovieDetails({ movieId: paramsId ?? '' });
+  const { pathname } = useLocation();
+  const [movie, credits] = queries;
+  const isPendingDetails = movie.isPlaceholderData || credits.isPending;
 
-  const [movie, credits, recommendations] = queries;
-  const isMoviePlaceholderData = movie.isPlaceholderData;
-  console.log({ isMoviePlaceholderData });
+  const categorizedMovieData =
+    movie.isSuccess && credits.isSuccess && !isPendingDetails
+      ? getCategorizedMovieData({ ...movie.data, ...credits.data })
+      : undefined;
 
-  if (movie.isPending) {
-    return <span>...loading</span>;
-  }
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
 
   if (movie.isSuccess) {
+    const {
+      title,
+      releaseDate,
+      overview,
+      voteAverage,
+      voteCount,
+      genreIds,
+      posterPath,
+      backdropPath,
+    } = movie.data;
+
     return (
-      <>
-        <h1>{movie.data.title}</h1>
-        <p>{isMoviePlaceholderData && <span>...moviePlaceholderData</span>}</p>
-        <p>{movie.data.voteAverage.toFixed(1)}</p>
-        <p>{movie.data.overview}</p>
-        <p>{movie.data.releaseDate}</p>
-        <p>{movie.data.runtime}</p>
-        <p>{movie.data.genres?.map(({ name }) => name).join(', ')}</p>
-        <img src={movie.data.posterPath} alt="movie poster" />
-        <p>
-          {credits.isSuccess &&
-            credits.data.cast
-              .slice(0, 5)
-              .map(({ name }) => name)
-              .join(', ')}
-        </p>
-        <>
-          {recommendations.isSuccess && (
-            <>
-              <h2>Recommendations</h2>
-              <ul>
-                {recommendations.data?.results
-                  .map(({ id, title }) => <li key={id}>{title}</li>)
-                  .slice(0, 5)}
-              </ul>
-            </>
-          )}
-        </>
-        <ListItemButtons movie={movie.data} />
-        <RatingButtons movie={movie.data} />
-      </>
+      <div>
+        <section className="relative py-20 xl:py-24 dark:bg-black bg-gray-900">
+          <div
+            className="bg-cover bg-center opacity-20 dark:opacity-25 absolute left-0 right-0 top-0 bottom-0 w-full h-full "
+            style={{
+              backgroundImage: `url(${`${imageUrl}/${BackdropSize.w780}${backdropPath}`})`,
+            }}
+          />
+          <div className="max-w-7xl mx-auto relative z-30 text-gray-50 px-8">
+            <div className="flex gap-10 md:gap-14">
+              <div className="w-[180px] md:w-[250px] shrink-0 hidden sm:block rounded overflow-hidden">
+                <MoviePoster posterPath={posterPath} movieTitle={title} />
+              </div>
+              <div className="flex flex-col gap-6 justify-center">
+                <div>
+                  <h1 className="font-bold text-3xl sm:text-4xl md:text-5xl lg:text-6xl lg:max-w-[70%] mb-2">
+                    {title}
+                  </h1>
+                  <div>
+                    {voteCount > 0 && (
+                      <>
+                        <AverageVout averageVout={voteAverage} />
+                        {(releaseDate || genreIds?.length > 0) && ' • '}
+                      </>
+                    )}
+                    <span>
+                      {releaseDate &&
+                        `${releaseDate.slice(0, 4)} ${genreIds?.length > 0 ? ` • ` : ''}`}
+                    </span>
+                    {genreIds?.map((id) => genresMap[id]).join(', ')}
+                  </div>
+                </div>
+                <p>{overview}</p>
+                <div className="flex gap-3">
+                  <ListItemButtons movie={movie.data} size="large" />
+                  <RatingToggler onClick={() => console.log('rate movie enabled')} />
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section className="max-w-7xl mx-auto relative z-30 px-8 py-8">
+          <h2 className="sr-only">Movie Details</h2>
+          <InfoGrid isLoading={isPendingDetails} dataItems={categorizedMovieData} />
+        </section>
+      </div>
     );
   }
 }

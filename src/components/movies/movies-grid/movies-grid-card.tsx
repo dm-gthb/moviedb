@@ -4,14 +4,15 @@ import { useSearchParamsWithMoviesFilterDefaults } from '../../../services/movie
 import { ListItemButtons } from '../list-item-buttons/list-item-buttons';
 import { genresMap } from '../../../services/movies/movies.constants.service';
 import { MoviePoster } from '../movie-poster/movie-poster';
+import { AverageVout } from '../average-vout/average-vout';
 
 export function MovieCard({ movie }: { movie: MovieItem }) {
   const searchParams = useSearchParamsWithMoviesFilterDefaults();
   const { pathname } = useLocation();
-  const { id, title, posterPath } = movie;
+  const { id, title, posterPath, voteCount, voteAverage, releaseDate, genreIds } = movie;
 
   return (
-    <article className="">
+    <article>
       <Link
         to={`/movie/${id}`}
         state={{ searchParams: searchParams.toString(), pathname }}
@@ -21,17 +22,9 @@ export function MovieCard({ movie }: { movie: MovieItem }) {
           <MoviePoster posterPath={posterPath} movieTitle={title} />
           <div className="px-2 py-3 text-white dark:text-gray-200 bg-gray-700 dark:bg-gray-800 rounded-b opacity-0 group-hover:opacity-100 transition absolute bottom-0 left-0 w-full">
             <div className="flex h-full items-center gap-2 text-sm mb-2">
-              {movie.voteAverage > 0 && (
-                <div
-                  className={`${movie.voteAverage >= 7 ? 'bg-green-600 dark:bg-green-600/80' : 'bg-gray-500'} px-1 rounded text-white`}
-                >
-                  <span>{movie.voteAverage?.toFixed(1)}</span>
-                </div>
-              )}
-              <span>{movie.releaseDate.slice(0, 4)}</span>
-              <span className="overflow-ellipsis">
-                {getFirstGenreName(movie.genreIds)}
-              </span>
+              {voteCount > 0 && <AverageVout averageVout={voteAverage} />}
+              <span>{releaseDate.slice(0, 4)}</span>
+              <span className="overflow-ellipsis">{getFirstGenreName(genreIds)}</span>
             </div>
             <ListItemButtons movie={movie} />
           </div>

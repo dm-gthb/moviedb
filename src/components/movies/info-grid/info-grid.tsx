@@ -21,8 +21,8 @@ export function InfoGrid({
   if (dataItems) {
     return (
       <div className="grid lg:grid-cols-3 gap-6">
-        {dataItems.map((items) => (
-          <InfoGridCard items={items} />
+        {dataItems.map((items, i) => (
+          <InfoGridCard key={i} items={items} />
         ))}
       </div>
     );

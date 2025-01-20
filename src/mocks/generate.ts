@@ -47,10 +47,11 @@ export function buildMovieItemWithDetails(
 export function generateMockDetails(movie: MovieItem): AdditionalMovieData {
   return {
     genres: movie.genre_ids.map((id) => ({ id, name: genresMap[id] })),
-    runtime: faker.number.int({ min: 0, max: 500 }),
+    runtime: faker.number.int({ min: 20, max: 130 }),
     budget: faker.number.int({ min: 1000, max: 120000000 }),
     homepage: 'https://developer.themoviedb.org/',
     status: 'Released',
+    origin_country: ['US'],
   };
 }
 

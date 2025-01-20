@@ -9,20 +9,14 @@ export type ListItemButtonProps = {
 };
 
 export function ListItemButton(props: ListItemButtonProps) {
-  const {
-    onClick,
-    type,
-    disabled,
-    isActive,
-    size = 'regular',
-  } = props;
+  const { onClick, type, disabled, isActive, size = 'regular' } = props;
 
   const iconProps = {
     width: 24,
     height: 24,
     className: getIconClassname({ isFilled: isActive, size }),
   };
-  
+
   const buttonClassname = getButtonClassname(size);
 
   return (

@@ -42,7 +42,11 @@ export function MovieCard({ movie }: { movie: MovieItem }) {
 }
 
 export function PlaceholderMovieCard() {
-  return <MoviePoster />;
+  return (
+    <div className="animate-pulse">
+      <MoviePoster />
+    </div>
+  );
 }
 
 function getFirstGenreName(genreIds: number[]) {

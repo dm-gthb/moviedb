@@ -23,7 +23,7 @@ export function MovieCard({ movie }: { movie: MovieItem }) {
           <div className="px-2 py-3 text-white dark:text-gray-200 bg-gray-700 dark:bg-gray-800 rounded-b opacity-0 group-hover:opacity-100 transition absolute bottom-0 left-0 w-full">
             <div className="flex h-full items-center gap-2 text-sm mb-2">
               {voteCount > 0 && <AverageVout averageVout={voteAverage} />}
-              <span>{releaseDate.slice(0, 4)}</span>
+              <span>{releaseDate?.slice(0, 4)}</span>
               <span className="overflow-ellipsis">{getFirstGenreName(genreIds)}</span>
             </div>
             <ListItemButtons movie={movie} />
@@ -44,5 +44,5 @@ export function PlaceholderMovieCard() {
 
 function getFirstGenreName(genreIds: number[]) {
   const genreNames = genreIds?.map((id) => genresMap[id]);
-  return genreNames[0];
+  return genreNames?.[0];
 }

@@ -66,19 +66,20 @@ function getFormattedValue(
       return movie.originalTitle;
 
     case 'originalLanguage':
-      return new Intl.DisplayNames(['en'], { type: 'language' }).of(
-        movie.originalLanguage,
-      );
+      return movie.originalLanguage
+        ? new Intl.DisplayNames(['en'], { type: 'language' }).of(movie.originalLanguage)
+        : undefined;
 
     case 'originCountry':
       return (
         movie.originCountry
+          ?.filter((code) => Boolean(code))
           ?.map((code) => new Intl.DisplayNames(['en'], { type: 'region' }).of(code))
           .join(', ') ?? ''
       );
 
     case 'runtime':
-      return formatDuration(movie.runtime ?? 0);
+      return movie.runtime ? formatDuration(movie.runtime) : undefined;
 
     case 'budget':
       return movie.budget
@@ -92,9 +93,11 @@ function getFormattedValue(
       return movie.status;
 
     case 'releaseDate':
-      return new Intl.DateTimeFormat('en-US', { dateStyle: 'long' }).format(
-        new Date(movie.releaseDate),
-      );
+      return movie.releaseDate
+        ? new Intl.DateTimeFormat('en-US', { dateStyle: 'long' }).format(
+            new Date(movie.releaseDate),
+          )
+        : undefined;
 
     case 'homepage':
       return movie.homepage;

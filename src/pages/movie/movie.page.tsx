@@ -66,7 +66,7 @@ export function MoviePage() {
                     )}
                     <span>
                       {releaseDate &&
-                        `${releaseDate.slice(0, 4)} ${genreIds?.length > 0 ? ` • ` : ''}`}
+                        `${releaseDate?.slice(0, 4)} ${genreIds?.length > 0 ? ` • ` : ''}`}
                     </span>
                     {genreIds?.map((id) => genresMap[id]).join(', ')}
                   </div>

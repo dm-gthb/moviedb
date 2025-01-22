@@ -47,7 +47,7 @@ function getTeamData(movie: MovieCredits): InfoItems {
     crew.filter(({ job }) => job === 'Writer'),
   );
   const [screenplay] = getNames(crew.filter(({ job }) => job === 'Screenplay'));
-  const [starring] = getNames(cast, 30);
+  const [starring] = getNames(cast, 20);
 
   return [
     { title: isMultipleDirectors ? 'Directors' : 'Director', content: directors },

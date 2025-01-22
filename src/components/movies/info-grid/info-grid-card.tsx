@@ -38,6 +38,6 @@ export function InfoGridCard({ items }: { items: InfoItems }) {
 
 export function LoadingInfoGridCard() {
   return (
-    <div className="border-white shadow-md rounded bg-gray-100 dark:bg-gray-800 animate-pulse aspect-square" />
+    <div className="border-white shadow-md rounded bg-gray-100 dark:bg-gray-800 animate-pulse aspect-video lg:aspect-square" />
   );
 }

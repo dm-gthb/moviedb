@@ -1,11 +1,11 @@
 import { Link, useLocation } from 'react-router';
-import { MovieItem } from '../../../services/movies/movies.types.service';
+import { ListItemMovie, MovieItem } from '../../../services/movies/movies.types.service';
 import { useSearchParamsWithMoviesFilterDefaults } from '../../../services/movies/movies-filter.service';
 import { ListItemButtons } from '../list-item-buttons/list-item-buttons';
 import { genresMap } from '../../../services/movies/movies.constants.service';
 import { MoviePoster } from '../movie-poster/movie-poster';
 
-export function MovieCard({ movie }: { movie: MovieItem }) {
+export function MovieCard({ movie }: { movie: MovieItem | ListItemMovie }) {
   const searchParams = useSearchParamsWithMoviesFilterDefaults();
   const { pathname } = useLocation();
   const { id, title, posterPath, releaseDate, genreIds } = movie;

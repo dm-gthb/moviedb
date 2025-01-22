@@ -14,6 +14,7 @@ import { useSearchParamsWithMoviesFilterDefaults } from '../services/movies/movi
 import { useLocation } from 'react-router';
 import { appRoute } from '../services/router.service';
 import { GetMovieListResponse } from '../services/api/api.types.service';
+import { listItemsOptions } from './list-items.queries';
 
 const moviesQueryConfig = {
   cacheTime: 1000 * 60 * 60,
@@ -107,6 +108,16 @@ function getCacheByPrevLocation({
     const searchTerm = pathname.split('/')[2];
     const cache = queryClient.getQueryData(movieQueries.search(searchTerm).queryKey);
     return cache?.results?.find((movie) => movie.id === movieId);
+  }
+
+  if (pathname?.includes(appRoute.lists)) {
+    const cache = queryClient.getQueryData(listItemsOptions().queryKey);
+    const listItem =
+      cache &&
+      Object.values(cache)
+        .flat()
+        .find((item) => item.movieId === movieId);
+    return listItem?.movie;
   }
 
   if (searchParams) {

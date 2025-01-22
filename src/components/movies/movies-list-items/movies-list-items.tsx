@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 import { ListType } from '../../../services/api/api.types.service';
 import { useListItems } from '../../../queries/list-items.queries';
-import { MoviesListItem } from './movies-list-item';
+import { MoviesGrid } from '../movies-grid/movies-grid';
 
 export function MoviesListItems({
   listType,
@@ -13,21 +13,11 @@ export function MoviesListItems({
   const { data, isPending } = useListItems();
   const listItems = data?.[listType] ?? [];
 
-  if (isPending) {
-    return <p>...loading</p>;
-  }
-
-  if (!listItems.length) {
+  if (!isPending && !listItems.length) {
     return <div>{noListItemsInfo}</div>;
   }
 
   return (
-    <ul>
-      {listItems.map((listItem) => (
-        <li key={listItem.id}>
-          <MoviesListItem movie={listItem.movie} />
-        </li>
-      ))}
-    </ul>
+    <MoviesGrid isPending={isPending} movies={listItems.map((item) => item.movie)} />
   );
 }

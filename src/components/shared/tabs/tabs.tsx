@@ -44,11 +44,14 @@ export function TabTrigger({
   className?: string;
   onClick?: (args: unknown) => void;
 }) {
-  const { setActiveTab } = useContext(TabsContext);
+  const { activeTab, setActiveTab } = useContext(TabsContext);
+  const isActive = activeTab === value;
+
   return Children.map(children, (child) => {
     if (!isValidElement(child)) {
       return (
         <button
+          data-state={isActive ? 'active' : 'inactive'}
           className={className}
           onClick={(...args) => {
             onClick?.(...args);
@@ -63,6 +66,7 @@ export function TabTrigger({
     return cloneElement(child, {
       ...child.props,
       className: { ...child.props.className, className },
+      'data-state': isActive ? 'active' : 'inactive',
       onClick: (...args: unknown[]) => {
         setActiveTab(value);
         child.props.onClick?.(...args);

@@ -1,16 +1,16 @@
 export type MovieItem = {
   backdropPath: string | null;
   id: number;
-  originalLanguage: string;
   overview: string;
-  popularity: number;
   posterPath: string | null;
   releaseDate: string;
   title: string;
-  voteAverage: number;
-  voteCount: number;
   genreIds: number[];
-  originalTitle: string;
+  originalLanguage?: string;
+  originalTitle?: string;
+  popularity?: number;
+  voteAverage?: number;
+  voteCount?: number;
 };
 
 export type MovieDetails = MovieItem & {
@@ -23,7 +23,6 @@ export type MovieDetails = MovieItem & {
   runtime?: number;
   status?: string;
   originCountry?: string[];
-  originalTitle?: string;
 };
 
 type Cast = {

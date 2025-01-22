@@ -3,14 +3,6 @@
 @tailwind utilities;
 
 @layer components {
-  .underline-animation {
-    @apply relative;
-  }
-
-  .underline-animation::after {
-    @apply absolute left-0 bottom-0 w-full content-[''] h-0.5 bg-gray-800 dark:bg-gray-50 scale-0 hover:scale-100 transition-transform origin-left;
-  }
-
   .icon-base {
     @apply text-gray-900 dark:text-gray-50 hover:scale-125 transition-transform;
   }

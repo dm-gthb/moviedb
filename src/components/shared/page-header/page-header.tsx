@@ -1,5 +1,5 @@
 import { FormEvent, useEffect, useRef, useState } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router';
+import { NavLink, useLocation, useNavigate } from 'react-router';
 import {
   MagnifyingGlassIcon,
   MoonIcon,
@@ -49,28 +49,34 @@ export function PageHeader() {
     }
   };
 
+  const hoverUnderlineClass =
+    "relative py-2 after:block after:content-[''] after:absolute after:h-0.5 after:bg-gray-900 dark:after:bg-gray-50 after:w-full after:scale-x-0 after:hover:scale-x-100 after:transition after:origin-left";
+
+  const getNavlinkClass = ({ isActive }: { isActive: boolean }) =>
+    isActive ? hoverUnderlineClass + ' after:scale-x-100' : hoverUnderlineClass;
+
   return (
     <div className="relative">
       <header className="max-w-7xl mx-auto px-8 z-40">
         <nav className="flex justify-between text-lg relative py-8">
-          <Link to="/" className="underline-animation">
+          <NavLink to="/" className={getNavlinkClass}>
             Home
-          </Link>
+          </NavLink>
           <div className="flex items-center gap-6 sm:gap-8 md:gap-10">
             {user && (
               <>
-                <Link to="/lists" className="underline-animation">
+                <NavLink to="/lists" className={getNavlinkClass}>
                   My Lists
-                </Link>
-                <button onClick={handleLogout} className="underline-animation">
+                </NavLink>
+                <button onClick={handleLogout} className={hoverUnderlineClass}>
                   Logout
                 </button>
               </>
             )}
             {!user && (
-              <Link to="/login" className="underline-animation">
+              <NavLink to="/login" className={hoverUnderlineClass}>
                 Login
-              </Link>
+              </NavLink>
             )}
             <ThemeToggler />
             <SearchToggler

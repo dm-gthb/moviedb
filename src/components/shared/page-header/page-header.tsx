@@ -8,13 +8,7 @@ import {
 } from '@heroicons/react/24/outline';
 import { useAuth } from '../../../services/auth/auth-context.service';
 import { appRoute } from '../../../services/router.service';
-
-interface SearchFormElements extends HTMLFormControlsCollection {
-  searchTerm: HTMLInputElement;
-}
-interface SearchForm extends HTMLFormElement {
-  elements: SearchFormElements;
-}
+import { SearchForm, SearchFormInterface } from './search-form';
 
 export function PageHeader() {
   const { user, logout } = useAuth();
@@ -38,7 +32,7 @@ export function PageHeader() {
     navigate('/');
   };
 
-  const handleSubmit = (e: FormEvent<SearchForm>) => {
+  const handleSubmit = (e: FormEvent<SearchFormInterface>) => {
     e.preventDefault();
     const searchTermValue = e.currentTarget.elements.searchTerm.value.trim();
 
@@ -85,18 +79,11 @@ export function PageHeader() {
             />
           </div>
         </nav>
-        <form
-          onSubmit={handleSubmit}
-          className={`flex shadow-md absolute z-50 left-[50%] translate-x-[-50%] w-full bg-white dark:bg-gray-950 pb-16 justify-center ${isSearchPanel ? 'visible' : 'collapse'}`}
+        <div
+          className={`shadow-md absolute z-50 left-[50%] translate-x-[-50%] w-full bg-white dark:bg-gray-950 pb-16 ${isSearchPanel ? 'visible' : 'collapse'}`}
         >
-          <input
-            type="search"
-            name="searchTerm"
-            placeholder="search"
-            className="p-4 border dark:bg-gray-950 rounded"
-            ref={searchInput}
-          />
-        </form>
+          <SearchForm onSubmit={handleSubmit} inputRef={searchInput} />
+        </div>
       </header>
     </div>
   );
@@ -139,12 +126,12 @@ function SearchToggler({
       {isSearchPanel ? (
         <>
           <XMarkIcon width={24} height={24} className="icon-base" />
-          <span className="sr-only">Dismiss search</span>
+          <span className="sr-only">Close search movie form</span>
         </>
       ) : (
         <>
           <MagnifyingGlassIcon width={24} height={24} className="icon-base" />
-          <span className="sr-only">Search</span>
+          <span className="sr-only">Open search movie form</span>
         </>
       )}
     </button>

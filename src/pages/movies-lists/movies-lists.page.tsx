@@ -28,10 +28,9 @@ export function MoviesLists() {
             <TabTrigger
               key={id}
               value={id}
+              label={label}
               className="py-2 data-[state=active]:underline hover:underline underline-offset-8"
-            >
-              {label}
-            </TabTrigger>
+            />
           ))}
         </div>
         {tabs.map(({ id, noItemsNote }) => (

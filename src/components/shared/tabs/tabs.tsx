@@ -1,9 +1,6 @@
 import {
-  Children,
-  cloneElement,
   createContext,
   Dispatch,
-  isValidElement,
   ReactNode,
   SetStateAction,
   useContext,
@@ -35,44 +32,30 @@ export function Tabs({
 
 export function TabTrigger({
   value,
-  children,
+  label,
   className,
   onClick,
 }: {
   value: string;
-  children: ReactNode;
+  label: string;
   className?: string;
   onClick?: (args: unknown) => void;
 }) {
   const { activeTab, setActiveTab } = useContext(TabsContext);
   const isActive = activeTab === value;
 
-  return Children.map(children, (child) => {
-    if (!isValidElement(child)) {
-      return (
-        <button
-          data-state={isActive ? 'active' : 'inactive'}
-          className={className}
-          onClick={(...args) => {
-            onClick?.(...args);
-            setActiveTab(value);
-          }}
-        >
-          {child}
-        </button>
-      );
-    }
-
-    return cloneElement(child, {
-      ...child.props,
-      className: { ...child.props.className, className },
-      'data-state': isActive ? 'active' : 'inactive',
-      onClick: (...args: unknown[]) => {
+  return (
+    <button
+      data-state={isActive ? 'active' : 'inactive'}
+      className={className}
+      onClick={(...args) => {
+        onClick?.(...args);
         setActiveTab(value);
-        child.props.onClick?.(...args);
-      },
-    });
-  });
+      }}
+    >
+      {label}
+    </button>
+  );
 }
 
 export function TabContent({ value, children }: { value: string; children: ReactNode }) {

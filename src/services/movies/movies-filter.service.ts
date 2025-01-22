@@ -17,15 +17,13 @@ const searchParamName = {
 
 const sortOption = {
   popularity: 'popularity.desc',
-  vote: 'vote_count.desc',
-  releaseDateAsc: 'primary_release_date.asc',
+  releaseDateDesc: 'primary_release_date.desc',
   titleAsc: 'title.asc',
 };
 
 const sortOptionLabel: Record<keyof typeof sortOption, string> = {
   popularity: 'Popularity',
-  vote: 'Vote Count',
-  releaseDateAsc: 'Release Date',
+  releaseDateDesc: 'Release Date',
   titleAsc: 'Alphabetical',
 };
 
@@ -75,7 +73,10 @@ const selectOption: Record<SelectName, { title: string; value: string }[]> = {
     createReleaseDatesOption('2000 - 2010', [2000, 2010]),
     createReleaseDatesOption('1990 - 2000', [1990, 2000]),
     createReleaseDatesOption('1980 - 1990', [1980, 1990]),
-    createReleaseDatesOption('before 1980', [MIN_RELEASE_DATE_YEAR, 1980]),
+    createReleaseDatesOption('1970 - 1980', [1980, 1990]),
+    createReleaseDatesOption('1960 - 1970', [1980, 1990]),
+    createReleaseDatesOption('1950 - 1960', [1980, 1990]),
+    createReleaseDatesOption('before 1950', [MIN_RELEASE_DATE_YEAR, 1950]),
   ],
   genre: [
     { title: 'all genres', value: '' },

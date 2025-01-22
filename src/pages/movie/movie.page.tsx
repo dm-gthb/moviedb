@@ -1,9 +1,7 @@
 import { useLocation, useParams } from 'react-router';
 import { useMovieDetails } from '../../queries/movies.queries';
 import { ListItemButtons } from '../../components/movies/list-item-buttons/list-item-buttons';
-import { RatingToggler } from '../../components/movies/rating-buttons/rating-buttons';
 import { MoviePoster } from '../../components/movies/movie-poster/movie-poster';
-import { AverageVout } from '../../components/movies/average-vout/average-vout';
 import { genresMap } from '../../services/movies/movies.constants.service';
 import { useEffect } from 'react';
 import { InfoGrid } from '../../components/movies/info-grid/info-grid';
@@ -27,16 +25,8 @@ export function MoviePage() {
   }, [pathname]);
 
   if (movie.isSuccess) {
-    const {
-      title,
-      releaseDate,
-      overview,
-      voteAverage,
-      voteCount,
-      genreIds,
-      posterPath,
-      backdropPath,
-    } = movie.data;
+    const { title, releaseDate, overview, genreIds, posterPath, backdropPath } =
+      movie.data;
 
     return (
       <div>
@@ -58,12 +48,6 @@ export function MoviePage() {
                     {title}
                   </h1>
                   <div>
-                    {voteCount > 0 && (
-                      <>
-                        <AverageVout averageVout={voteAverage} />
-                        {(releaseDate || genreIds?.length > 0) && ' • '}
-                      </>
-                    )}
                     <span>
                       {releaseDate &&
                         `${releaseDate?.slice(0, 4)} ${genreIds?.length > 0 ? ` • ` : ''}`}
@@ -72,10 +56,7 @@ export function MoviePage() {
                   </div>
                 </div>
                 <p>{overview}</p>
-                <div className="flex gap-3">
-                  <ListItemButtons movie={movie.data} size="large" />
-                  <RatingToggler onClick={() => console.log('rate movie enabled')} />
-                </div>
+                <ListItemButtons movie={movie.data} size="large" />
               </div>
             </div>
           </div>

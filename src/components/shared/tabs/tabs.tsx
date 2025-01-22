@@ -26,7 +26,11 @@ export function Tabs({
   defaultValue?: string;
 }) {
   const [activeTab, setActiveTab] = useState(defaultValue ?? '');
-  return <TabsContext value={{ activeTab, setActiveTab }}>{children}</TabsContext>;
+  return (
+    <TabsContext.Provider value={{ activeTab, setActiveTab }}>
+      {children}
+    </TabsContext.Provider>
+  );
 }
 
 export function TabTrigger({

@@ -1,29 +1,21 @@
-import { FormEvent, RefObject } from 'react';
+import { RefObject } from 'react';
 import { ArrowRightIcon } from '@heroicons/react/24/outline';
-
-export interface SearchFormInterface extends HTMLFormElement {
-  elements: SearchFormElements;
-}
-
-interface SearchFormElements extends HTMLFormControlsCollection {
-  searchTerm: HTMLInputElement;
-}
 
 export function SearchForm({
   onSubmit,
   inputRef,
 }: {
-  onSubmit: (e: FormEvent<SearchFormInterface>) => void;
+  onSubmit: (formData: FormData) => void;
   inputRef: RefObject<HTMLInputElement | null>;
 }) {
   return (
-    <form onSubmit={onSubmit} className="flex flex-col gap-6 items-center justify-center">
+    <form action={onSubmit} className="flex flex-col gap-6 items-center justify-center">
       <div className="flex gap-2">
         <input
           id="search"
           type="search"
           name="searchTerm"
-          className="p-4 border dark:bg-gray-950 rounded"
+          className="p-3 border-2 dark:bg-gray-950 rounded"
           ref={inputRef}
         />
         <button

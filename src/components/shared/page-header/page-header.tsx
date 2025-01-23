@@ -1,4 +1,4 @@
-import { FormEvent, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { NavLink, useLocation, useNavigate } from 'react-router';
 import {
   MagnifyingGlassIcon,
@@ -8,7 +8,7 @@ import {
 } from '@heroicons/react/24/outline';
 import { useAuth } from '../../../services/auth/auth-context.service';
 import { appRoute } from '../../../services/router.service';
-import { SearchForm, SearchFormInterface } from './search-form';
+import { SearchForm } from './search-form';
 
 export function PageHeader() {
   const { user, logout } = useAuth();
@@ -32,13 +32,10 @@ export function PageHeader() {
     navigate('/');
   };
 
-  const handleSubmit = (e: FormEvent<SearchFormInterface>) => {
-    e.preventDefault();
-    const searchTermValue = e.currentTarget.elements.searchTerm.value.trim();
-
-    if (searchTermValue) {
+  const handleSearchFormSubmit = (formData: FormData) => {
+    const searchTermValue = formData.get('searchTerm') as string;
+    if (searchTermValue?.trim()) {
       navigate(`${appRoute.search}/${searchTermValue}`);
-      e.currentTarget.reset();
       setIsSearchPanel(false);
     }
   };
@@ -51,7 +48,7 @@ export function PageHeader() {
 
   return (
     <div className="relative">
-      <header className="max-w-7xl mx-auto px-8 z-40">
+      <header className="max-w-7xl mx-auto px-8">
         <nav className="flex justify-between text-lg relative py-8">
           <NavLink to="/" className={getNavlinkClass}>
             Home
@@ -68,7 +65,7 @@ export function PageHeader() {
               </>
             )}
             {!user && (
-              <NavLink to="/login" className={hoverUnderlineClass}>
+              <NavLink to="/auth" className={getNavlinkClass}>
                 Login
               </NavLink>
             )}
@@ -82,7 +79,7 @@ export function PageHeader() {
         <div
           className={`shadow-md absolute z-50 left-[50%] translate-x-[-50%] w-full bg-white dark:bg-gray-950 pb-16 ${isSearchPanel ? 'visible' : 'collapse'}`}
         >
-          <SearchForm onSubmit={handleSubmit} inputRef={searchInput} />
+          <SearchForm onSubmit={handleSearchFormSubmit} inputRef={searchInput} />
         </div>
       </header>
     </div>

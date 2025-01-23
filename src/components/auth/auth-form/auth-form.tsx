@@ -1,7 +1,8 @@
-import { useActionState } from 'react';
-import { AuthFormError } from './auth-form-error';
+import { useActionState, useState } from 'react';
 import { AuthData } from '../../../services/auth/auth.types.service';
 import { getErrorMessage } from '../../../services/utils.service';
+import { AuthFormError } from './auth-form-error';
+import { PasswordVisibilityToggler } from './password-visibility-toggler';
 
 const PASSWORD_MIN_LENGTH = 8;
 
@@ -18,6 +19,8 @@ type FormState = {
 
 function AuthForm(props: AuthFormProps) {
   const { type, onSubmit } = props;
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+
   const [formState, formAction, isPending] = useActionState(
     async (_: FormState | undefined, formData: FormData) => {
       const username = formData.get('username') as string;
@@ -57,16 +60,22 @@ function AuthForm(props: AuthFormProps) {
         </div>
         <div className={classNames.formGroup}>
           <label htmlFor="password">Password</label>
-          <input
-            id="password"
-            type="password"
-            name="password"
-            minLength={PASSWORD_MIN_LENGTH}
-            autoComplete={type === 'signup' ? 'new-password' : 'current-password'}
-            className={classNames.input}
-            defaultValue={formState?.data.password}
-            required
-          />
+          <div className="relative">
+            <input
+              id="password"
+              type={isPasswordVisible ? 'text' : 'password'}
+              name="password"
+              minLength={PASSWORD_MIN_LENGTH}
+              autoComplete={type === 'signup' ? 'new-password' : 'current-password'}
+              className={`${classNames.input} pr-11 w-full`}
+              defaultValue={formState?.data.password}
+              required
+            />
+            <PasswordVisibilityToggler
+              isVisible={isPasswordVisible}
+              onClick={() => setIsPasswordVisible(!isPasswordVisible)}
+            />
+          </div>
         </div>
       </fieldset>
       {formState?.isError && <AuthFormError errorMessage={formState.errorMessage} />}

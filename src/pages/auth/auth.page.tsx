@@ -14,7 +14,7 @@ export function AuthPage() {
   return (
     <div className="max-w-7xl mx-auto px-8 py-4 flex flex-col justify-center items-center">
       <h1 className="font-bold text-4xl mb-10">{isLogin ? 'Log In' : 'Sign Up'}</h1>
-      <div className="w-full sm:w-80 mb-4">
+      <div className="w-full sm:w-96 mb-4">
         <div>
           {isLogin ? (
             <LoginForm

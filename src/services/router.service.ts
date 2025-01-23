@@ -1,7 +1,6 @@
 export const appRoute = {
-  search: '/search',
-  login: '/login',
-  signup: '/signup',
-  movie: '/movie',
+  auth: '/auth',
   lists: '/lists',
+  movie: '/movie',
+  search: '/search',
 };

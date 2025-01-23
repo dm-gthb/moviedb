@@ -1,65 +1,90 @@
-import { FormEvent } from 'react';
-import { useAuthMutation } from '../../../queries/auth.query';
-import { useLocation, useNavigate } from 'react-router';
+import { useActionState } from 'react';
+import { AuthFormError } from './auth-form-error';
+import { AuthData } from '../../../services/auth/auth.types.service';
+import { getErrorMessage } from '../../../services/utils.service';
 
 const PASSWORD_MIN_LENGTH = 8;
 
-interface AuthElements extends HTMLFormControlsCollection {
-  username: HTMLInputElement;
-  password: HTMLInputElement;
-}
+type AuthFormProps = {
+  type: 'login' | 'signup';
+  onSubmit: (data: AuthData) => Promise<void>;
+};
 
-interface AuthFormInterface extends HTMLFormElement {
-  elements: AuthElements;
-}
+type FormState = {
+  data: { username: string; password: string };
+  isError: boolean;
+  errorMessage: string;
+};
 
-function AuthForm({ isSignup = false }: { isSignup?: boolean }) {
-  const navigate = useNavigate();
-  const { state } = useLocation();
-  const { mutate, isPending, isError, error } = useAuthMutation({ isSignup });
+function AuthForm(props: AuthFormProps) {
+  const { type, onSubmit } = props;
+  const [formState, formAction, isPending] = useActionState(
+    async (_: FormState | undefined, formData: FormData) => {
+      const username = formData.get('username') as string;
+      const password = formData.get('password') as string;
+      try {
+        await onSubmit({ username, password });
+      } catch (error) {
+        return {
+          data: { username, password },
+          isError: true,
+          errorMessage: getErrorMessage(error),
+        };
+      }
+    },
+    { data: { username: '', password: '' }, isError: false, errorMessage: '' },
+  );
 
-  const hanldeSubmit = (e: FormEvent<AuthFormInterface>) => {
-    e.preventDefault();
-    const formEl = e.currentTarget;
-
-    mutate(
-      {
-        username: formEl.elements.username.value,
-        password: formEl.elements.password.value,
-      },
-      {
-        onSuccess: () => {
-          formEl.reset();
-          navigate(state?.path || '/');
-        },
-      },
-    );
+  const classNames = {
+    input: 'p-3 border-2 rounded dark:bg-transparent disabled:text-gray-400',
+    formGroup: 'flex flex-col gap-1 mb-4 last-of-type:mb-6',
   };
 
   return (
-    <form onSubmit={hanldeSubmit}>
-      <label htmlFor="username">username</label>
-      <input type="text" name="username" autoComplete="username" required />
-      <label htmlFor="passord">password</label>
-      <input
-        type="password"
-        name="password"
-        minLength={PASSWORD_MIN_LENGTH}
-        autoComplete={isSignup ? 'new-password' : 'current-password'}
-        required
-      />
-      <button type="submit" disabled={isPending}>
-        {isPending ? 'Submitting...' : 'Submit'}
+    <form action={formAction}>
+      <fieldset disabled={isPending}>
+        <div className={classNames.formGroup}>
+          <label htmlFor="username">Username</label>
+          <input
+            id="username"
+            type="text"
+            name="username"
+            autoComplete="username"
+            className={classNames.input}
+            defaultValue={formState?.data.username}
+            required
+          />
+        </div>
+        <div className={classNames.formGroup}>
+          <label htmlFor="password">Password</label>
+          <input
+            id="password"
+            type="password"
+            name="password"
+            minLength={PASSWORD_MIN_LENGTH}
+            autoComplete={type === 'signup' ? 'new-password' : 'current-password'}
+            className={classNames.input}
+            defaultValue={formState?.data.password}
+            required
+          />
+        </div>
+      </fieldset>
+      {formState?.isError && <AuthFormError errorMessage={formState.errorMessage} />}
+      <button
+        type="submit"
+        disabled={isPending}
+        className="text-bold w-full p-4 text-center bg-gray-200 dark:bg-gray-600 hover:bg-gray-300 hover:dark:bg-gray-700 disabled:text-gray-400 disabled:bg-gray-300 disabled:dark:bg-gray-700 disabled:cursor-not-allowed transition-colors rounded-full"
+      >
+        {type === 'login' ? 'Log In' : 'Sign Up'}
       </button>
-      {isError && <p>{error?.message}</p>}
     </form>
   );
 }
 
-export function LoginForm() {
-  return <AuthForm />;
+export function LoginForm({ onSubmit }: { onSubmit: AuthFormProps['onSubmit'] }) {
+  return <AuthForm type="login" onSubmit={onSubmit} />;
 }
 
-export function SignupForm() {
-  return <AuthForm isSignup />;
+export function SignupForm({ onSubmit }: { onSubmit: AuthFormProps['onSubmit'] }) {
+  return <AuthForm type="signup" onSubmit={onSubmit} />;
 }

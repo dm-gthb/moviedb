@@ -4,14 +4,13 @@ import { PageHeader } from '../components/shared/page-header/page-header';
 import { DiscoverPage } from '../pages/discover/discover.page';
 import { appRoute } from '../services/router.service';
 import { SearchPage } from '../pages/search/search.page';
-import { LoginPage } from '../pages/login/login.page';
-import { SignupPage } from '../pages/signup/signup.page';
 import { MoviePage } from '../pages/movie/movie.page';
 import { NotFoundPage } from '../pages/not-found/not-found.page';
 import { RequireAuth } from '../components/auth/require-auth/require-auth';
 import { ErrorMessage } from '../components/shared/error-message/error-message';
 import { MoviesLists } from '../pages/movies-lists/movies-lists.page';
 import { CheckAuth } from '../components/auth/check-auth/check-auth';
+import { AuthPage } from '../pages/auth/auth.page';
 
 function App() {
   return (
@@ -40,18 +39,10 @@ function AppRoutes() {
         }
       />
       <Route
-        path={`${appRoute.login}`}
+        path={`${appRoute.auth}`}
         element={
           <CheckAuth>
-            <LoginPage />
-          </CheckAuth>
-        }
-      />
-      <Route
-        path={`${appRoute.signup}`}
-        element={
-          <CheckAuth>
-            <SignupPage />
+            <AuthPage />
           </CheckAuth>
         }
       />

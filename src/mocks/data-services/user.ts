@@ -26,7 +26,7 @@ export async function authenticate({ username, password }: AuthData) {
   if (user.passwordHash === hash(password)) {
     return { ...sanitizeUser(user), token: btoa(user.id) };
   }
-  const error = new StatusError('Invalid username or password');
+  const error = new StatusError('Invalid username or password.');
   error.status = 400;
   throw error;
 }
@@ -38,7 +38,7 @@ export async function create({ username, password }: AuthData) {
 
   if (users[id]) {
     const error = new StatusError(
-      `Cannot create a new user with the username "${username}"`,
+      `Cannot create a new user with the username "${username}".`,
     );
     error.status = 400;
     throw error;

@@ -44,7 +44,7 @@ export function RatingButtons({
   const navigate = useNavigate();
 
   if (!user) {
-    return <button onClick={() => navigate(appRoute.login)}>add rating</button>;
+    return <button onClick={() => navigate(appRoute.auth)}>add rating</button>;
   }
 
   return <AuthorizedUserButtons movie={getListItemMovie(movie)} />;

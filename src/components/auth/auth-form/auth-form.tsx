@@ -55,6 +55,7 @@ function AuthForm(props: AuthFormProps) {
             autoComplete="username"
             className={classNames.input}
             defaultValue={formState?.data.username}
+            autoFocus
             required
           />
         </div>

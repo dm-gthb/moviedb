@@ -32,12 +32,12 @@ export function ListItemButtons({
       <ListItemButton
         type="favorites"
         size={size}
-        onClick={() => navigate(appRoute.login)}
+        onClick={() => navigate(appRoute.auth)}
       />
       <ListItemButton
         type="watchlist"
         size={size}
-        onClick={() => navigate(appRoute.login)}
+        onClick={() => navigate(appRoute.auth)}
       />
     </div>
   );

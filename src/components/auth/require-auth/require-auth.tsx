@@ -10,6 +10,6 @@ export function RequireAuth({ children }: { children: ReactNode }) {
   return user ? (
     children
   ) : (
-    <Navigate to={appRoute.login} replace state={{ path: location.pathname }} />
+    <Navigate to={appRoute.auth} replace state={{ path: location.pathname }} />
   );
 }

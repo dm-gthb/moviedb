@@ -22,7 +22,7 @@ export function SearchPage() {
         )}
         {isSuccess && data?.results?.length > 0 && (
           <>
-            Search results for <SearchTerm term={searchTerm} />:
+            Search results for <SearchTerm term={searchTerm} />
           </>
         )}
       </p>

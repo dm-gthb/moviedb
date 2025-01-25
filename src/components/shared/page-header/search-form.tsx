@@ -17,6 +17,7 @@ export function SearchForm({
           name="searchTerm"
           className="p-3 border-2 dark:bg-gray-950 rounded"
           ref={inputRef}
+          required
         />
         <button
           type="submit"

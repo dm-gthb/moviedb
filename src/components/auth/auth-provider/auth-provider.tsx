@@ -6,6 +6,7 @@ import api from '../../../services/api/api.service';
 import { AuthContext } from '../../../services/auth/auth-context.service';
 import { listItemsOptions } from '../../../queries/list-items.queries';
 import { ErrorMessage } from '../../shared/error-message/error-message';
+import { Spinner } from '../../shared/spinner/spinner';
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
@@ -45,7 +46,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     authService.register(data).then((user) => setUser(user));
 
   if (isLoading) {
-    return <p>...loading app</p>;
+    return (
+      <div className="h-screen flex justify-center items-center">
+        <Spinner className="animate-spin text-gray-200 dark:text-gray-600 fill-gray-600 dark:fill-gray-300" />
+      </div>
+    );
   }
 
   if (error) {

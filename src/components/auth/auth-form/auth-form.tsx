@@ -3,16 +3,17 @@ import { AuthData } from '../../../services/auth/auth.types.service';
 import { getErrorMessage } from '../../../services/utils.service';
 import { AuthFormError } from './auth-form-error';
 import { PasswordVisibilityToggler } from './password-visibility-toggler';
+import { SubmitButton } from './submit-button';
 
 const PASSWORD_MIN_LENGTH = 8;
 
-type AuthFormProps = {
+export type AuthFormProps = {
   type: 'login' | 'signup';
   onSubmit: (data: AuthData) => Promise<void>;
 };
 
 type FormState = {
-  data: { username: string; password: string };
+  data: AuthData;
   isError: boolean;
   errorMessage: string;
 };
@@ -75,18 +76,13 @@ function AuthForm(props: AuthFormProps) {
             <PasswordVisibilityToggler
               isVisible={isPasswordVisible}
               onClick={() => setIsPasswordVisible(!isPasswordVisible)}
+              isDisabled={isPending}
             />
           </div>
         </div>
       </fieldset>
       {formState?.isError && <AuthFormError errorMessage={formState.errorMessage} />}
-      <button
-        type="submit"
-        disabled={isPending}
-        className="text-bold w-full p-4 text-center bg-gray-200 dark:bg-gray-600 hover:bg-gray-300 hover:dark:bg-gray-700 disabled:text-gray-400 disabled:bg-gray-300 disabled:dark:bg-gray-700 disabled:cursor-not-allowed transition-colors rounded-full"
-      >
-        {type === 'login' ? 'Log In' : 'Sign Up'}
-      </button>
+      <SubmitButton type={type} isDisabled={isPending} />
     </form>
   );
 }

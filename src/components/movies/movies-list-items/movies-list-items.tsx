@@ -14,7 +14,7 @@ export function MoviesListItems({
   const listItems = data?.[listType] ?? [];
 
   if (!isPending && !listItems.length) {
-    return <div>{noListItemsInfo}</div>;
+    return <p>{noListItemsInfo}</p>;
   }
 
   return (

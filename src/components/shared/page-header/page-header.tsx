@@ -1,26 +1,35 @@
 import { useEffect, useRef, useState } from 'react';
 import { NavLink, useLocation, useNavigate } from 'react-router';
-import {
-  MagnifyingGlassIcon,
-  MoonIcon,
-  SunIcon,
-  XMarkIcon,
-} from '@heroicons/react/24/outline';
+import { MoonIcon, SunIcon } from '@heroicons/react/24/outline';
 import { useAuth } from '../../../services/auth/auth-context.service';
 import { appRoute } from '../../../services/router.service';
 import { SearchForm } from './search-form';
+import { SearchToggler } from './search-toggler';
 
 export function PageHeader() {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
-  const [isSearchPanel, setIsSearchPanel] = useState(false);
-  const searchInput = useRef<HTMLInputElement>(null);
   const { pathname } = useLocation();
+  const [isSearchPanel, setIsSearchPanel] = useState(false);
+  const searchButtonRef = useRef<HTMLButtonElement>(null);
+  const searchInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
+    const handleEscapeKeyPress = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setIsSearchPanel(false);
+        searchButtonRef.current?.focus();
+      }
+    };
+
     if (isSearchPanel) {
-      searchInput.current?.focus();
+      searchInputRef.current?.focus();
+      window.addEventListener('keydown', handleEscapeKeyPress);
     }
+
+    return () => {
+      window.removeEventListener('keydown', handleEscapeKeyPress);
+    };
   }, [isSearchPanel]);
 
   useEffect(() => {
@@ -71,6 +80,7 @@ export function PageHeader() {
             )}
             <ThemeToggler />
             <SearchToggler
+              buttonRef={searchButtonRef}
               isSearchPanel={isSearchPanel}
               onClick={() => setIsSearchPanel(!isSearchPanel)}
             />
@@ -79,7 +89,7 @@ export function PageHeader() {
         <div
           className={`shadow-md absolute z-50 left-[50%] translate-x-[-50%] w-full bg-white dark:bg-gray-950 pb-16 ${isSearchPanel ? 'visible' : 'collapse'}`}
         >
-          <SearchForm onSubmit={handleSearchFormSubmit} inputRef={searchInput} />
+          <SearchForm onSubmit={handleSearchFormSubmit} inputRef={searchInputRef} />
         </div>
       </header>
     </div>
@@ -105,30 +115,6 @@ function ThemeToggler() {
         <>
           <SunIcon width={24} height={24} className="icon-base" />
           <span className="sr-only">Activate light mode</span>
-        </>
-      )}
-    </button>
-  );
-}
-
-function SearchToggler({
-  isSearchPanel,
-  onClick,
-}: {
-  isSearchPanel: boolean;
-  onClick: () => void;
-}) {
-  return (
-    <button onClick={onClick}>
-      {isSearchPanel ? (
-        <>
-          <XMarkIcon width={24} height={24} className="icon-base" />
-          <span className="sr-only">Close search movie form</span>
-        </>
-      ) : (
-        <>
-          <MagnifyingGlassIcon width={24} height={24} className="icon-base" />
-          <span className="sr-only">Open search movie form</span>
         </>
       )}
     </button>

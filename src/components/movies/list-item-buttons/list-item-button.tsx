@@ -22,7 +22,6 @@ export function ListItemButton(props: ListItemButtonProps) {
   return (
     <button
       onClick={(e) => {
-        e.stopPropagation();
         e.preventDefault();
         onClick();
       }}

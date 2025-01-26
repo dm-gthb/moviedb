@@ -1,10 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
 import { NavLink, useLocation, useNavigate } from 'react-router';
-import { MoonIcon, SunIcon } from '@heroicons/react/24/outline';
 import { useAuth } from '../../../services/auth/auth-context.service';
 import { appRoute } from '../../../services/router.service';
 import { SearchForm } from './search-form';
 import { SearchToggler } from './search-toggler';
+import { ThemeToggler } from './theme-toggler';
 
 export function PageHeader() {
   const { user, logout } = useAuth();
@@ -65,7 +65,7 @@ export function PageHeader() {
           <div className="flex items-center gap-6 sm:gap-8 md:gap-10">
             {user && (
               <>
-                <NavLink to="/lists" className={getNavlinkClass}>
+                <NavLink to={appRoute.lists} className={getNavlinkClass}>
                   My Lists
                 </NavLink>
                 <button onClick={handleLogout} className={hoverUnderlineClass}>
@@ -74,7 +74,7 @@ export function PageHeader() {
               </>
             )}
             {!user && (
-              <NavLink to="/auth" className={getNavlinkClass}>
+              <NavLink to={appRoute.auth} className={getNavlinkClass}>
                 Login
               </NavLink>
             )}
@@ -93,30 +93,5 @@ export function PageHeader() {
         </div>
       </header>
     </div>
-  );
-}
-
-function ThemeToggler() {
-  const [theme, setTheme] = useState('dark');
-
-  useEffect(() => {
-    document.body.classList.remove('light', 'dark');
-    document.body.classList.add(theme);
-  }, [theme]);
-
-  return (
-    <button onClick={() => setTheme((t) => (t === 'light' ? 'dark' : 'light'))}>
-      {theme === 'light' ? (
-        <>
-          <MoonIcon width={24} height={24} className="icon-base" />
-          <span className="sr-only">Activate dark mode</span>
-        </>
-      ) : (
-        <>
-          <SunIcon width={24} height={24} className="icon-base" />
-          <span className="sr-only">Activate light mode</span>
-        </>
-      )}
-    </button>
   );
 }

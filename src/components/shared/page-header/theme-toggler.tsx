@@ -9,7 +9,7 @@ export function ThemeToggler() {
   return (
     <IconButton
       onClick={switchTheme}
-      Icon={isLight ? MoonIcon : SunIcon}
+      Icon={isLight ? SunIcon : MoonIcon}
       label={isLight ? 'Activate dark mode' : 'Activate light mode'}
     />
   );

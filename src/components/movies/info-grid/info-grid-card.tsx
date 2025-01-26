@@ -14,11 +14,7 @@ export function InfoGridCard({ items }: { items: InfoItems }) {
                 className={`dark:text-gray-400 text-gray-900 ${isLink && 'overflow-ellipsis'}`}
               >
                 {isLink ? (
-                  <a
-                    href={content}
-                    rel="nofollow noopener noreferrer external"
-                    target="_blank"
-                  >
+                  <a href={content} rel="noopener noreferrer" target="_blank">
                     {content}
                   </a>
                 ) : (

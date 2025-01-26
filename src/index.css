@@ -3,10 +3,6 @@
 @tailwind utilities;
 
 @layer components {
-  .filter-element {
-    @apply p-4 w-max rounded border-2 capitalize;
-  }
-
   .overflow-ellipsis {
     @apply text-ellipsis whitespace-nowrap overflow-hidden;
   }

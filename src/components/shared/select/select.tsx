@@ -1,5 +1,11 @@
 import { ChevronDownIcon } from '@heroicons/react/24/outline';
-import { ChangeEvent, Children, isValidElement, ReactNode } from 'react';
+import { ChangeEvent, Children, isValidElement, ReactElement, ReactNode } from 'react';
+
+type OptionElementProps = {
+  value: string;
+};
+
+type OptionElement = ReactElement<OptionElementProps>;
 
 export function Select({
   name,
@@ -11,7 +17,7 @@ export function Select({
   name: string;
   value: string;
   onChange: (e: ChangeEvent<HTMLSelectElement>) => void;
-  children: ReactNode;
+  children: OptionElement[];
   className?: string;
 }) {
   return (
@@ -34,9 +40,12 @@ export function Select({
   );
 }
 
-function getDisplayedValue(value: string, children: ReactNode) {
+function getDisplayedValue(value: string, children: OptionElement[]) {
   const selectedChild = Children.toArray(children).find(
-    (child) => isValidElement(child) && child.props.value === value,
+    (child) => isValidElement<OptionElementProps>(child) && child.props.value === value,
   );
-  return isValidElement(selectedChild) && selectedChild?.props?.children;
+  return (
+    isValidElement<{ children: ReactNode }>(selectedChild) &&
+    selectedChild?.props?.children
+  );
 }

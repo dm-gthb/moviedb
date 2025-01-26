@@ -1,5 +1,6 @@
 import { RefObject } from 'react';
 import { MagnifyingGlassIcon, XMarkIcon } from '@heroicons/react/24/outline';
+import { IconButton } from './icon-button';
 
 export function SearchToggler({
   isSearchPanel,
@@ -11,18 +12,11 @@ export function SearchToggler({
   buttonRef: RefObject<HTMLButtonElement | null>;
 }) {
   return (
-    <button onClick={onClick} ref={buttonRef}>
-      {isSearchPanel ? (
-        <>
-          <XMarkIcon width={24} height={24} className="icon-base" />
-          <span className="sr-only">Close search movie form</span>
-        </>
-      ) : (
-        <>
-          <MagnifyingGlassIcon width={24} height={24} className="icon-base" />
-          <span className="sr-only">Open search movie form</span>
-        </>
-      )}
-    </button>
+    <IconButton
+      onClick={onClick}
+      buttonRef={buttonRef}
+      Icon={isSearchPanel ? XMarkIcon : MagnifyingGlassIcon}
+      label={isSearchPanel ? 'Open search movie form' : 'Close search movie form'}
+    />
   );
 }

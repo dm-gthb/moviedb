@@ -88,7 +88,6 @@ export const useMovieDetails = ({ movieId }: { movieId: string }) => {
           }),
       },
       movieQueries.credits(movieId),
-      movieQueries.recommendations(movieId),
     ],
   });
 };

@@ -4,16 +4,6 @@ import * as movieDataService from '../../mocks/data-services/movies';
 import { renderWithProviders } from '../../mocks/app-test-utils';
 import App from '../../app/app';
 
-beforeEach(() => {
-  const mockIntersectionObserver = vi.fn();
-  mockIntersectionObserver.mockReturnValue({
-    observe: () => null,
-    unobserve: () => null,
-    disconnect: () => null,
-  });
-  window.IntersectionObserver = mockIntersectionObserver;
-});
-
 test('renders movie cards', async () => {
   const movies = new Array(10).fill('').map(buildMovieItemWithDetails);
   await Promise.all(movies.map((movie) => movieDataService.create(movie)));

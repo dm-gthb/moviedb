@@ -10,6 +10,16 @@ import * as ratingDataService from './mocks/data-services/rating';
 
 beforeAll(() => {
   server.listen();
+
+  const IntersectionObserverMock = vi.fn(() => ({
+    disconnect: vi.fn(),
+    observe: vi.fn(),
+    takeRecords: vi.fn(),
+    unobserve: vi.fn(),
+  }))
+  
+  vi.stubGlobal('IntersectionObserver', IntersectionObserverMock)
+  vi.stubGlobal('scrollTo', vi.fn())
 });
 
 beforeEach(async () => {
@@ -30,4 +40,5 @@ afterEach(async () => {
 
 afterAll(() => {
   server.close();
+  vi.unstubAllGlobals()
 });

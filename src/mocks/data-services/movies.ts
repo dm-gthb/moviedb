@@ -62,7 +62,7 @@ export async function readMany({
 
   if (releaseDateLte) {
     result = result.filter(
-      (movie) => new Date(movie.release_date) < new Date(releaseDateLte),
+      (movie) => new Date(movie.release_date) <= new Date(releaseDateLte),
     );
   }
 

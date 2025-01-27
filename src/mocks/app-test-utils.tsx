@@ -3,6 +3,7 @@ import { ReactElement } from 'react';
 import { BrowserRouter } from 'react-router';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { AuthProvider } from '../components/auth/auth-provider/auth-provider';
+import { ThemeProvider } from '../components/shared/theme/theme-provider/theme-provider';
 
 const createTestQueryClient = () =>
   new QueryClient({
@@ -30,7 +31,9 @@ export const renderWithProviders = async (
   render(
     <BrowserRouter>
       <QueryClientProvider client={createTestQueryClient()}>
-        <AuthProvider>{ui}</AuthProvider>
+        <ThemeProvider>
+          <AuthProvider>{ui}</AuthProvider>
+        </ThemeProvider>
       </QueryClientProvider>
     </BrowserRouter>,
   );

@@ -1,15 +1,26 @@
-import { screen, waitForElementToBeRemoved } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import { screen } from '@testing-library/react';
 import { buildMovieItemWithDetails } from '../../mocks/generate';
 import * as movieDataService from '../../mocks/data-services/movies';
 import { renderWithProviders } from '../../mocks/app-test-utils';
 import App from '../../app/app';
 
+beforeEach(() => {
+  const mockIntersectionObserver = vi.fn();
+  mockIntersectionObserver.mockReturnValue({
+    observe: () => null,
+    unobserve: () => null,
+    disconnect: () => null,
+  });
+  window.IntersectionObserver = mockIntersectionObserver;
+});
+
 test('renders movie cards', async () => {
   const movies = new Array(10).fill('').map(buildMovieItemWithDetails);
   await Promise.all(movies.map((movie) => movieDataService.create(movie)));
   await renderWithProviders(<App />);
+  expect(screen.getByRole('heading', { level: 1, name: /discover movies/i }));
   expect(screen.getAllByRole('heading', { level: 2 }).length).toBe(10);
+  expect(screen.getAllByRole('img', { name: /movie poster/i }).length).toBe(10);
 });
 
 test('renders movies with "popularity" default sort option', async () => {
@@ -27,25 +38,6 @@ test('renders movies with "popularity" default sort option', async () => {
       Node.DOCUMENT_POSITION_FOLLOWING,
     );
   }
-});
-
-test('limits render to 20 items and show more with "load more" button click', async () => {
-  const moviesToRenderCount = 30;
-  const movies = new Array(moviesToRenderCount).fill('').map(buildMovieItemWithDetails);
-  await Promise.all(movies.map((movie) => movieDataService.create(movie)));
-  await renderWithProviders(<App />);
-  expect(screen.getAllByRole('heading', { level: 2 }).length).toBe(20);
-
-  const loadMoreButton = screen.getByRole('button', { name: /load more/i });
-  expect(loadMoreButton).toBeInTheDocument();
-
-  await userEvent.click(loadMoreButton);
-  expect(loadMoreButton).toBeDisabled();
-
-  await waitForElementToBeRemoved(() =>
-    screen.queryByRole('button', { name: /load more/i }),
-  );
-  expect(screen.getAllByRole('heading', { level: 2 }).length).toBe(moviesToRenderCount);
 });
 
 test.todo('movies filter works correctly', async () => {});

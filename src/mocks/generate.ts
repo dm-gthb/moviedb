@@ -25,7 +25,7 @@ export function buildMovieItem(): MovieItem {
     overview: faker.lorem.paragraph(),
     popularity: faker.number.float({ fractionDigits: 2 }),
     poster_path: '/' + faker.system.commonFileName('jpg'),
-    release_date: faker.date.recent().toLocaleDateString(),
+    release_date: faker.date.recent().toISOString().split('T')[0],
     title: faker.lorem.word() + faker.number.int(),
     video: faker.datatype.boolean(),
     vote_average: faker.number.float({ fractionDigits: 3 }),
@@ -71,7 +71,7 @@ export function buildMovieCredits(): MovieCredits {
       credit_id: faker.string.uuid(),
       order: faker.number.int(),
     })),
-    crew: new Array(3).fill('').map(() => ({
+    crew: new Array(3).fill('').map((_, i) => ({
       adult: faker.datatype.boolean(),
       gender: faker.number.int(),
       id: faker.number.int(),
@@ -82,7 +82,7 @@ export function buildMovieCredits(): MovieCredits {
       profile_path: '/' + faker.system.commonFileName('jpg'),
       credit_id: faker.string.uuid(),
       department: faker.commerce.department(),
-      job: faker.person.jobTitle(),
+      job: i === 0 ? 'Director' : i === 1 ? 'Writer' : 'Screenplay',
     })),
   };
 }

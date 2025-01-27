@@ -9,7 +9,10 @@ export function MoviesGrid({
   movies?: MovieItem[] | ListItemMovie[];
 }) {
   return (
-    <div className="grid grid-cols-2 gap-6 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 lg:gap-8 xl:gap-10">
+    <div
+      {...(isPending && { 'aria-label': 'loading' })}
+      className="grid grid-cols-2 gap-6 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 lg:gap-8 xl:gap-10"
+    >
       {isPending
         ? new Array(20).fill('').map((_el, i) => <PlaceholderMovieCard key={i} />)
         : movies?.map((movie) => <MovieCard key={movie.id} movie={movie} />)}

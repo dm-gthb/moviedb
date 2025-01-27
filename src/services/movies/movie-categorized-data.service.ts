@@ -1,4 +1,12 @@
 import { MovieCredits, MovieDetails } from './movies.types.service';
+import {
+  formatBudget,
+  formatCountryList,
+  formatDate,
+  formatDuration,
+  formatLanguage,
+  getNamesWithOverflow,
+} from './movies.utils.service';
 
 export type InfoItems = { title: string; content?: string; isLink?: boolean }[];
 
@@ -40,14 +48,16 @@ function getMovieTechData(movie: MovieDetails): InfoItems {
 function getTeamData(movie: MovieCredits): InfoItems {
   const crew = movie.crew ?? [];
   const cast = movie.cast ?? [];
-  const [directors, isMultipleDirectors] = getNames(
+  const [directors, isMultipleDirectors] = getNamesWithOverflow(
     crew.filter(({ job }) => job === 'Director'),
   );
-  const [writers, isMultipleWriters] = getNames(
+  const [writers, isMultipleWriters] = getNamesWithOverflow(
     crew.filter(({ job }) => job === 'Writer'),
   );
-  const [screenplay] = getNames(crew.filter(({ job }) => job === 'Screenplay'));
-  const [starring] = getNames(cast, 20);
+  const [screenplay] = getNamesWithOverflow(
+    crew.filter(({ job }) => job === 'Screenplay'),
+  );
+  const [starring] = getNamesWithOverflow(cast, 20);
 
   return [
     { title: isMultipleDirectors ? 'Directors' : 'Director', content: directors },
@@ -66,38 +76,22 @@ function getFormattedValue(
       return movie.originalTitle;
 
     case 'originalLanguage':
-      return movie.originalLanguage
-        ? new Intl.DisplayNames(['en'], { type: 'language' }).of(movie.originalLanguage)
-        : undefined;
+      return movie.originalLanguage ? formatLanguage(movie.originalLanguage) : undefined;
 
     case 'originCountry':
-      return (
-        movie.originCountry
-          ?.filter((code) => Boolean(code))
-          ?.map((code) => new Intl.DisplayNames(['en'], { type: 'region' }).of(code))
-          .join(', ') ?? ''
-      );
+      return formatCountryList(movie.originCountry);
 
     case 'runtime':
       return movie.runtime ? formatDuration(movie.runtime) : undefined;
 
     case 'budget':
-      return movie.budget
-        ? new Intl.NumberFormat('en-US', {
-            style: 'currency',
-            currency: 'USD',
-          }).format(movie.budget)
-        : undefined;
+      return movie.budget ? formatBudget(movie.budget) : undefined;
 
     case 'status':
       return movie.status;
 
     case 'releaseDate':
-      return movie.releaseDate
-        ? new Intl.DateTimeFormat('en-US', { dateStyle: 'long' }).format(
-            new Date(movie.releaseDate),
-          )
-        : undefined;
+      return movie.releaseDate ? formatDate(movie.releaseDate) : undefined;
 
     case 'homepage':
       return movie.homepage;
@@ -105,22 +99,4 @@ function getFormattedValue(
     default:
       return undefined;
   }
-}
-
-function getNames(list?: Array<{ name: string }>, maxCount = 10): [string, boolean] {
-  return list
-    ? [
-        list
-          .slice(0, maxCount)
-          .map(({ name }) => name)
-          .join(', '),
-        list.length > 1,
-      ]
-    : ['', false];
-}
-
-function formatDuration(minDuration: number) {
-  const hours = Math.floor(minDuration / 60);
-  const min = minDuration % 60;
-  return `${hours ? `${hours}h` : ''} ${min ? `${min}m` : ''}`;
 }

@@ -1,6 +1,6 @@
 import { useSearchParams } from 'react-router';
 import { genresMap } from './movies.constants.service';
-import { Entries, getFormattedDate } from './movies.utils.service';
+import { Entries, getYear } from './movies.utils.service';
 
 type SelectName = 'sort' | 'releaseDates' | 'genre';
 type SearchParamName = keyof typeof searchParamName;
@@ -29,7 +29,7 @@ const sortOptionLabel: Record<keyof typeof sortOption, string> = {
 
 const defaultSearchParamValue: Record<SearchParamName, string> = {
   releaseDateGte: `${MIN_RELEASE_DATE_YEAR}-01-01`,
-  releaseDateLte: getFormattedDate(new Date()),
+  releaseDateLte: getYear(new Date()),
   genre: '',
   sortBy: sortOption.popularity,
   includeAdult: 'false',
@@ -38,9 +38,7 @@ const defaultSearchParamValue: Record<SearchParamName, string> = {
 const createYearsRangeParam = ([startYear, endYear]: [number, number]) => {
   return [
     `${startYear}-01-01`,
-    endYear === new Date().getFullYear()
-      ? getFormattedDate(new Date())
-      : `${endYear}-12-31`,
+    endYear === new Date().getFullYear() ? getYear(new Date()) : `${endYear}-12-31`,
   ].join(',');
 };
 

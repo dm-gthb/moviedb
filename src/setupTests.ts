@@ -16,10 +16,10 @@ beforeAll(() => {
     observe: vi.fn(),
     takeRecords: vi.fn(),
     unobserve: vi.fn(),
-  }))
-  
-  vi.stubGlobal('IntersectionObserver', IntersectionObserverMock)
-  vi.stubGlobal('scrollTo', vi.fn())
+  }));
+
+  vi.stubGlobal('IntersectionObserver', IntersectionObserverMock);
+  vi.stubGlobal('scrollTo', vi.fn());
 });
 
 beforeEach(async () => {
@@ -40,5 +40,5 @@ afterEach(async () => {
 
 afterAll(() => {
   server.close();
-  vi.unstubAllGlobals()
+  vi.unstubAllGlobals();
 });

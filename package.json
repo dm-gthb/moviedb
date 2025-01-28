@@ -3,9 +3,11 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "author": "Dmitrii Mamonov",
+  "homepage": "https://dm-gthb.github.io/moviedb/",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "build": "tsc -b && vite build --base=/moviedb",
     "lint": "eslint .",
     "preview": "vite preview",
     "format": "prettier --write \"**/*.+(js|ts|tsx|json|css|html)\"",

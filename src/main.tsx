@@ -4,7 +4,7 @@ import App from './app/app.tsx';
 import { AppProviders } from './app/app-providers.tsx';
 import './index.css';
 
-const isMockMovies = true;
+const isMockMovies = false;
 
 async function enableMocking() {
   const { getServer } = await import('./mocks/server/dev-server.ts');

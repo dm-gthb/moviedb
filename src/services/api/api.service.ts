@@ -43,7 +43,8 @@ type RequestConfig = {
   body?: string;
 };
 
-const MOVIEDB_API_TOKEN = '';
+const MOVIEDB_API_TOKEN =
+  'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJjOGVkOTFhY2ZkMWY0NGQwNTk0ZDgxNzQ0MTBjMjkyNiIsIm5iZiI6MTczMzc1NzM3Ny4yMywic3ViIjoiNjc1NzA5YzFhMThjYjg2OTVhZmQ5MTU2Iiwic2NvcGVzIjpbImFwaV9yZWFkIl0sInZlcnNpb24iOjF9.9eDPF25L0SRXhujBE_5AYaevptn80f405k2v5Yeg_Wk';
 
 class API {
   protected async fetchData(url: string, requestConfig: RequestConfig = {}) {

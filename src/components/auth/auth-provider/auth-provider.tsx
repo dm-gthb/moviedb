@@ -47,8 +47,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   if (isLoading) {
     return (
-      <div className="h-screen flex justify-center items-center">
-        <Spinner className="animate-spin text-gray-200 dark:text-gray-600 fill-gray-600 dark:fill-gray-300" />
+      <div className="flex h-screen items-center justify-center">
+        <Spinner className="animate-spin fill-gray-600 text-gray-200 dark:fill-gray-300 dark:text-gray-600" />
       </div>
     );
   }

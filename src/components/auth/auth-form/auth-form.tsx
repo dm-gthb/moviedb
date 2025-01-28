@@ -69,7 +69,7 @@ function AuthForm(props: AuthFormProps) {
               name="password"
               minLength={PASSWORD_MIN_LENGTH}
               autoComplete={type === 'signup' ? 'new-password' : 'current-password'}
-              className={`${classNames.input} pr-11 w-full`}
+              className={`${classNames.input} w-full pr-11`}
               defaultValue={formState?.data.password}
               required
             />

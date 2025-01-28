@@ -17,13 +17,13 @@ export function DiscoverPage() {
         fetchNextPage();
       }
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [entry?.isIntersecting, hasNextPage]);
 
   return (
-    <div className="max-w-7xl mx-auto px-8 pt-4 pb-10">
-      <h1 className="font-bold text-4xl md:text-5xl mb-5">Discover Movies</h1>
-      <p className="text-xl max-w-2xl mb-6">
+    <div className="mx-auto max-w-7xl px-8 pb-10 pt-4">
+      <h1 className="mb-5 text-4xl font-bold md:text-5xl">Discover Movies</h1>
+      <p className="mb-6 max-w-2xl text-xl">
         Explore a vast collection of films, from the latest releases to timeless classics,
         with data powered by{' '}
         <a
@@ -51,7 +51,7 @@ export function DiscoverPage() {
           <Spinner
             width={24}
             height={24}
-            className="inline w-8 h-8 text-gray-300 fill-gray-900 animate-spin dark:text-gray-600 dark:fill-gray-50"
+            className="inline h-8 w-8 animate-spin fill-gray-900 text-gray-300 dark:fill-gray-50 dark:text-gray-600"
           />
         </div>
       ) : (

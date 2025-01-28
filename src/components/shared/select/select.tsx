@@ -26,12 +26,12 @@ export function Select({
         name={name}
         value={value}
         onChange={onChange}
-        className="opacity-0 absolute left-0 right-0 bottom-0 top-0 w-full h-full peer"
+        className="peer absolute bottom-0 left-0 right-0 top-0 h-full w-full opacity-0"
       >
         {children}
       </select>
       <div
-        className={`${className} peer-focus:outline outline-blue-800 -outline-offset-2 outline-2`}
+        className={`${className} outline-2 -outline-offset-2 outline-blue-800 peer-focus:outline`}
       >
         {getDisplayedValue(value, children)}
         <ChevronDownIcon width={20} height={20} className="translate-y-[1px]" />

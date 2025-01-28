@@ -57,8 +57,8 @@ export function PageHeader() {
 
   return (
     <div className="relative">
-      <header className="max-w-7xl mx-auto px-8">
-        <nav className="flex justify-between text-lg relative py-8">
+      <header className="mx-auto max-w-7xl px-8">
+        <nav className="relative flex justify-between py-8 text-lg">
           <NavLink to="/" className={getNavlinkClass}>
             Home
           </NavLink>
@@ -87,7 +87,7 @@ export function PageHeader() {
           </div>
         </nav>
         <div
-          className={`shadow-md absolute z-50 left-[50%] translate-x-[-50%] w-full bg-white dark:bg-gray-950 pb-16 ${isSearchPanel ? 'visible' : 'collapse'}`}
+          className={`absolute left-[50%] z-50 w-full translate-x-[-50%] bg-white pb-16 shadow-md dark:bg-gray-950 ${isSearchPanel ? 'visible' : 'collapse'}`}
         >
           <SearchForm onSubmit={handleSearchFormSubmit} inputRef={searchInputRef} />
         </div>

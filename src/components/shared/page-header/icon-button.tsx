@@ -16,7 +16,7 @@ export function IconButton({
       <Icon
         width={24}
         height={24}
-        className="text-gray-900 dark:text-gray-50 hover:scale-125 transition-transform"
+        className="text-gray-900 transition-transform hover:scale-125 dark:text-gray-50"
       />
       <span className="sr-only">{label}</span>
     </button>

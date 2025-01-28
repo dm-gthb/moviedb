@@ -12,9 +12,9 @@ export function AuthPage() {
   const isLogin = authType === 'login';
 
   return (
-    <div className="max-w-7xl mx-auto px-8 py-4 flex flex-col justify-center items-center">
-      <h1 className="font-bold text-4xl mb-10">{isLogin ? 'Log In' : 'Sign Up'}</h1>
-      <div className="w-full sm:w-96 mb-4">
+    <div className="mx-auto flex max-w-7xl flex-col items-center justify-center px-8 py-4">
+      <h1 className="mb-10 text-4xl font-bold">{isLogin ? 'Log In' : 'Sign Up'}</h1>
+      <div className="mb-4 w-full sm:w-96">
         <div>
           {isLogin ? (
             <LoginForm
@@ -37,7 +37,7 @@ export function AuthPage() {
         {isLogin ? "Don't have an account?" : 'Already have an account?'}{' '}
         <button
           type="button"
-          className="underline disabled:text-gray-400 disabled:cursor-not-allowed"
+          className="underline disabled:cursor-not-allowed disabled:text-gray-400"
           onClick={() => setAuthType(isLogin ? 'signup' : 'login')}
         >
           {isLogin ? 'Sign up' : 'Log in'}

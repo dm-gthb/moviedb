@@ -11,7 +11,7 @@ export function MoviesFilter() {
   const filterElementClassname = 'w-max p-4 shrink-0 rounded border-2 capitalize';
 
   return (
-    <div className="flex items-center flex-row gap-4 -mx-8 px-8 overflow-x-auto">
+    <div className="-mx-8 flex flex-row items-center gap-4 overflow-x-auto px-8">
       {selectData.map(([selectName, options]) => (
         <Select
           key={selectName}
@@ -37,7 +37,7 @@ export function MoviesFilter() {
         </Select>
       ))}
       <button
-        className={`${filterElementClassname} hover:bg-gray-200 hover:dark:bg-gray-800 transition-colors border-transparent`}
+        className={`${filterElementClassname} border-transparent transition-colors hover:bg-gray-200 hover:dark:bg-gray-800`}
         onClick={() => setSearchParams(new URLSearchParams())}
       >
         Reset Filters

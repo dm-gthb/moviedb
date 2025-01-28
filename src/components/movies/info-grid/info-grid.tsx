@@ -10,7 +10,7 @@ export function InfoGrid({
 }) {
   if (isLoading) {
     return (
-      <div className="grid lg:grid-cols-3 gap-6" aria-label="loading">
+      <div className="grid gap-6 lg:grid-cols-3" aria-label="loading">
         {new Array(3).fill('').map((_el, i) => (
           <LoadingInfoGridCard key={i} />
         ))}
@@ -20,7 +20,7 @@ export function InfoGrid({
 
   if (dataItems) {
     return (
-      <div className="grid lg:grid-cols-3 gap-6">
+      <div className="grid gap-6 lg:grid-cols-3">
         {dataItems.map((items, i) => (
           <InfoGridCard key={i} items={items} />
         ))}

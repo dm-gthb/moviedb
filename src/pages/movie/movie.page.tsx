@@ -34,21 +34,21 @@ export function MoviePage() {
 
     return (
       <>
-        <div className="relative py-20 xl:py-24 dark:bg-black bg-gray-900">
+        <div className="relative bg-gray-900 py-20 xl:py-24 dark:bg-black">
           <div
-            className="bg-cover bg-center opacity-20 dark:opacity-25 absolute left-0 right-0 top-0 bottom-0 w-full h-full "
+            className="absolute bottom-0 left-0 right-0 top-0 h-full w-full bg-cover bg-center opacity-20 dark:opacity-25"
             style={{
               backgroundImage: `url(${`${imageUrl}/${BackdropSize.w780}${backdropPath}`})`,
             }}
           />
-          <section className="max-w-7xl mx-auto relative z-30 text-gray-50 px-8">
+          <section className="relative z-30 mx-auto max-w-7xl px-8 text-gray-50">
             <div className="flex gap-10 md:gap-14">
-              <div className="w-[180px] md:w-[250px] shrink-0 hidden sm:block rounded overflow-hidden">
+              <div className="hidden w-[180px] shrink-0 overflow-hidden rounded sm:block md:w-[250px]">
                 <MoviePoster posterPath={posterPath} movieTitle={title} />
               </div>
-              <div className="flex flex-col gap-6 justify-center">
+              <div className="flex flex-col justify-center gap-6">
                 <div>
-                  <h1 className="font-bold text-3xl sm:text-4xl md:text-5xl lg:text-6xl lg:max-w-[70%] mb-2">
+                  <h1 className="mb-2 text-3xl font-bold sm:text-4xl md:text-5xl lg:max-w-[70%] lg:text-6xl">
                     {title}
                   </h1>
                   <div>
@@ -65,7 +65,7 @@ export function MoviePage() {
             </div>
           </section>
         </div>
-        <section className="max-w-7xl mx-auto p-8">
+        <section className="mx-auto max-w-7xl p-8">
           <h2 className="sr-only">Movie Details</h2>
           <InfoGrid isLoading={isPendingDetails} dataItems={categorizedMovieData} />
         </section>
@@ -77,12 +77,12 @@ export function MoviePage() {
 function LoadingPage() {
   return (
     <>
-      <div className="py-20 xl:py-24 bg-gray-100 dark:bg-gray-800 animate-pulse shadow">
-        <div className="max-w-7xl mx-auto relative z-30 text-gray-50 px-8">
-          <div className="w-[180px] md:w-[250px] aspect-[2/3]" />
+      <div className="animate-pulse bg-gray-100 py-20 shadow xl:py-24 dark:bg-gray-800">
+        <div className="relative z-30 mx-auto max-w-7xl px-8 text-gray-50">
+          <div className="aspect-[2/3] w-[180px] md:w-[250px]" />
         </div>
       </div>
-      <div className="max-w-7xl mx-auto p-8">
+      <div className="mx-auto max-w-7xl p-8">
         <InfoGrid isLoading />
       </div>
     </>

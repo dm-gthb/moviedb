@@ -7,9 +7,9 @@ export function SearchPage() {
   const { data, isPending, isSuccess } = useMoviesSearch({ searchTerm });
 
   return (
-    <div className="max-w-7xl mx-auto px-8 pt-4 pb-10">
+    <div className="mx-auto max-w-7xl px-8 pb-10 pt-4">
       <h1 className="sr-only">Search Results</h1>
-      <p className={`text-xl max-w-2xl mb-6 ${isPending && 'animate-pulse'}`}>
+      <p className={`mb-6 max-w-2xl text-xl ${isPending && 'animate-pulse'}`}>
         {isPending && (
           <>
             Searching for: <SearchTerm term={searchTerm} />
@@ -35,5 +35,5 @@ export function SearchPage() {
 }
 
 function SearchTerm({ term = '' }: { term?: string }) {
-  return <span className="capitalize font-semibold">"{term}"</span>;
+  return <span className="font-semibold capitalize">"{term}"</span>;
 }

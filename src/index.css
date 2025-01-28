@@ -4,6 +4,6 @@
 
 @layer components {
   .overflow-ellipsis {
-    @apply text-ellipsis whitespace-nowrap overflow-hidden;
+    @apply overflow-hidden text-ellipsis whitespace-nowrap;
   }
 }

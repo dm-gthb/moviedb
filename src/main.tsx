@@ -4,9 +4,11 @@ import App from './app/app.tsx';
 import { AppProviders } from './app/app-providers.tsx';
 import './index.css';
 
+const isMockMovies = true;
+
 async function enableMocking() {
-  const { server } = await import('./mocks/server/dev-server.ts');
-  return server.start({
+  const { getServer } = await import('./mocks/server/dev-server.ts');
+  return getServer({ isMockMovies }).start({
     onUnhandledRequest: 'bypass',
   });
 }

@@ -6,6 +6,7 @@ import { defineConfig, type UserConfig } from 'vite';
 
 export default defineConfig({
   plugins: [react()],
+  base: '/moviedb/',
   test: {
     globals: true,
     environment: 'jsdom',

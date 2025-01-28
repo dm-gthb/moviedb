@@ -17,6 +17,7 @@ export function DiscoverPage() {
         fetchNextPage();
       }
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [entry?.isIntersecting, hasNextPage]);
 
   return (

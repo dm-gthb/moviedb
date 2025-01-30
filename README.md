@@ -1,50 +1,29 @@
-# React + TypeScript + Vite
+## MovieDB v1
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**MovieDB** is a movie library web app, that uses data from [TMDB](https://developer.themoviedb.org/docs/getting-started).
+- Browse movies by genre, release date, popularity, and more.
+- Find movies by title.
+- Save movies to personal lists.
+---
 
-Currently, two official plugins are available:
+### 💡 Features
+- **Mock API:** Fully mocked API with separate data services; seamless toggling between real and mock data.  
+- **Caching:** Placeholder data feature for transitioning from any movies list page to the movie details page; caches previously visited items for faster retrieval.
+- **Persistent Filters & Sorting**: Filters and sorting options on the discovery page are stored in the URL via search params, allowing users to bookmark, share, and reopen pages while preserving their selected state.
+- **Optimistic Updates:** Minimal intergration: applied to item deletion in user lists (favorites, watchlist).
+- **Keyboard Navigation:** Navigation is optimized for keyboard use.
+- **Infinite Scroll:** Endless scrolling on the discovery page (future virtualized list integration).
+- **Theming:** Easily toggle between light and dark themes.  
+- **Responsive Layout**: Optimized for phones, tablets, and desktops.
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### 📦 Stack  
+- **Frontend:** React, TanStack Query, Tailwind CSS, React Router, Vite  
+- **API Mocking:** MSW  
+- **Testing:** React Testing Library, Vitest, MSW  
+---
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
-
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
-
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+### 🔧 Future Enhancements  
+- Virtualized List for Discovery Page
+- Full Cast & Crew Pages
+- Backend for Authentication & User Lists

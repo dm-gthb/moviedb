@@ -1,8 +1,11 @@
 import { InfoItems } from '../../../services/movies/movie-categorized-data.service';
 
 export function InfoGridCard({ items }: { items: InfoItems }) {
+  const isNoData = items.every(({ content }) => Boolean(content) === false);
   return (
-    <div className="flex flex-col gap-4 rounded bg-gray-100 px-6 py-8 shadow-md dark:bg-gray-800">
+    <div
+      className={`${isNoData && 'hidden'} flex flex-col gap-4 rounded bg-gray-100 px-6 py-8 shadow-md lg:flex dark:bg-gray-800`}
+    >
       {items?.map(({ title, content, isLink }) => {
         if (content) {
           return (
@@ -25,9 +28,7 @@ export function InfoGridCard({ items }: { items: InfoItems }) {
           );
         }
       })}
-      {items.every(({ content }) => Boolean(content) === false) && (
-        <span>No Info Yet</span>
-      )}
+      {isNoData && <span className="text-gray-900 dark:text-gray-400">No Info Yet</span>}
     </div>
   );
 }

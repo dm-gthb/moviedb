@@ -8,9 +8,11 @@ export function InfoGrid({
   isLoading: boolean;
   dataItems?: InfoItems[];
 }) {
+  const containerClassname = 'grid gap-6 grid-cols-1 lg:grid-cols-3';
+
   if (isLoading) {
     return (
-      <div className="grid gap-6 lg:grid-cols-3" aria-label="loading">
+      <div className={containerClassname} aria-label="loading">
         {new Array(3).fill('').map((_el, i) => (
           <LoadingInfoGridCard key={i} />
         ))}
@@ -20,7 +22,7 @@ export function InfoGrid({
 
   if (dataItems) {
     return (
-      <div className="grid gap-6 lg:grid-cols-3">
+      <div className={containerClassname}>
         {dataItems.map((items, i) => (
           <InfoGridCard key={i} items={items} />
         ))}

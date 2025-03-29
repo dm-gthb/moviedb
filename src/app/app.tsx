@@ -11,6 +11,8 @@ import { ErrorMessage } from '../components/shared/error-message/error-message';
 import { MoviesLists } from '../pages/movies-lists/movies-lists.page';
 import { CheckAuth } from '../components/auth/check-auth/check-auth';
 import { AuthPage } from '../pages/auth/auth.page';
+import { PersonPage } from '../pages/person/person.page';
+import { CastPage } from '../pages/cast/cast.page';
 
 function App() {
   return (
@@ -47,6 +49,8 @@ function AppRoutes() {
         }
       />
       <Route path={`${appRoute.movie}/:id`} element={<MoviePage />} />
+      <Route path={`${appRoute.person}/:id`} element={<PersonPage />} />
+      <Route path={`${appRoute.movie}/:movieId${appRoute.cast}`} element={<CastPage />} />
       <Route path="*" element={<NotFoundPage />} />
     </Routes>
   );

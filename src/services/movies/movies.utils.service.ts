@@ -1,3 +1,4 @@
+import { PersonBase } from '../person/person.types';
 import { ListItemMovie, MovieDetails, MovieItem } from './movies.types.service';
 
 export const getListItemMovie = (
@@ -16,19 +17,11 @@ export function getYear(date: Date) {
   return date.toISOString().split('T')[0];
 }
 
-export function getNamesWithOverflow(
-  list?: Array<{ name: string }>,
+export function getPersonsWithOverflow(
+  list?: Array<PersonBase>,
   maxCount = 10,
-): [string, boolean] {
-  return list
-    ? [
-        list
-          .slice(0, maxCount)
-          .map(({ name }) => name)
-          .join(', '),
-        list.length > 1,
-      ]
-    : ['', false];
+): [persons: Array<PersonBase>, isMultiple: boolean] {
+  return [list?.slice(0, maxCount) ?? [], list ? list.length > 1 : false];
 }
 
 export function formatDuration(minDuration: number) {

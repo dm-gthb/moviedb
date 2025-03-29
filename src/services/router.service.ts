@@ -3,4 +3,6 @@ export const appRoute = {
   lists: '/lists',
   movie: '/movie',
   search: '/search',
+  person: '/person',
+  cast: '/cast',
 };

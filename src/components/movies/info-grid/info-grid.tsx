@@ -1,31 +1,32 @@
-import { InfoItems } from '../../../services/movies/movie-categorized-data.service';
-import { InfoGridCard, LoadingInfoGridCard } from './info-grid-card';
+import { CategorizedData } from '../../../services/movies/movie-categorized-data.service';
+import { TeamInfoCard, LoadingInfoCard, TechInfoCard } from './info-grid-card';
 
 export function InfoGrid({
   isLoading,
   dataItems,
 }: {
   isLoading: boolean;
-  dataItems?: InfoItems[];
+  dataItems?: CategorizedData;
 }) {
-  const containerClassname = 'grid gap-6 grid-cols-1 lg:grid-cols-3';
+  const containerClassname = 'grid gap-6 lg:auto-cols-[minmax(0,1fr)] lg:grid-flow-col';
 
   if (isLoading) {
     return (
       <div className={containerClassname} aria-label="loading">
         {new Array(3).fill('').map((_el, i) => (
-          <LoadingInfoGridCard key={i} />
+          <LoadingInfoCard key={i} />
         ))}
       </div>
     );
   }
 
   if (dataItems) {
+    const { general, team, specs } = dataItems;
     return (
       <div className={containerClassname}>
-        {dataItems.map((items, i) => (
-          <InfoGridCard key={i} items={items} />
-        ))}
+        {general.length > 0 && <TechInfoCard items={general} />}
+        {team.length > 0 && <TeamInfoCard items={team} />}
+        {specs.length > 0 && <TechInfoCard items={specs} />}
       </div>
     );
   }

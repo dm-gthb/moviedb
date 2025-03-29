@@ -7,6 +7,7 @@ import {
   MovieItem,
   Rating,
 } from '../movies/movies.types.service';
+import { PersonDetails } from '../person/person.types';
 
 export type AuthResponse = {
   user: User;
@@ -90,3 +91,7 @@ export type UpdateRatingResponse = {
 export type DeleteRatingResponse = {
   succuss: boolean;
 };
+
+export type GetPersonDetailsResponse = PersonDetails;
+
+export type GetPersonMovieCreditsResponse = { cast: MovieItem[]; crew: MovieItem[] };

@@ -34,9 +34,11 @@ export function MoviePage() {
 
     return (
       <>
-        <div className="relative bg-gray-900 py-20 xl:py-24 dark:bg-black">
+        <div
+          className={`relative py-20 xl:py-24 ${backdropPath ? 'bg-black' : 'bg-gray-600'} dark:bg-black`}
+        >
           <div
-            className="absolute bottom-0 left-0 right-0 top-0 h-full w-full bg-cover bg-center opacity-20 dark:opacity-25"
+            className="absolute bottom-0 left-0 right-0 top-0 h-full w-full bg-cover bg-center opacity-35 dark:opacity-30"
             style={{
               backgroundImage: backdropPath
                 ? `url(${createBackdropSrc(backdropPath)})`
@@ -50,7 +52,7 @@ export function MoviePage() {
               </div>
               <div className="flex flex-col justify-center gap-6">
                 <div>
-                  <h1 className="mb-2 text-3xl font-bold sm:text-4xl md:text-5xl lg:max-w-[70%] lg:text-6xl">
+                  <h1 className="mb-2 text-3xl font-bold sm:text-4xl md:text-5xl lg:text-6xl">
                     {title}
                   </h1>
                   <div>

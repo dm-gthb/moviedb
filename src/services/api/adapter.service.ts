@@ -2,8 +2,10 @@ import {
   MovieItem as ServerMovieItem,
   MovieDetails as ServerMovieDetails,
   MovieCredits as ServerMovieCredits,
+  Person as ServerPerson,
 } from '../../mocks/types/movie';
 import { MovieItem, MovieDetails, MovieCredits } from '../movies/movies.types.service';
+import { PersonDetails } from '../person/person.types';
 
 export default class Adapter {
   static transformMovieItemServerData(movie: ServerMovieItem): MovieItem {
@@ -74,6 +76,24 @@ export default class Adapter {
         department: crew.department,
         job: crew.job,
       })),
+    };
+  }
+
+  static transformPersonServerData(person: ServerPerson): PersonDetails {
+    return {
+      alsoKnownsAs: person.also_known_as,
+      biography: person.biography,
+      birthday: person.birthday,
+      deathday: person.deathday,
+      gender: person.gender,
+      homepage: person.homepage,
+      id: person.id,
+      imdbId: person.imdb_id,
+      knownForDepartment: person.known_for_department,
+      name: person.name,
+      placeOfBirth: person.place_of_birth,
+      popularity: person.popularity,
+      profilePath: person.profile_path,
     };
   }
 }

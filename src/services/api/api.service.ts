@@ -31,10 +31,14 @@ import {
   GetMovieDetailsResponse,
   GetMovieListResponse,
   GetMovieRecommendationsResponse,
+  GetPersonDetailsResponse,
+  GetPersonMovieCreditsResponse,
   UpdateRatingParams,
   UpdateRatingResponse,
 } from './api.types.service';
 import Adapter from './adapter.service';
+
+const MOVIEDB_API_TOKEN = import.meta.env.VITE_MOVIEDB_API_TOKEN;
 
 type RequestConfig = {
   token?: string;
@@ -42,10 +46,6 @@ type RequestConfig = {
   method?: string;
   body?: string;
 };
-
-// token included here to simplify the setup
-const MOVIEDB_API_TOKEN =
-  'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJjOGVkOTFhY2ZkMWY0NGQwNTk0ZDgxNzQ0MTBjMjkyNiIsIm5iZiI6MTczMzc1NzM3Ny4yMywic3ViIjoiNjc1NzA5YzFhMThjYjg2OTVhZmQ5MTU2Iiwic2NvcGVzIjpbImFwaV9yZWFkIl0sInZlcnNpb24iOjF9.9eDPF25L0SRXhujBE_5AYaevptn80f405k2v5Yeg_Wk';
 
 class API {
   protected async fetchData(url: string, requestConfig: RequestConfig = {}) {
@@ -260,6 +260,27 @@ class API {
       },
     );
     return response;
+  }
+
+  async getPerson({ personId }: { personId: string }): Promise<GetPersonDetailsResponse> {
+    const rowData = await this.fetchData(`${endpoints.getPerson(personId)}`, {
+      token: MOVIEDB_API_TOKEN,
+    });
+    return Adapter.transformPersonServerData(rowData);
+  }
+
+  async getPersonMovieCredits({
+    personId,
+  }: {
+    personId: string;
+  }): Promise<GetPersonMovieCreditsResponse> {
+    const rowData = await this.fetchData(`${endpoints.getPersonMovieCredits(personId)}`, {
+      token: MOVIEDB_API_TOKEN,
+    });
+    return {
+      cast: rowData.cast.map(Adapter.transformMovieItemServerData),
+      crew: rowData.crew.map(Adapter.transformMovieItemServerData),
+    };
   }
 }
 

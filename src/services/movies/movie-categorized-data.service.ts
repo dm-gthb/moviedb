@@ -1,22 +1,44 @@
-import { MovieCredits, MovieDetails } from './movies.types.service';
+import { PersonBase } from '../person/person.types';
+import { Crew, MovieCredits, MovieDetails } from './movies.types.service';
 import {
   formatBudget,
   formatCountryList,
   formatDate,
   formatDuration,
   formatLanguage,
-  getNamesWithOverflow,
+  getPersonsWithOverflow,
 } from './movies.utils.service';
 
-export type InfoItems = { title: string; content?: string; isLink?: boolean }[];
+export type TechItems = {
+  title: string;
+  content: string;
+  href?: string;
+}[];
 
-export function getCategorizedMovieData(movie: MovieDetails & MovieCredits): InfoItems[] {
-  return [getMovieGeneralData(movie), getTeamData(movie), getMovieTechData(movie)];
+export type TeamItems = {
+  jobTitle: string;
+  persons: PersonBase[];
+}[];
+
+export type CategorizedData = {
+  general: TechItems;
+  specs: TechItems;
+  team: TeamItems;
+};
+
+export function getCategorizedMovieData(
+  movie: MovieDetails & MovieCredits,
+): CategorizedData {
+  return {
+    general: getTechData(movie, movieDataType.general),
+    specs: getTechData(movie, movieDataType.specs),
+    team: getTeamData(movie),
+  };
 }
 
 const movieDataType = {
   general: ['Original Title', 'Original Language', 'Country'],
-  tech: ['Runtime', 'Budget', 'Status', 'Release Date', 'Homepage'],
+  specs: ['Runtime', 'Budget', 'Status', 'Release Date', 'Homepage'],
 };
 
 const dataItemToMovieField: Record<string, Partial<keyof MovieDetails>> = {
@@ -30,41 +52,53 @@ const dataItemToMovieField: Record<string, Partial<keyof MovieDetails>> = {
   Homepage: 'homepage',
 };
 
-function getMovieGeneralData(movie: MovieDetails): InfoItems {
-  return movieDataType.general.map((title) => ({
-    title,
-    content: getFormattedValue(movie, dataItemToMovieField[title]),
-  }));
+function getTechData(movie: MovieDetails, movieDataItems: string[]): TechItems {
+  return movieDataItems.reduce<TechItems>((techItems, title) => {
+    const value = getFormattedValue(movie, dataItemToMovieField[title]);
+    if (value !== undefined) {
+      techItems.push({
+        title,
+        content: value,
+        ...(title === 'Homepage' && { href: value }),
+      });
+    }
+    return techItems;
+  }, []);
 }
 
-function getMovieTechData(movie: MovieDetails): InfoItems {
-  return movieDataType.tech.map((title) => ({
-    title,
-    content: getFormattedValue(movie, dataItemToMovieField[title]),
-    ...(title === 'Homepage' && { isLink: true }),
-  }));
-}
-
-function getTeamData(movie: MovieCredits): InfoItems {
+function getTeamData(movie: MovieCredits): TeamItems {
   const crew = movie.crew ?? [];
   const cast = movie.cast ?? [];
-  const [directors, isMultipleDirectors] = getNamesWithOverflow(
+  const [directors, isMultipleDirectors] = getPersonsWithOverflow(
     crew.filter(({ job }) => job === 'Director'),
   );
-  const [writers, isMultipleWriters] = getNamesWithOverflow(
+  const [writers, isMultipleWriters] = getPersonsWithOverflow(
     crew.filter(({ job }) => job === 'Writer'),
   );
-  const [screenplay] = getNamesWithOverflow(
+  const [screenplay] = getPersonsWithOverflow(
     crew.filter(({ job }) => job === 'Screenplay'),
   );
-  const [starring] = getNamesWithOverflow(cast, 20);
+  const [starring] = getPersonsWithOverflow(cast, 20);
 
   return [
-    { title: isMultipleDirectors ? 'Directors' : 'Director', content: directors },
-    { title: isMultipleWriters ? 'Writers' : 'Writer', content: writers },
-    { title: 'Screenplay', content: screenplay },
-    { title: 'Starring', content: starring },
-  ];
+    { jobTitle: isMultipleDirectors ? 'Directors' : 'Director', persons: directors },
+    { jobTitle: isMultipleWriters ? 'Writers' : 'Writer', persons: writers },
+    { jobTitle: 'Screenplay', persons: screenplay },
+    { jobTitle: 'Starring', persons: starring },
+  ].filter(({ persons }) => persons?.length);
+}
+
+export function getAllCrew(crew: MovieCredits['crew']) {
+  const result: Record<string, Crew[]> = {};
+  for (const crewItem of crew) {
+    if (result[crewItem.department]) {
+      result[crewItem.department].push(crewItem);
+    } else {
+      result[crewItem.department] = [crewItem];
+    }
+  }
+
+  return result;
 }
 
 function getFormattedValue(
@@ -73,7 +107,7 @@ function getFormattedValue(
 ) {
   switch (movieDataKey) {
     case 'originalTitle':
-      return movie.originalTitle;
+      return movie.originalTitle ? movie.originalTitle : undefined;
 
     case 'originalLanguage':
       return movie.originalLanguage ? formatLanguage(movie.originalLanguage) : undefined;
@@ -88,13 +122,13 @@ function getFormattedValue(
       return movie.budget ? formatBudget(movie.budget) : undefined;
 
     case 'status':
-      return movie.status;
+      return movie.status ? movie.status : undefined;
 
     case 'releaseDate':
       return movie.releaseDate ? formatDate(movie.releaseDate) : undefined;
 
     case 'homepage':
-      return movie.homepage;
+      return movie.homepage ? movie.homepage : undefined;
 
     default:
       return undefined;

@@ -21,7 +21,7 @@ const moviesQueryConfig = {
   staleTime: 1000 * 60 * 60,
 };
 
-const movieQueries = {
+export const movieQueries = {
   search: (searchTerm: string) =>
     queryOptions({
       queryKey: ['moviesSearch', searchTerm],

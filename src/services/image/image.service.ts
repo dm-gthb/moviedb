@@ -24,6 +24,12 @@ export function createBackdropSrc(backdropPath: string) {
   return createSrcUrl(BackdropSize.w1280, backdropPath);
 }
 
+export function prefetchBackdropImage(backdropPath: string | null) {
+  if (backdropPath) {
+    prefetchImage(createBackdropSrc(backdropPath));
+  }
+}
+
 export function prefetchImage(src: string | null) {
   if (src) {
     const img = new Image();

@@ -1,14 +1,24 @@
 import { Link, useLocation } from 'react-router';
+import { useQueryClient } from '@tanstack/react-query';
 import { ListItemMovie, MovieItem } from '../../../services/movies/movies.types.service';
 import { useSearchParamsWithMoviesFilterDefaults } from '../../../services/movies/movies-filter.service';
 import { ListItemButtons } from '../list-item-buttons/list-item-buttons';
 import { genresMap } from '../../../services/movies/movies.constants.service';
 import { MoviePoster } from '../movie-poster/movie-poster';
+import { movieQueries } from '../../../queries/movies.queries';
+import { prefetchBackdropImage } from '../../../services/image/image.service';
 
 export function MovieCard({ movie }: { movie: MovieItem | ListItemMovie }) {
+  const queryClient = useQueryClient();
   const searchParams = useSearchParamsWithMoviesFilterDefaults();
   const { pathname } = useLocation();
-  const { id, title, posterPath, releaseDate, genreIds } = movie;
+  const { id, title, posterPath, releaseDate, genreIds, backdropPath } = movie;
+
+  const prefetchMovie = () => {
+    queryClient.prefetchQuery(movieQueries.details(id.toString()));
+    queryClient.prefetchQuery(movieQueries.credits(id.toString()));
+    prefetchBackdropImage(backdropPath);
+  };
 
   return (
     <article>
@@ -16,6 +26,8 @@ export function MovieCard({ movie }: { movie: MovieItem | ListItemMovie }) {
         to={`/movie/${id}`}
         state={{ searchParams: searchParams.toString(), pathname }}
         className="group block overflow-hidden rounded shadow-md transition focus-within:scale-110 hover:scale-110"
+        onMouseEnter={prefetchMovie}
+        onFocus={prefetchMovie}
       >
         <h2 className="sr-only">{title}</h2>
         <div className="relative">

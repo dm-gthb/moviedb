@@ -17,7 +17,6 @@ import {
   formatDate,
   formatDuration,
   formatLanguage,
-  getNamesWithOverflow,
 } from '../../services/movies/movies.utils.service';
 
 const createMovieWithCredits = async () => {
@@ -29,11 +28,16 @@ const createMovieWithCredits = async () => {
 };
 
 test('renders movie data', async () => {
-  const { movie, credits } = await createMovieWithCredits();
-  const [directors] = getNamesWithOverflow(credits.cast);
-  const [writers] = getNamesWithOverflow(credits.cast);
-  const [starring] = getNamesWithOverflow(credits.cast, 20);
-
+  const {
+    movie,
+    credits: { cast, crew },
+  } = await createMovieWithCredits();
+  const directors = crew.filter(({ job }) => job === 'Director').map(({ name }) => name);
+  const writers = crew.filter(({ job }) => job === 'Writer').map(({ name }) => name);
+  const screenplay = crew
+    .filter(({ job }) => job === 'Screenplay')
+    .map(({ name }) => name);
+  const starring = cast.slice(0, 20).map(({ name }) => name);
   await renderWithProviders(<App />, { route: `/movie/${movie.id}` });
 
   expect(screen.getByRole('heading', { name: movie.title })).toBeInTheDocument();
@@ -45,9 +49,10 @@ test('renders movie data', async () => {
   expect(screen.getByText(movie.original_title)).toBeInTheDocument();
   expect(screen.getByText(formatLanguage(movie.original_language)!)).toBeInTheDocument();
   expect(screen.getByText(formatCountryList(movie.origin_country))).toBeInTheDocument();
-  expect(screen.getByText(directors)).toBeInTheDocument();
-  expect(screen.getByText(writers)).toBeInTheDocument();
-  expect(screen.getByText(starring)).toBeInTheDocument();
+  directors.forEach((person) => expect(screen.getByText(person)).toBeInTheDocument());
+  writers.forEach((person) => expect(screen.getByText(person)).toBeInTheDocument());
+  screenplay.forEach((person) => expect(screen.getByText(person)).toBeInTheDocument());
+  starring.forEach((person) => expect(screen.getByText(person)).toBeInTheDocument());
   expect(screen.getByText(formatDuration(movie.runtime))).toBeInTheDocument();
   expect(screen.getByText(formatBudget(movie.budget))).toBeInTheDocument();
   expect(screen.getByText(movie.status)).toBeInTheDocument();

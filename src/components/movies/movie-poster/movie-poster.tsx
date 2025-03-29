@@ -1,4 +1,4 @@
-import { imageUrl, PosterSize } from '../../../services/movies/movies.constants.service';
+import { createPosterSrc } from '../../../services/image/image.service';
 
 export function MoviePoster({
   posterPath,
@@ -11,7 +11,7 @@ export function MoviePoster({
     <div className="aspect-[2/3] bg-gray-100 shadow-md dark:bg-gray-700">
       {posterPath ? (
         <img
-          src={`${imageUrl}/${PosterSize.w500}/${posterPath}`}
+          src={createPosterSrc(posterPath)}
           alt={`${movieTitle} movie poster`}
           className="block h-full w-full object-cover"
         />

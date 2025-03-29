@@ -6,7 +6,7 @@ import { MoviePoster } from '../../components/movies/movie-poster/movie-poster';
 import { genresMap } from '../../services/movies/movies.constants.service';
 import { InfoGrid } from '../../components/movies/info-grid/info-grid';
 import { getCategorizedMovieData } from '../../services/movies/movie-categorized-data.service';
-import { imageUrl, BackdropSize } from '../../services/movies/movies.constants.service';
+import { createBackdropSrc } from '../../services/image/image.service';
 
 export function MoviePage() {
   const { id: paramsId } = useParams();
@@ -38,7 +38,9 @@ export function MoviePage() {
           <div
             className="absolute bottom-0 left-0 right-0 top-0 h-full w-full bg-cover bg-center opacity-20 dark:opacity-25"
             style={{
-              backgroundImage: `url(${`${imageUrl}/${BackdropSize.w780}${backdropPath}`})`,
+              backgroundImage: backdropPath
+                ? `url(${createBackdropSrc(backdropPath)})`
+                : 'none',
             }}
           />
           <section className="relative z-30 mx-auto max-w-7xl px-8 text-gray-50">

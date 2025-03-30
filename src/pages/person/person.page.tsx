@@ -83,7 +83,7 @@ function LoadingPage() {
     <div className="mx-auto max-w-7xl px-8 pb-10 pt-2">
       <div className="flex items-start gap-8">
         <div className="mt-1 hidden aspect-[2/3] w-[210px] max-w-[25%] shrink-0 overflow-hidden rounded-lg bg-gray-100 shadow-md sm:block dark:bg-gray-700" />
-        <h1 className="mb-3 text-4xl font-bold md:text-5xl animate-pulse">Loading</h1>
+        <h1 className="mb-3 animate-pulse text-4xl font-bold md:text-5xl">Loading</h1>
       </div>
     </div>
   );

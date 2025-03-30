@@ -1,14 +1,15 @@
 import { Link, useLocation } from 'react-router';
-import { useQueryClient } from '@tanstack/react-query';
-import { ListItemMovie, MovieItem } from '../../../services/movies/movies.types.service';
+import { MovieItem } from '../../../services/movies/movies.types.service';
+import { MovieListItemData } from '../../../services/list-items/list-items.types';
 import { useSearchParamsWithMoviesFilterDefaults } from '../../../services/movies/movies-filter.service';
 import { ListItemButtons } from '../list-item-buttons/list-item-buttons';
 import { genresMap } from '../../../services/movies/movies.constants.service';
 import { MoviePoster } from '../movie-poster/movie-poster';
 import { movieQueries } from '../../../queries/movies.queries';
 import { prefetchBackdropImage } from '../../../services/image/image.service';
+import { useQueryClient } from '@tanstack/react-query';
 
-export function MovieCard({ movie }: { movie: MovieItem | ListItemMovie }) {
+export function MovieCard({ movie }: { movie: MovieItem | MovieListItemData }) {
   const queryClient = useQueryClient();
   const searchParams = useSearchParamsWithMoviesFilterDefaults();
   const { pathname } = useLocation();

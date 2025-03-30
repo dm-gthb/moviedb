@@ -1,8 +1,8 @@
 import { Link, useLocation } from 'react-router';
-import { ListItemMovie } from '../../../services/movies/movies.types.service';
 import { ListItemButtons } from '../list-item-buttons/list-item-buttons';
+import { MovieListItemData } from '../../../services/list-items/list-items.types';
 
-export function MoviesListItem({ movie }: { movie: ListItemMovie }) {
+export function MoviesListItem({ movie }: { movie: MovieListItemData }) {
   const { pathname } = useLocation();
   return (
     <div>

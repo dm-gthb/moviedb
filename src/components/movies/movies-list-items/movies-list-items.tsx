@@ -1,16 +1,15 @@
 import { ReactNode } from 'react';
-import { ListType } from '../../../services/api/api.types.service';
-import { useListItems } from '../../../queries/list-items.queries';
+import { useMovieListItems } from '../../../queries/list-items.queries';
 import { MoviesGrid } from '../movies-grid/movies-grid';
 
 export function MoviesListItems({
   listType,
   noListItemsInfo = 'no items found',
 }: {
-  listType: ListType;
+  listType: 'favorites' | 'watchlist';
   noListItemsInfo?: ReactNode;
 }) {
-  const { data, isPending } = useListItems();
+  const { data, isPending } = useMovieListItems();
   const listItems = data?.[listType] ?? [];
 
   if (!isPending && !listItems.length) {

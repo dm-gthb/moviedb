@@ -1,4 +1,4 @@
-export type ListItemMovie = {
+export type MovieListItemData = {
   backdropPath: string | null;
   id: number;
   overview: string;
@@ -8,10 +8,10 @@ export type ListItemMovie = {
   genreIds: number[];
 };
 
-export type ListItem = {
+export type MovieListItem = {
   id: string;
   type: 'favorite' | 'watchlist';
   movieId: number;
   ownerId: string;
-  movie: ListItemMovie;
+  movie: MovieListItemData;
 };

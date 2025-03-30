@@ -1,9 +1,10 @@
+import { MovieListItemData } from '../list-items/list-items.types';
 import { PersonBase } from '../person/person.types';
-import { ListItemMovie, MovieDetails, MovieItem } from './movies.types.service';
+import { MovieDetails, MovieItem } from './movies.types.service';
 
 export const getListItemMovie = (
-  movie: MovieItem | MovieDetails | ListItemMovie,
-): ListItemMovie => ({
+  movie: MovieItem | MovieDetails | MovieListItemData,
+): MovieListItemData => ({
   backdropPath: movie.backdropPath,
   id: movie.id,
   overview: movie.overview,

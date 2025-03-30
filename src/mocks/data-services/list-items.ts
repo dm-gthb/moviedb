@@ -1,9 +1,9 @@
-import { ListItem, ListItemMovie } from '../types/list-item';
+import { MovieListItem, MovieListItemData } from '../types/list-item';
 import { StatusError } from '../utils';
 
 const listItemsKey = '__moviedb_list_items__';
 
-let listItems: Record<string, ListItem> = {};
+let listItems: Record<string, MovieListItem> = {};
 
 const storeListItems = () => {
   window.localStorage.setItem(listItemsKey, JSON.stringify(listItems));
@@ -42,7 +42,7 @@ export async function create({
   ownerId,
   type,
 }: {
-  movie: ListItemMovie;
+  movie: MovieListItemData;
   ownerId: string;
   type: 'favorite' | 'watchlist';
 }) {
@@ -65,7 +65,7 @@ export async function read(id: string) {
   return listItems[id];
 }
 
-export async function update(id: string, updates: ListItem) {
+export async function update(id: string, updates: MovieListItem) {
   validateListItem(id);
   Object.assign(listItems[id], updates);
   storeListItems();

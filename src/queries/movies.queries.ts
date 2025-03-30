@@ -13,8 +13,8 @@ import api from '../services/api/api.service';
 import { useSearchParamsWithMoviesFilterDefaults } from '../services/movies/movies-filter.service';
 import { useLocation } from 'react-router';
 import { appRoute } from '../services/router.service';
-import { GetMovieListResponse } from '../services/api/api.types.service';
-import { listItemsOptions } from './list-items.queries';
+import { movieListItemsOptions } from './list-items.queries';
+import { GetMoviesResponse } from '../services/api/api.types.service';
 
 const moviesQueryConfig = {
   cacheTime: 1000 * 60 * 60,
@@ -119,7 +119,7 @@ function getCacheByPrevLocation({
   }
 
   if (pathname?.includes(appRoute.lists)) {
-    const cache = queryClient.getQueryData(listItemsOptions().queryKey);
+    const cache = queryClient.getQueryData(movieListItemsOptions().queryKey);
     const listItem =
       cache &&
       Object.values(cache)
@@ -131,7 +131,7 @@ function getCacheByPrevLocation({
   if (searchParams) {
     const [, data] = queryClient
       .getQueriesData(movieQueries.filter(searchParams))
-      .flat() as [QueryKey, InfiniteData<GetMovieListResponse> | undefined];
+      .flat() as [QueryKey, InfiniteData<GetMoviesResponse> | undefined];
     const movies = data?.pages?.map(({ results }) => results).flat() ?? [];
     const movie = movies?.find((movie) => movie.id === +movieId);
     return movie;

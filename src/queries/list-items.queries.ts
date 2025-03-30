@@ -6,15 +6,21 @@ import {
   useQuery,
   useQueryClient,
 } from '@tanstack/react-query';
-import api from '../services/api/api.service';
-import { useAuth } from '../services/auth/auth-context.service';
-import { ListItemMovie } from '../services/movies/movies.types.service';
-import { GetListItemsResponse, ListType } from '../services/api/api.types.service';
+import {
+  addMovieToFavorites,
+  addMovieToWatchList,
+  deleteMovieFromList,
+  getMovieListItems,
+} from '../services/list-items/list-items.service';
+import {
+  MovieListItemData,
+  MovieListItems,
+} from '../services/list-items/list-items.types';
 
-export const listItemsOptions = (token?: string) =>
+export const movieListItemsOptions = () =>
   queryOptions({
-    queryKey: ['listItems'],
-    queryFn: () => api.getListItems({ token }),
+    queryKey: ['movieListItems'],
+    queryFn: () => getMovieListItems(),
   });
 
 const onErrorDefaultOptions = () => ({
@@ -25,21 +31,19 @@ const onErrorDefaultOptions = () => ({
 
 const invalidateQueriesOptions = (queryClient: QueryClient) => ({
   onSuccess: () => {
-    return queryClient.invalidateQueries(listItemsOptions());
+    return queryClient.invalidateQueries(movieListItemsOptions());
   },
 });
 
-export function useListItems() {
-  const { user } = useAuth();
-  return useQuery(listItemsOptions(user?.token));
+export function useMovieListItems() {
+  return useQuery(movieListItemsOptions());
 }
 
 export function useAddFavoriteMutation() {
   const queryClient = useQueryClient();
-  const { user } = useAuth();
   return useMutation({
-    mutationFn: ({ movie }: { movie: ListItemMovie }) => {
-      return api.addFavorite({ token: user?.token, movie });
+    mutationFn: ({ movie }: { movie: MovieListItemData }) => {
+      return addMovieToFavorites({ movie });
     },
     ...invalidateQueriesOptions(queryClient),
     ...onErrorDefaultOptions(),
@@ -48,22 +52,9 @@ export function useAddFavoriteMutation() {
 
 export function useAddToWatchlistMutation() {
   const queryClient = useQueryClient();
-  const { user } = useAuth();
   return useMutation({
-    mutationFn: ({ movie }: { movie: ListItemMovie }) => {
-      return api.addToWatchList({ token: user?.token, movie });
-    },
-    ...invalidateQueriesOptions(queryClient),
-    ...onErrorDefaultOptions(),
-  });
-}
-
-export function useAddRatingMutation() {
-  const queryClient = useQueryClient();
-  const { user } = useAuth();
-  return useMutation({
-    mutationFn: ({ movie, rating }: { movie: ListItemMovie; rating: number }) => {
-      return api.addRating({ token: user?.token, movie, rating });
+    mutationFn: ({ movie }: { movie: MovieListItemData }) => {
+      return addMovieToWatchList({ movie });
     },
     ...invalidateQueriesOptions(queryClient),
     ...onErrorDefaultOptions(),
@@ -78,58 +69,16 @@ export function useDeleteFromWatchlistMutation() {
   return useDeleteListItemMutation({ type: 'watchlist' });
 }
 
-export function useDeleteRatingMutation() {
-  return useDeleteListItemMutation({ type: 'rated' });
-}
-
-export function useUpdateRatingMutation() {
-  const { user } = useAuth();
+function useDeleteListItemMutation({ type }: { type: 'watchlist' | 'favorites' }) {
   return useListItemOptimisticMutation({
-    mutationFn: ({ rating, listItemId }: { rating: number; listItemId: string }) => {
-      return api.updateRating({ token: user?.token, listItemId, rating });
-    },
+    mutationFn: ({ listItemId }: { listItemId: string }) =>
+      deleteMovieFromList(listItemId),
     updater: (
-      prevItems: GetListItemsResponse | undefined,
-      updatedItemData: { listItemId: string; rating: number },
-    ): GetListItemsResponse => {
-      if (prevItems === undefined) {
-        return { rated: [], favorites: [], watchlist: [] };
-      }
-      const { rated } = prevItems;
-      const updatedRated = rated?.map((prevItem) =>
-        prevItem.id === updatedItemData.listItemId
-          ? { ...prevItem, rating: updatedItemData.rating }
-          : prevItem,
-      );
-      return {
-        ...prevItems,
-        rated: updatedRated,
-      };
-    },
-  });
-}
-
-function useDeleteListItemMutation({ type }: { type: ListType }) {
-  const { user } = useAuth();
-  const token = user?.token;
-  return useListItemOptimisticMutation({
-    mutationFn: ({ listItemId }: { listItemId: string }) => {
-      if (type === 'favorites') {
-        return api.deleteFavorite({ token, listItemId });
-      }
-
-      if (type === 'watchlist') {
-        return api.deleteFromWatchlist({ token, listItemId });
-      }
-
-      return api.deleteRating({ token, listItemId });
-    },
-    updater: (
-      prevItems: GetListItemsResponse | undefined,
+      prevItems: MovieListItems | undefined,
       itemToDelete: { listItemId: string },
-    ): GetListItemsResponse => {
+    ): MovieListItems => {
       if (prevItems === undefined) {
-        return { rated: [], favorites: [], watchlist: [] };
+        return { favorites: [], watchlist: [] };
       }
 
       const list = prevItems[type];
@@ -146,7 +95,7 @@ function useDeleteListItemMutation({ type }: { type: ListType }) {
 type OptimisticProps<
   TData = unknown,
   TVariables = void,
-  TQueryFnData = GetListItemsResponse,
+  TQueryFnData = MovieListItems,
 > = {
   mutationFn: MutationFunction<TData, TVariables>;
   updater: (input: TQueryFnData | undefined, onMutateArgs: TVariables) => TQueryFnData;
@@ -161,7 +110,7 @@ export const useListItemOptimisticMutation = <TData = unknown, TVariables = void
   return useMutation({
     mutationFn,
     onMutate: async (...args) => {
-      const queryKey = listItemsOptions().queryKey;
+      const queryKey = movieListItemsOptions().queryKey;
       await queryClient.cancelQueries({ queryKey });
       const snapshot = queryClient.getQueryData(queryKey);
       queryClient.setQueryData(queryKey, (old) => updater(old, ...args));
@@ -175,7 +124,7 @@ export const useListItemOptimisticMutation = <TData = unknown, TVariables = void
       alert('There was an error. Please try again.');
     },
     onSettled: () => {
-      return queryClient.invalidateQueries(listItemsOptions());
+      return queryClient.invalidateQueries(movieListItemsOptions());
     },
   });
 };

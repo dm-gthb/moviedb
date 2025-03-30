@@ -6,21 +6,18 @@ import {
   useAddToWatchlistMutation,
   useDeleteFavoriteMutation,
   useDeleteFromWatchlistMutation,
-  useListItems,
+  useMovieListItems,
 } from '../../../queries/list-items.queries';
-import {
-  ListItemMovie,
-  MovieDetails,
-  MovieItem,
-} from '../../../services/movies/movies.types.service';
+import { MovieDetails, MovieItem } from '../../../services/movies/movies.types.service';
 import { getListItemMovie } from '../../../services/movies/movies.utils.service';
 import { ListItemButton, ListItemButtonProps } from './list-item-button';
+import { MovieListItemData } from '../../../services/list-items/list-items.types';
 
 export function ListItemButtons({
   movie,
   size,
 }: {
-  movie: MovieItem | MovieDetails | ListItemMovie;
+  movie: MovieItem | MovieDetails | MovieListItemData;
   size?: ListItemButtonProps['size'];
 }) {
   const { user } = useAuth();
@@ -47,10 +44,10 @@ function AuthorizedUserButtons({
   movie,
   size,
 }: {
-  movie: ListItemMovie;
+  movie: MovieListItemData;
   size?: ListItemButtonProps['size'];
 }) {
-  const { data } = useListItems();
+  const { data } = useMovieListItems();
   const favoriteItem = data?.favorites.find((item) => item.movieId === movie.id);
   const watchlistItem = data?.watchlist.find((item) => item.movieId === movie.id);
   const addToFavorites = useAddFavoriteMutation();

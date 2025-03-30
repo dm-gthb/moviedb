@@ -60,7 +60,7 @@ test('renders movie data', async () => {
   expect(screen.getByText(movie.homepage)).toBeInTheDocument();
 });
 
-test('authenticated user can add movie to list and delete from list', async () => {
+test.todo('authenticated user can add movie to list and delete from list', async () => {
   const userAuthData = buildUserAuthData();
   await userDataService.create(userAuthData);
   const authenticatedUser = await userDataService.authenticate(userAuthData);

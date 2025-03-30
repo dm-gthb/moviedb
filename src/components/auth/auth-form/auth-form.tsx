@@ -24,19 +24,19 @@ function AuthForm(props: AuthFormProps) {
 
   const [formState, formAction, isPending] = useActionState(
     async (_: FormState | undefined, formData: FormData) => {
-      const username = formData.get('username') as string;
+      const email = formData.get('email') as string;
       const password = formData.get('password') as string;
       try {
-        await onSubmit({ username, password });
+        await onSubmit({ email, password });
       } catch (error) {
         return {
-          data: { username, password },
+          data: { email, password },
           isError: true,
           errorMessage: getErrorMessage(error),
         };
       }
     },
-    { data: { username: '', password: '' }, isError: false, errorMessage: '' },
+    { data: { email: '', password: '' }, isError: false, errorMessage: '' },
   );
 
   const classNames = {
@@ -50,12 +50,12 @@ function AuthForm(props: AuthFormProps) {
         <div className={classNames.formGroup}>
           <label htmlFor="username">Username</label>
           <input
-            id="username"
-            type="text"
-            name="username"
-            autoComplete="username"
+            id="email"
+            type="email"
+            name="email"
+            autoComplete="email"
             className={classNames.input}
-            defaultValue={formState?.data.username}
+            defaultValue={formState?.data.email}
             autoFocus
             required
           />

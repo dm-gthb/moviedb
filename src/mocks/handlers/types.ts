@@ -1,4 +1,4 @@
-import { ListItem, ListItemMovie } from '../types/list-item';
+import { MovieListItem, MovieListItemData } from '../types/list-item';
 import { MovieCredits, MovieDetails, MovieItem } from '../types/movie';
 import { Rating, RatingMovie } from '../types/rating';
 import { AuthData, AuthenticatedUser } from '../types/user';
@@ -21,17 +21,17 @@ export type GetRecommendationsResponseBody = {
 };
 
 export type GetListItemsResponseBody = {
-  favorites: ListItem[];
-  watchlist: ListItem[];
+  favorites: MovieListItem[];
+  watchlist: MovieListItem[];
   rated: Rating[];
 };
 
 export type CreateListItemRequestBody = {
-  movie: ListItemMovie;
+  movie: MovieListItemData;
 };
 
 export type CreateListItemResponseBody = {
-  listItem: ListItem;
+  listItem: MovieListItem;
 };
 
 export type DeleteListItemParams = {

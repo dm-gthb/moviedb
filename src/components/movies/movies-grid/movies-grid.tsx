@@ -1,4 +1,5 @@
-import { ListItemMovie, MovieItem } from '../../../services/movies/movies.types.service';
+import { MovieListItemData } from '../../../services/list-items/list-items.types';
+import { MovieItem } from '../../../services/movies/movies.types.service';
 import { MovieCard, PlaceholderMovieCard } from './movies-grid-card';
 
 export function MoviesGrid({
@@ -6,7 +7,7 @@ export function MoviesGrid({
   movies,
 }: {
   isPending?: boolean;
-  movies?: MovieItem[] | ListItemMovie[];
+  movies?: MovieItem[] | MovieListItemData[];
 }) {
   return (
     <div

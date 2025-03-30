@@ -58,7 +58,7 @@ export function PageHeader() {
   return (
     <div className="relative">
       <header className="mx-auto max-w-7xl px-8">
-        <nav className="relative flex justify-between py-8 text-lg">
+        <nav className="relative flex justify-between py-5 text-lg">
           <NavLink to="/" className={getNavlinkClass}>
             Home
           </NavLink>

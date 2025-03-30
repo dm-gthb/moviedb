@@ -37,7 +37,7 @@ test('renders movie data', async () => {
   const screenplay = crew
     .filter(({ job }) => job === 'Screenplay')
     .map(({ name }) => name);
-  const starring = cast.slice(0, 20).map(({ name }) => name);
+  const starring = cast.slice(0, 12).map(({ name }) => name);
   await renderWithProviders(<App />, { route: `/movie/${movie.id}` });
 
   expect(screen.getByRole('heading', { name: movie.title })).toBeInTheDocument();

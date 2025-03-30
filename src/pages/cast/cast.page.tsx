@@ -4,10 +4,8 @@ import { getAllCrew } from '../../services/movies/movie-categorized-data.service
 import { createBackdropSrc } from '../../services/image/image.service';
 import { appRoute } from '../../services/router.service';
 import { genresMap } from '../../services/movies/movies.constants.service';
-import {
-  AllCastCard,
-  AllCrewCard,
-} from '../../components/movies/info-grid/info-grid-card';
+import { FullCastCard } from '../../components/movies/info-grid/full-cast-card';
+import { FullCrewCard } from '../../components/movies/info-grid/full-crew-card';
 
 export function CastPage() {
   const { movieId } = useParams();
@@ -18,7 +16,7 @@ export function CastPage() {
     return (
       <div
         aria-label="loading"
-        className={`h-[calc(100vh-108px)] animate-pulse bg-gray-600 shadow md:h-[535px] xl:h-[567px] xl:py-24`}
+        className={`h-[calc(100vh-84px)] animate-pulse bg-gray-600 shadow md:h-[535px] xl:h-[567px] xl:py-24`}
       />
     );
   }
@@ -30,9 +28,9 @@ export function CastPage() {
     const { title, releaseDate, genreIds, backdropPath } = movie.data;
 
     return (
-      <div className={`relative min-h-[calc(100vh-108px)] pb-20 pt-10`}>
+      <div className="relative min-h-[calc(100vh-84px)] pb-20 pt-10">
         <div
-          className={`md:max-h-[535px}] absolute inset-0 xl:max-h-[567px] ${backdropPath ? 'bg-black' : 'bg-gray-600'} dark:bg-black`}
+          className={`md:max-h-[535px}] absolute inset-0 hidden lg:block xl:max-h-[567px] ${backdropPath ? 'bg-black' : 'bg-gray-600'} dark:bg-black`}
         />
         <div
           className="absolute inset-0 hidden w-full bg-cover bg-center opacity-35 md:max-h-[535px] lg:block xl:max-h-[567px] dark:opacity-30"
@@ -42,7 +40,7 @@ export function CastPage() {
               : 'none',
           }}
         />
-        <section className="relative z-30 mx-auto max-w-7xl px-8 text-gray-50 md:mb-4">
+        <section className="relative z-30 mx-auto max-w-7xl px-8 md:mb-4 lg:text-gray-50">
           <Link
             to={`${appRoute.movie}/${movieId}`}
             className="transition-opacity hover:opacity-85"
@@ -63,8 +61,8 @@ export function CastPage() {
         <section className="mx-auto max-w-7xl p-8">
           <h2 className="sr-only">Cast and Crew</h2>
           <div className="grid gap-8 lg:auto-cols-[minmax(0,1fr)] lg:grid-flow-col">
-            <AllCastCard cast={cast} />
-            <AllCrewCard allCrew={allCrew} />
+            <FullCastCard cast={cast} />
+            <FullCrewCard allCrew={allCrew} />
           </div>
         </section>
       </div>

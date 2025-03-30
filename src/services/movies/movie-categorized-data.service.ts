@@ -78,7 +78,7 @@ function getTeamData(movie: MovieCredits): TeamItems {
   const [screenplay] = getPersonsWithOverflow(
     crew.filter(({ job }) => job === 'Screenplay'),
   );
-  const [starring] = getPersonsWithOverflow(cast, 20);
+  const [starring] = getPersonsWithOverflow(cast, 12);
 
   return [
     { jobTitle: isMultipleDirectors ? 'Directors' : 'Director', persons: directors },

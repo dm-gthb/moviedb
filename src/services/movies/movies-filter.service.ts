@@ -63,7 +63,7 @@ const selectOption: Record<SelectName, { title: string; value: string }[]> = {
     }),
   ),
   releaseDates: [
-    { title: 'all years', value: '' },
+    { title: 'All Years', value: '' },
     ...getYearsFrom2020ToNow().map((year) =>
       createReleaseDatesOption(year.toString(), [year, year]),
     ),
@@ -77,7 +77,7 @@ const selectOption: Record<SelectName, { title: string; value: string }[]> = {
     createReleaseDatesOption('before 1950', [MIN_RELEASE_DATE_YEAR, 1950]),
   ],
   genre: [
-    { title: 'all genres', value: '' },
+    { title: 'All Genres', value: '' },
     ...Object.entries(genresMap)
       .map(([value, title]) => ({ title, value }))
       .sort((a, b) => (a.title > b.title ? 1 : -1)),

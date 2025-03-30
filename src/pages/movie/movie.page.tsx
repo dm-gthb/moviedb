@@ -38,7 +38,7 @@ export function MoviePage() {
           className={`relative py-20 xl:py-24 ${backdropPath ? 'bg-black' : 'bg-gray-600'} dark:bg-black`}
         >
           <div
-            className="absolute bottom-0 left-0 right-0 top-0 h-full w-full bg-cover bg-center opacity-35 dark:opacity-30"
+            className="absolute inset-0 h-full w-full bg-cover bg-center opacity-35 dark:opacity-30"
             style={{
               backgroundImage: backdropPath
                 ? `url(${createBackdropSrc(backdropPath)})`

@@ -5,7 +5,7 @@ import {
   ChevronRightIcon,
   XMarkIcon,
 } from '@heroicons/react/24/outline';
-import { prefetchImage } from '../../services/image/image.service';
+import { prefetchImage } from '../../../services/image/image.service';
 
 export function ModalImageGallery({
   srcList = [],

@@ -11,7 +11,7 @@ import {
   createPosterSrc,
   prefetchBackdropImage,
 } from '../../services/image/image.service';
-import { ModalImageGallery } from '../../components/image-gallery/image-gallery';
+import { ModalImageGallery } from '../../components/shared/image-gallery/image-gallery';
 import { PhotoIcon } from '@heroicons/react/24/outline';
 
 export function MoviePage() {

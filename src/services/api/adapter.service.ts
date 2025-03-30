@@ -96,4 +96,10 @@ export default class Adapter {
       profilePath: person.profile_path,
     };
   }
+
+  static transformImageServerData(image: { file_path: string }): { filePath: string } {
+    return {
+      filePath: image.file_path,
+    };
+  }
 }

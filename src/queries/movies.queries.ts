@@ -63,6 +63,12 @@ export const movieQueries = {
       queryFn: () => api.getMovieRecommendations({ movieId }),
       ...moviesQueryConfig,
     }),
+  images: (movieId: string) =>
+    queryOptions({
+      queryKey: ['movieImages', { movieId }],
+      queryFn: () => api.getMovieImages({ movieId }),
+      ...moviesQueryConfig,
+    }),
 };
 
 export const useMoviesSearch = ({ searchTerm = '' }) =>
@@ -91,6 +97,9 @@ export const useMovieDetails = ({ movieId }: { movieId: string }) => {
     ],
   });
 };
+
+export const useMovieImages = ({ movieId }: { movieId: string }) =>
+  useQuery(movieQueries.images(movieId));
 
 function getCacheByPrevLocation({
   state,

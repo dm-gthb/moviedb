@@ -95,3 +95,9 @@ export type DeleteRatingResponse = {
 export type GetPersonDetailsResponse = PersonDetails;
 
 export type GetPersonMovieCreditsResponse = { cast: MovieItem[]; crew: MovieItem[] };
+
+export type GetMovieImagesResponse = {
+  backdrops: { filePath: string }[];
+  logos: { filePath: string }[];
+  posters: { filePath: string }[];
+};

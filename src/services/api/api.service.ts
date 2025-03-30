@@ -29,6 +29,7 @@ import {
   GetMeParams,
   GetMovieCreditsResponse,
   GetMovieDetailsResponse,
+  GetMovieImagesResponse,
   GetMovieListResponse,
   GetMovieRecommendationsResponse,
   GetPersonDetailsResponse,
@@ -281,6 +282,22 @@ class API {
     return {
       cast: rowData.cast.map(Adapter.transformMovieItemServerData),
       crew: rowData.crew.map(Adapter.transformMovieItemServerData),
+    };
+  }
+
+  async getMovieImages({
+    movieId,
+  }: {
+    movieId: string;
+  }): Promise<GetMovieImagesResponse> {
+    const rowData = await this.fetchData(`${endpoints.getMovieImages(movieId)}`, {
+      token: MOVIEDB_API_TOKEN,
+    });
+
+    return {
+      backdrops: rowData.backdrops.map(Adapter.transformImageServerData),
+      logos: rowData.logos.map(Adapter.transformImageServerData),
+      posters: rowData.posters.map(Adapter.transformImageServerData),
     };
   }
 }

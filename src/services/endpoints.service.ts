@@ -8,6 +8,7 @@ export const endpoints = {
   getMovie: (id: string) => `${moviedbUrl}/movie/${id}`,
   getMovieRecommendations: (id: string) => `${moviedbUrl}/movie/${id}/recommendations`,
   getMovieCredits: (id: string) => `${moviedbUrl}/movie/${id}/credits`,
+  getMovieImages: (id: string) => `${moviedbUrl}/movie/${id}/images`,
   getPerson: (id: string) => `${moviedbUrl}/person/${id}`,
   getPersonMovieCredits: (id: string) => `${moviedbUrl}/person/${id}/movie_credits`,
   getMe: () => `${authMockUrl}/me`,

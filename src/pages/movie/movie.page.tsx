@@ -1,16 +1,25 @@
 import { useEffect } from 'react';
 import { useLocation, useParams } from 'react-router';
-import { useMovieDetails } from '../../queries/movies.queries';
+import { useMovieDetails, useMovieImages } from '../../queries/movies.queries';
 import { ListItemButtons } from '../../components/movies/list-item-buttons/list-item-buttons';
 import { MoviePoster } from '../../components/movies/movie-poster/movie-poster';
 import { genresMap } from '../../services/movies/movies.constants.service';
 import { InfoGrid } from '../../components/movies/info-grid/info-grid';
 import { getCategorizedMovieData } from '../../services/movies/movie-categorized-data.service';
-import { createBackdropSrc } from '../../services/image/image.service';
+import {
+  createBackdropSrc,
+  createPosterSrc,
+  prefetchBackdropImage,
+} from '../../services/image/image.service';
+import { ModalImageGallery } from '../../components/image-gallery/image-gallery';
+import { PhotoIcon } from '@heroicons/react/24/outline';
 
 export function MoviePage() {
   const { id: paramsId } = useParams();
   const queries = useMovieDetails({ movieId: paramsId ?? '' });
+  const { data: images, isSuccess: isImagesLoadingSuccess } = useMovieImages({
+    movieId: paramsId!,
+  });
   const { pathname } = useLocation();
   const [movie, credits] = queries;
   const isPendingDetails = movie.isPlaceholderData || credits.isPending;
@@ -23,6 +32,10 @@ export function MoviePage() {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [pathname]);
+
+  if (isImagesLoadingSuccess) {
+    prefetchBackdropImage(images.backdrops?.[0]?.filePath);
+  }
 
   if (movie.isPending) {
     return <LoadingPage />;
@@ -47,8 +60,19 @@ export function MoviePage() {
           />
           <section className="relative z-30 mx-auto max-w-7xl px-8 text-gray-50">
             <div className="flex gap-10 md:gap-14">
-              <div className="hidden w-[180px] shrink-0 overflow-hidden rounded sm:block md:w-[250px]">
+              <div className="relative hidden w-[180px] shrink-0 overflow-hidden rounded transition hover:scale-105 sm:block md:w-[250px]">
                 <MoviePoster posterPath={posterPath} movieTitle={title} />
+                {posterPath && (
+                  <ModalImageGallery
+                    galleryTitle={`${title} movie poster`}
+                    srcList={[createPosterSrc(posterPath)]}
+                    trigger={
+                      <button className="absolute inset-0 h-full w-full">
+                        <span className="sr-only">Show movie poster image</span>
+                      </button>
+                    }
+                  />
+                )}
               </div>
               <div className="flex flex-col justify-center gap-6">
                 <div>
@@ -63,8 +87,24 @@ export function MoviePage() {
                     )}
                   </div>
                 </div>
+                <div className="flex gap-3">
+                  <ListItemButtons movie={movie.data} size="large" />
+                  {backdropPath && (
+                    <ModalImageGallery
+                      galleryTitle={`${title} movie images`}
+                      srcList={images?.backdrops.map(({ filePath }) =>
+                        createBackdropSrc(filePath),
+                      )}
+                      trigger={
+                        <button className="flex shrink-0 rounded-full bg-gray-800 p-3.5 transition hover:scale-105 hover:bg-gray-700">
+                          <PhotoIcon width={24} height={24} />
+                          <span className="sr-only">Open movie image gallery</span>
+                        </button>
+                      }
+                    />
+                  )}
+                </div>
                 <p>{overview}</p>
-                <ListItemButtons movie={movie.data} size="large" />
               </div>
             </div>
           </section>

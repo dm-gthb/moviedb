@@ -1,9 +1,13 @@
 import { useSearchParams } from 'react-router';
 import { genresMap } from './movies.constants.service';
-import { Entries, getYear } from './movies.utils.service';
+import { getYear } from './movies.utils.service';
 
 type SelectName = 'sort' | 'releaseDates' | 'genre';
 type SearchParamName = keyof typeof searchParamName;
+
+export type Entries<T> = {
+  [K in keyof T]: [K, T[K]];
+}[keyof T][];
 
 const MIN_RELEASE_DATE_YEAR = 1895;
 

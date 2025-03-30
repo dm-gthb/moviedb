@@ -1,3 +1,4 @@
+import { useLocation } from 'react-router';
 import {
   InfiniteData,
   infiniteQueryOptions,
@@ -9,12 +10,17 @@ import {
   useQuery,
   useQueryClient,
 } from '@tanstack/react-query';
-import api from '../services/api/api.service';
 import { useSearchParamsWithMoviesFilterDefaults } from '../services/movies/movies-filter.service';
-import { useLocation } from 'react-router';
 import { appRoute } from '../services/router.service';
 import { movieListItemsOptions } from './list-items.queries';
 import { GetMoviesResponse } from '../services/api/api.types.service';
+import {
+  getMovie,
+  getMovieCredits,
+  getMovieImages,
+  getMovies,
+  searchMovies,
+} from '../services/api/api.service';
 
 const moviesQueryConfig = {
   cacheTime: 1000 * 60 * 60,
@@ -25,7 +31,7 @@ export const movieQueries = {
   search: (searchTerm: string) =>
     queryOptions({
       queryKey: ['moviesSearch', searchTerm],
-      queryFn: () => api.searchMovies({ query: searchTerm }),
+      queryFn: () => searchMovies({ query: searchTerm }),
       ...moviesQueryConfig,
     }),
   filter: (searchParams?: URLSearchParams | string) =>
@@ -34,7 +40,7 @@ export const movieQueries = {
       queryFn: ({ pageParam }) => {
         const apiParams = new URLSearchParams(searchParams);
         apiParams.set('page', String(pageParam));
-        return api.getMovies(apiParams);
+        return getMovies(apiParams);
       },
       initialPageParam: 1,
       getNextPageParam: (lastPage, _allPages, lastPageParam) => {
@@ -48,25 +54,19 @@ export const movieQueries = {
   details: (movieId: string) =>
     queryOptions({
       queryKey: ['movieDetails', { movieId }],
-      queryFn: () => api.getMovie({ movieId }),
+      queryFn: () => getMovie({ movieId }),
       ...moviesQueryConfig,
     }),
   credits: (movieId: string) =>
     queryOptions({
       queryKey: ['movieCredits', { movieId }],
-      queryFn: () => api.getMovieCredits({ movieId }),
-      ...moviesQueryConfig,
-    }),
-  recommendations: (movieId: string) =>
-    queryOptions({
-      queryKey: ['movieRecommendations', { movieId }],
-      queryFn: () => api.getMovieRecommendations({ movieId }),
+      queryFn: () => getMovieCredits({ movieId }),
       ...moviesQueryConfig,
     }),
   images: (movieId: string) =>
     queryOptions({
       queryKey: ['movieImages', { movieId }],
-      queryFn: () => api.getMovieImages({ movieId }),
+      queryFn: () => getMovieImages({ movieId }),
       ...moviesQueryConfig,
     }),
 };

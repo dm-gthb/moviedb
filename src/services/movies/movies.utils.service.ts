@@ -1,6 +1,5 @@
 import { MovieListItemData } from '../list-items/list-items.types';
-import { PersonBase } from '../person/person.types';
-import { MovieDetails, MovieItem } from './movies.types.service';
+import { MovieDetails, MovieItem, PersonBase } from './movies.types.service';
 
 export const getListItemMovie = (
   movie: MovieItem | MovieDetails | MovieListItemData,
@@ -58,7 +57,3 @@ export function formatBudget(budget: number) {
 export function formatDate(date: string) {
   return new Intl.DateTimeFormat('en-US', { dateStyle: 'long' }).format(new Date(date));
 }
-
-export type Entries<T> = {
-  [K in keyof T]: [K, T[K]];
-}[keyof T][];

@@ -10,17 +10,17 @@ import {
   useQuery,
   useQueryClient,
 } from '@tanstack/react-query';
-import { useSearchParamsWithMoviesFilterDefaults } from '../services/movies/movies-filter.service';
+import { useSearchParamsWithMoviesFilterDefaults } from '../services/movies/movies.filter.service';
 import { appRoute } from '../services/router.service';
-import { movieListItemsOptions } from './list-items.queries';
-import { GetMoviesResponse } from '../services/api/api.types.service';
+import { movieListItemOptions } from './list-items.queries';
+import { GetMoviesResponse } from '../services/api/movies.api.types.service';
 import {
   getMovie,
   getMovieCredits,
   getMovieImages,
   getMovies,
   searchMovies,
-} from '../services/api/api.service';
+} from '../services/api/movies.api.service';
 
 const moviesQueryConfig = {
   cacheTime: 1000 * 60 * 60,
@@ -119,7 +119,7 @@ function getCacheByPrevLocation({
   }
 
   if (pathname?.includes(appRoute.lists)) {
-    const cache = queryClient.getQueryData(movieListItemsOptions().queryKey);
+    const cache = queryClient.getQueryData(movieListItemOptions().queryKey);
     const listItem =
       cache &&
       Object.values(cache)

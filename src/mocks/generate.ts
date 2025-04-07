@@ -9,7 +9,7 @@ import {
 
 export function buildUserAuthData() {
   return {
-    username: faker.internet.username(),
+    email: faker.internet.email(),
     password: faker.internet.password(),
   };
 }

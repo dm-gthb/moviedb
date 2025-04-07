@@ -3,7 +3,7 @@ import {
   getSelectValue,
   selectData,
   updateSearchParamsWithSelectValue,
-} from '../../../services/movies/movies-filter.service';
+} from '../../../services/movies/movies.filter.service';
 import { Select } from '../../shared/select/select';
 
 export function MoviesFilter() {

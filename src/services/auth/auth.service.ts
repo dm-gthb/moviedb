@@ -1,28 +1,34 @@
-import {
-  createUserWithEmailAndPassword,
-  onAuthStateChanged,
-  signInWithEmailAndPassword,
-  signOut,
-  User,
-} from 'firebase/auth';
-import { auth } from '../firebase/firebase.service';
+import * as api from '../api/auth.api.service';
+import { AuthData, User } from './auth.types.service';
 
-export function register({ email, password }: { email: string; password: string }) {
-  return createUserWithEmailAndPassword(auth, email, password);
-}
+export const tokenKey = '__moviedb_auth_token__';
+export const userIdKey = '__moviedb_auth_userId__';
 
-export function login({ email, password }: { email: string; password: string }) {
-  return signInWithEmailAndPassword(auth, email, password);
-}
+export const login = async (authData: AuthData) => {
+  const response = await api.login(authData);
+  return handleUserResponse(response);
+};
 
-export function logout() {
-  return signOut(auth);
-}
+export const register = async (authData: AuthData) => {
+  const response = await api.register(authData);
+  return handleUserResponse(response);
+};
 
-export function getUser() {
-  return auth.currentUser;
-}
+export const logout = () => {
+  window.localStorage.removeItem(tokenKey);
+  window.localStorage.removeItem(userIdKey);
+};
 
-export function subscribeToAuthStateChange(cb: (user: User | null) => void) {
-  return onAuthStateChanged(auth, (user) => cb(user));
+export const getToken = () => {
+  return window.localStorage.getItem(tokenKey);
+};
+
+export const getUserId = () => {
+  return window.localStorage.getItem(userIdKey);
+};
+
+function handleUserResponse(user: User) {
+  window.localStorage.setItem(tokenKey, user.idToken);
+  window.localStorage.setItem(userIdKey, user.localId);
+  return user;
 }

@@ -1,6 +1,6 @@
 import { Link, useParams } from 'react-router';
 import { useMovieDetails } from '../../queries/movies.queries';
-import { getAllCrew } from '../../services/movies/movie-categorized-data.service';
+import { getAllCrew } from '../../services/movies/movies.categorize.service';
 import { createBackdropSrc } from '../../services/image/image.service';
 import { appRoute } from '../../services/router.service';
 import { genresMap } from '../../services/movies/movies.constants.service';

@@ -5,7 +5,7 @@ import { ListItemButtons } from '../../components/movies/list-item-buttons/list-
 import { MoviePoster } from '../../components/movies/movie-poster/movie-poster';
 import { genresMap } from '../../services/movies/movies.constants.service';
 import { InfoGrid } from '../../components/movies/info-grid/info-grid';
-import { getCategorizedMovieData } from '../../services/movies/movie-categorized-data.service';
+import { getCategorizedMovieData } from '../../services/movies/movies.categorize.service';
 import {
   createBackdropSrc,
   createPosterSrc,

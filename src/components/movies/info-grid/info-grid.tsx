@@ -1,4 +1,4 @@
-import { CategorizedData } from '../../../services/movies/movie-categorized-data.service';
+import { CategorizedData } from '../../../services/movies/movies.categorize.service';
 import { LoadingCard } from './info-card';
 import { TeamCard } from './team-card';
 import { TechCard } from './tech-card';

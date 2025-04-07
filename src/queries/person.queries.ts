@@ -1,5 +1,5 @@
 import { queryOptions, useQueries } from '@tanstack/react-query';
-import { getPerson, getPersonMovieCredits } from '../services/api/api.service';
+import { getPerson, getPersonMovieCredits } from '../services/api/movies.api.service';
 
 const personQueryConfig = {
   cacheTime: 1000 * 60 * 60,

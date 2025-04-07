@@ -1,6 +1,5 @@
 import { delay, http, HttpResponse } from 'msw';
 import * as listItemService from '../data-services/list-items.ts';
-import * as ratingService from '../data-services/rating.ts';
 import {
   CreateListItemRequestBody,
   DeleteListItemResponseBody,
@@ -9,81 +8,38 @@ import {
   DeleteListItemParams,
 } from './types.ts';
 import { getUser } from './utils.ts';
-import { endpoints } from '../../services/endpoints.service.ts';
 
 const DELAY_MS = import.meta.env.MODE === 'test' ? 0 : 1000;
+const url = 'https://firestore.googleapis.com/*';
 
 export const listItems = [
-  http.get<never, never, GetListItemsResponseBody>(
-    `${endpoints.getListItems()}`,
+  http.get<{ userId: string }, never, GetListItemsResponseBody>(
+    url,
     async ({ request }) => {
       const user = await getUser(request);
-      const listItems = await listItemService.readByOwner(user.id);
-      const ratedItems = await ratingService.readByOwner(user.id);
-      const favorites = [];
-      const watchlist = [];
-
-      for (const listItem of listItems) {
-        if (listItem.type === 'favorite') {
-          favorites.push(listItem);
-        } else if (listItem.type === 'watchlist') {
-          watchlist.push(listItem);
-        }
-      }
-
+      const listItems = await listItemService.readByOwner(user.localId);
       await delay(DELAY_MS);
-      return HttpResponse.json({ favorites, watchlist, rated: ratedItems });
+      return HttpResponse.json({ documents: listItems });
     },
   ),
   http.post<never, CreateListItemRequestBody, CreateListItemResponseBody>(
-    `${endpoints.addFavorite()}`,
+    url,
     async ({ request }) => {
-      const user = await getUser(request);
-      const { movie } = await request.json();
-      const listItem = await listItemService.create({
-        type: 'favorite',
-        ownerId: user.id,
-        movie,
-      });
+      await getUser(request);
+      const reqListItemData = await request.json();
+      const listItem = await listItemService.create(reqListItemData);
       await delay(DELAY_MS);
-      return HttpResponse.json({ listItem });
+      return HttpResponse.json(listItem);
     },
   ),
 
   http.delete<DeleteListItemParams, never, DeleteListItemResponseBody>(
-    `${endpoints.deleteFavorite(':listItemId')}`,
-    async ({ params, request }) => {
-      const user = await getUser(request);
-      const { listItemId } = params;
-      await listItemService.authorize(user.id, listItemId);
-      await listItemService.remove(listItemId);
-      await delay(DELAY_MS);
-      return HttpResponse.json({ succuss: true });
-    },
-  ),
-
-  http.post<never, CreateListItemRequestBody, CreateListItemResponseBody>(
-    `${endpoints.addToWatchlist()}`,
+    url,
     async ({ request }) => {
-      const user = await getUser(request);
-      const { movie } = await request.json();
-      const listItem = await listItemService.create({
-        type: 'watchlist',
-        ownerId: user.id,
-        movie,
-      });
-      await delay(DELAY_MS);
-      return HttpResponse.json({ listItem });
-    },
-  ),
-
-  http.delete<DeleteListItemParams, never, DeleteListItemResponseBody>(
-    `${endpoints.deleteFromWatchlist(':listItemId')}`,
-    async ({ params, request }) => {
-      const user = await getUser(request);
-      const { listItemId } = params;
-      await listItemService.authorize(user.id, listItemId);
-      await listItemService.remove(listItemId);
+      const listItemId = request.url.split('/').at(-1);
+      const userId = request.url.split('/').at(-3);
+      await listItemService.authorize(userId!, listItemId!);
+      await listItemService.remove(listItemId!);
       await delay(DELAY_MS);
       return HttpResponse.json({ succuss: true });
     },

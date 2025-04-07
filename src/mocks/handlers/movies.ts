@@ -1,13 +1,11 @@
 import { delay, http, HttpResponse, StrictResponse } from 'msw';
 import * as movieService from '../data-services/movies.ts';
 import * as creditService from '../data-services/credits.ts';
-import * as recommendationService from '../data-services/recommendations.ts';
-import { endpoints } from '../../services/endpoints.service.ts';
+import { endpoints } from '../../services/api/endpoints.api.service.ts';
 import {
   GetMovieCreditsResponseBody,
   GetMovieDetailsResponseBody,
   GetMovieItemsResponseBody,
-  GetRecommendationsResponseBody,
 } from './types.ts';
 
 const ITEMS_PER_PAGE = 20;
@@ -100,24 +98,6 @@ export const movies = [
         id: +movieId,
         ...credits,
       });
-    },
-  ),
-
-  http.get<{ movieId: string }>(
-    endpoints.getMovieRecommendations(':movieId'),
-    async ({
-      params,
-    }): Promise<HttpResponse | StrictResponse<GetRecommendationsResponseBody>> => {
-      const { movieId } = params;
-      const recommendedMovies = await recommendationService.read(+movieId);
-      if (!recommendedMovies) {
-        return new HttpResponse(null, {
-          status: 404,
-          statusText: `recommendations for ${movieId} not found`,
-        });
-      }
-      await delay(DELAY_MS);
-      return HttpResponse.json({ results: recommendedMovies });
     },
   ),
 ];

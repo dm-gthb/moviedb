@@ -1,7 +1,7 @@
 import { Fragment } from 'react/jsx-runtime';
 import { useParams } from 'react-router';
 import { appRoute } from '../../../services/router.service';
-import { TeamItems } from '../../../services/movies/movie-categorized-data.service';
+import { TeamItems } from '../../../services/movies/movies.categorize.service';
 import { Card, CardLink, CardSection } from './info-card';
 import { PersonLink } from './person-link';
 

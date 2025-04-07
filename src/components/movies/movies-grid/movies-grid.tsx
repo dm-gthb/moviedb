@@ -1,4 +1,4 @@
-import { MovieListItemData } from '../../../services/list-items/list-items.types';
+import { MovieListItemData } from '../../../services/list-items/list-items.types.service';
 import { MovieItem } from '../../../services/movies/movies.types.service';
 import { MovieCard, PlaceholderMovieCard } from './movies-grid-card';
 

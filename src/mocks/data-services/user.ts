@@ -1,4 +1,4 @@
-import { AuthData, User } from '../types/user';
+import { AuthData, AuthenticatedUser, User } from '../types/user';
 import { StatusError } from '../utils';
 
 const usersKey = '__moviedb_users__';
@@ -19,31 +19,32 @@ try {
   storeUsersData();
 }
 
-export async function authenticate({ username, password }: AuthData) {
-  validateUserForm({ username, password });
-  const id = hash(username);
+export async function authenticate({
+  email,
+  password,
+}: AuthData): Promise<AuthenticatedUser> {
+  validateUserForm({ email, password });
+  const id = hash(email);
   const user = users[id] || {};
   if (user.passwordHash === hash(password)) {
-    return { ...sanitizeUser(user), token: btoa(user.id) };
+    return { ...sanitizeUser(user), idToken: btoa(user.id) };
   }
-  const error = new StatusError('Invalid username or password.');
+  const error = new StatusError('Invalid email or password.');
   error.status = 400;
   throw error;
 }
 
-export async function create({ username, password }: AuthData) {
-  validateUserForm({ username, password });
-  const id = hash(username);
+export async function create({ email, password }: AuthData) {
+  validateUserForm({ email, password });
+  const id = hash(email);
   const passwordHash = hash(password);
 
   if (users[id]) {
-    const error = new StatusError(
-      `Cannot create a new user with the username "${username}".`,
-    );
+    const error = new StatusError(`Cannot create a new user with email "${email}".`);
     error.status = 400;
     throw error;
   }
-  users[id] = { id, username, passwordHash };
+  users[id] = { id, email, passwordHash };
   storeUsersData();
   return read(id);
 }
@@ -67,23 +68,21 @@ function validateUserId(id: string) {
   }
 }
 
-function validateUserForm({ username, password }: AuthData) {
-  if (!username) {
-    const error = new StatusError('A username is required');
+function validateUserForm({ email, password }: AuthData) {
+  if (!email) {
+    const error = new StatusError('Email is required');
     error.status = 400;
     throw error;
   }
   if (!password) {
-    const error = new StatusError('A password is required');
+    const error = new StatusError('Password is required');
     error.status = 400;
     throw error;
   }
 }
 
 function sanitizeUser(user: User) {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { passwordHash, ...rest } = user;
-  return rest;
+  return { localId: user.id };
 }
 
 function hash(input: string) {

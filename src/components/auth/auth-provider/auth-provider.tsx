@@ -3,10 +3,11 @@ import { useQueryClient } from '@tanstack/react-query';
 import * as authService from '../../../services/auth/auth.service';
 import { AuthData, User } from '../../../services/auth/auth.types.service';
 import { AuthContext } from '../../../services/auth/auth-context.service';
-import { movieListItemsOptions } from '../../../queries/list-items.queries';
+import { movieListItemOptions } from '../../../queries/list-items.queries';
 import { ErrorMessage } from '../../shared/error-message/error-message';
 import { Spinner } from '../../shared/spinner/spinner';
-import { getMovieListItems } from '../../../services/list-items/list-items.service';
+import { getMe } from '../../../services/api/auth.api.service';
+import { getMovieListItems } from '../../../services/api/list-items.api.service';
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
@@ -15,36 +16,33 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const queryClient = useQueryClient();
 
   useEffect(() => {
-    const unsubscribe = authService.subscribeToAuthStateChange((user) => {
-      setIsLoading(true);
-      setError(null);
-
-      if (user) {
-        getMovieListItems()
-          .then((listItems) => {
-            queryClient.setQueryData(movieListItemsOptions().queryKey, listItems);
-          })
-          .catch((err) => {
-            setError(err);
-          })
-          .finally(() => setIsLoading(false));
-      } else {
-        setIsLoading(false);
-      }
-
-      setUser(user);
-    });
-
-    return unsubscribe;
+    const token = authService.getToken();
+    const userId = authService.getUserId() ?? '';
+    if (token) {
+      Promise.all([getMe({ token }), getMovieListItems({ token, userId })])
+        .then(([user, listItems]) => {
+          setUser(user);
+          queryClient.setQueryData(movieListItemOptions().queryKey, listItems);
+        })
+        .catch((err) => {
+          setError(err);
+        })
+        .finally(() => setIsLoading(false));
+    } else {
+      setIsLoading(false);
+    }
   }, [queryClient]);
 
   const register = (authData: AuthData) =>
-    authService.register(authData).then(({ user }) => setUser(user));
+    authService.register(authData).then((user) => setUser(user));
 
   const login = (authData: AuthData) =>
-    authService.login(authData).then(({ user }) => setUser(user));
+    authService.login(authData).then((user) => setUser(user));
 
-  const logout = () => authService.logout().then(() => setUser(null));
+  const logout = () => {
+    authService.logout();
+    setUser(null);
+  };
 
   if (isLoading) {
     return (

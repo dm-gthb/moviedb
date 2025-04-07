@@ -1,9 +1,8 @@
-import { MovieListItem, MovieListItemData } from '../types/list-item';
+import { FirestoreMovieListItem } from '../types/list-item';
 import { StatusError } from '../utils';
 
 const listItemsKey = '__moviedb_list_items__';
-
-let listItems: Record<string, MovieListItem> = {};
+let listItems: Record<string, { id: string } & FirestoreMovieListItem> = {};
 
 const storeListItems = () => {
   window.localStorage.setItem(listItemsKey, JSON.stringify(listItems));
@@ -30,32 +29,32 @@ function validateListItem(id: string) {
 
 export async function authorize(userId: string, listItemId: string) {
   const listItem = await read(listItemId);
-  if (listItem.ownerId !== userId) {
+  if (listItem.fields.ownerId.stringValue !== userId) {
     const error = new StatusError('User is not authorized to view list');
     error.status = 403;
     throw error;
   }
 }
 
-export async function create({
-  movie,
-  ownerId,
-  type,
-}: {
-  movie: MovieListItemData;
-  ownerId: string;
-  type: 'favorite' | 'watchlist';
-}) {
-  const id = `${type}${movie.id}${ownerId}`;
+export async function create(listItemData: FirestoreMovieListItem) {
+  const { type, movieId, ownerId } = listItemData.fields;
+  const id = `${type.stringValue}-${movieId.integerValue}-${ownerId.stringValue}`;
 
   if (listItems[id]) {
     const error = new StatusError(
-      `List item with type "${type}" already exists for movie ${movie.id}`,
+      `List item with type "${type}" already exists for movie ${movieId}`,
     );
     error.status = 400;
     throw error;
   }
-  listItems[id] = { id, movieId: movie.id, ownerId, movie, type };
+  const currentTime = new Date().toISOString();
+  listItems[id] = {
+    id,
+    ...listItemData,
+    name: `listItem/${id}`,
+    createTime: currentTime,
+    updateTime: currentTime,
+  };
   storeListItems();
   return read(id);
 }
@@ -65,13 +64,6 @@ export async function read(id: string) {
   return listItems[id];
 }
 
-export async function update(id: string, updates: MovieListItem) {
-  validateListItem(id);
-  Object.assign(listItems[id], updates);
-  storeListItems();
-  return read(id);
-}
-
 export async function remove(id: string) {
   validateListItem(id);
   delete listItems[id];
@@ -79,7 +71,9 @@ export async function remove(id: string) {
 }
 
 export async function readByOwner(userId: string) {
-  return Object.values(listItems).filter((li) => li.ownerId === userId);
+  return Object.values(listItems).filter(
+    (li) => li.fields.ownerId.stringValue === userId,
+  );
 }
 
 export async function reset() {

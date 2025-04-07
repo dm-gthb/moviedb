@@ -1,20 +1,28 @@
 import { delay, http, HttpResponse, StrictResponse } from 'msw';
 import * as userService from '../data-services/user.ts';
-import { getToken, getUser } from './utils.ts';
 import { AuthRequestBody, AuthResponseBody } from './types.ts';
-import { endpoints } from '../../services/endpoints.service.ts';
-import { getErrorMessage } from '../utils.ts';
+import { getErrorMessage, StatusError } from '../utils.ts';
+import { AuthenticatedUser } from '../types/user.ts';
+import { tokenKey } from '../../services/auth/auth.service.ts';
 
 const DELAY_MS = import.meta.env.MODE === 'test' ? 0 : 500;
 
+const endpoints = {
+  login:
+    /^https:\/\/identitytoolkit\.googleapis\.com\/v1\/accounts:signInWithPassword.*$/,
+  register: /^https:\/\/identitytoolkit\.googleapis\.com\/v1\/accounts:signUp.*$/,
+  getMe: /^https:\/\/identitytoolkit\.googleapis\.com\/v1\/accounts:lookup.*$/,
+};
+
 export const user = [
   http.post<never, AuthRequestBody>(
-    `${endpoints.login()}`,
+    endpoints.login,
     async ({ request }): Promise<HttpResponse | StrictResponse<AuthResponseBody>> => {
-      const { username, password } = await request.json();
-      let user;
+      const { email, password } = await request.json();
       try {
-        user = await userService.authenticate({ username, password });
+        const user = await userService.authenticate({ email, password });
+        await delay(DELAY_MS);
+        return HttpResponse.json(user);
       } catch (error) {
         await delay(DELAY_MS);
         return new HttpResponse(null, {
@@ -22,19 +30,18 @@ export const user = [
           statusText: getErrorMessage(error),
         });
       }
-      await delay(DELAY_MS);
-      return HttpResponse.json({ user });
     },
   ),
 
   http.post<never, AuthRequestBody>(
-    `${endpoints.register()}`,
+    endpoints.register,
     async ({ request }): Promise<HttpResponse | StrictResponse<AuthResponseBody>> => {
-      const { username, password } = await request.json();
-      let user;
+      const { email, password } = await request.json();
       try {
-        await userService.create({ username, password });
-        user = await userService.authenticate({ username, password });
+        await userService.create({ email, password });
+        const user = await userService.authenticate({ email, password });
+        await delay(DELAY_MS);
+        return HttpResponse.json(user);
       } catch (error) {
         await delay(DELAY_MS);
         return new HttpResponse(null, {
@@ -42,19 +49,20 @@ export const user = [
           statusText: getErrorMessage(error),
         });
       }
-      await delay(DELAY_MS);
-      return HttpResponse.json({ user });
     },
   ),
 
-  http.get<never, never>(
-    `${endpoints.getMe()}`,
-    async ({ request }): Promise<HttpResponse | StrictResponse<AuthResponseBody>> => {
+  http.post<{ idToken: string }, never>(
+    endpoints.getMe,
+    async (): Promise<HttpResponse | StrictResponse<{ users: AuthenticatedUser[] }>> => {
       try {
-        const user = await getUser(request);
-        const token = getToken(request)!;
+        const { user, token } = await getMeUser();
         await delay(DELAY_MS);
-        return HttpResponse.json({ user: { ...user, token } });
+        if (token && user) {
+          return HttpResponse.json({ users: [{ ...user, idToken: token }] });
+        }
+
+        return HttpResponse.json({ users: [] });
       } catch (e) {
         await delay(DELAY_MS);
         return new HttpResponse(null, {
@@ -65,3 +73,23 @@ export const user = [
     },
   ),
 ];
+
+async function getMeUser() {
+  const token = window.localStorage.getItem(tokenKey);
+
+  if (!token) {
+    return { user: null, token: null };
+  }
+
+  let userId;
+  try {
+    userId = atob(token);
+  } catch {
+    const error = new StatusError('Invalid token. Please login again.');
+    error.status = 401;
+    throw error;
+  }
+
+  const user = await userService.read(userId);
+  return { user, token };
+}

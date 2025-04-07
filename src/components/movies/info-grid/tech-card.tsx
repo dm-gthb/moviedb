@@ -1,4 +1,4 @@
-import { TechItems } from '../../../services/movies/movie-categorized-data.service';
+import { TechItems } from '../../../services/movies/movies.categorize.service';
 import { Card, CardAnchor, CardSection } from './info-card';
 
 export function TechCard({ items }: { items: TechItems }) {

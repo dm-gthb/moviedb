@@ -48,7 +48,7 @@ function AuthForm(props: AuthFormProps) {
     <form action={formAction}>
       <fieldset disabled={isPending}>
         <div className={classNames.formGroup}>
-          <label htmlFor="username">Username</label>
+          <label htmlFor="email">Email</label>
           <input
             id="email"
             type="email"

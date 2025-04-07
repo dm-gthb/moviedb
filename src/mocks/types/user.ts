@@ -1,16 +1,15 @@
 export type User = {
   id: string;
-  username: string;
+  email: string;
   passwordHash: string;
 };
 
 export type AuthData = {
-  username: string;
+  email: string;
   password: string;
 };
 
 export type AuthenticatedUser = {
-  id: string;
-  username: string;
-  token: string;
+  localId: string;
+  idToken: string;
 };

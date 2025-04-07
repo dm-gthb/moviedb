@@ -1,4 +1,7 @@
-export type { User } from 'firebase/auth';
+export type User = {
+  localId: string;
+  idToken: string;
+};
 
 export type AuthData = {
   email: string;

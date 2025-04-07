@@ -1,6 +1,5 @@
-import { MovieListItem, MovieListItemData } from '../types/list-item';
+import { FirestoreMovieListItem } from '../types/list-item';
 import { MovieCredits, MovieDetails, MovieItem } from '../types/movie';
-import { Rating, RatingMovie } from '../types/rating';
 import { AuthData, AuthenticatedUser } from '../types/user';
 
 export type GetMovieItemsResponseBody = {
@@ -21,20 +20,15 @@ export type GetRecommendationsResponseBody = {
 };
 
 export type GetListItemsResponseBody = {
-  favorites: MovieListItem[];
-  watchlist: MovieListItem[];
-  rated: Rating[];
+  documents: FirestoreMovieListItem[];
 };
 
-export type CreateListItemRequestBody = {
-  movie: MovieListItemData;
-};
+export type CreateListItemRequestBody = FirestoreMovieListItem;
 
-export type CreateListItemResponseBody = {
-  listItem: MovieListItem;
-};
+export type CreateListItemResponseBody = FirestoreMovieListItem;
 
 export type DeleteListItemParams = {
+  userId: string;
   listItemId: string;
 };
 
@@ -42,37 +36,6 @@ export type DeleteListItemResponseBody = {
   succuss: boolean;
 };
 
-export type CreateRatingRequestBody = {
-  movie: RatingMovie;
-  rating: number;
-};
-
-export type CreateRatingResponseBody = {
-  rating: Rating;
-};
-
-export type UpdateRatingParams = {
-  ratedItemId: string;
-};
-
-export type UpdateRatingRequestBody = {
-  updates: Partial<Rating>;
-};
-
-export type UpdateRatingResponseBody = {
-  rating: Rating;
-};
-
-export type DeleteRatingParams = {
-  ratedItemId: string;
-};
-
-export type DeleteRatingResponseBody = {
-  succuss: boolean;
-};
-
 export type AuthRequestBody = AuthData;
 
-export type AuthResponseBody = {
-  user: AuthenticatedUser;
-};
+export type AuthResponseBody = AuthenticatedUser;

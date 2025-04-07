@@ -6,7 +6,6 @@ import {
   buildUserAuthData,
 } from '../../mocks/generate';
 import * as userDataService from '../../mocks/data-services/user';
-import * as authService from '../../mocks/auth-service';
 import * as movieDataService from '../../mocks/data-services/movies';
 import * as creditsDataService from '../../mocks/data-services/credits';
 import App from '../../app/app';
@@ -60,12 +59,11 @@ test('renders movie data', async () => {
   expect(screen.getByText(movie.homepage)).toBeInTheDocument();
 });
 
-test.todo('authenticated user can add movie to list and delete from list', async () => {
+test('authenticated user can add movie to list and delete from list', async () => {
   const userAuthData = buildUserAuthData();
   await userDataService.create(userAuthData);
   const authenticatedUser = await userDataService.authenticate(userAuthData);
-  window.localStorage.setItem(authService.localStorageKey, authenticatedUser.token);
-
+  localStorage.setItem('__moviedb_auth_token__', authenticatedUser.idToken);
   const { movie } = await createMovieWithCredits();
   await renderWithProviders(<App />, { route: `/movie/${movie.id}` });
 

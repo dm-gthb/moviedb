@@ -1,11 +1,12 @@
-import { endpoints } from '../endpoints.service';
+import { endpoints } from './endpoints.api.service';
+import { fetchDataWithConfig } from './api.utils.service';
 import {
   transformImageServerData,
   transformMovieCreditServerData,
   transformMovieDetailsServerData,
   transformMovieItemServerData,
   transformPersonServerData,
-} from './api.adapter.service';
+} from './movies.api.adapter.service';
 import {
   GetMovieCreditsResponse,
   GetMovieDetailsResponse,
@@ -13,7 +14,7 @@ import {
   GetMovieImagesResponse,
   GetPersonMovieCreditsResponse,
   GetPersonDetailsResponse,
-} from './api.types.service';
+} from './movies.api.types.service';
 
 export async function searchMovies({
   query,
@@ -96,18 +97,13 @@ export async function getPersonMovieCredits({
   };
 }
 
-async function fetchData(url: string) {
-  const TOKEN =
-    'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJjOGVkOTFhY2ZkMWY0NGQwNTk0ZDgxNzQ0MTBjMjkyNiIsIm5iZiI6MTczMzc1NzM3Ny4yMywic3ViIjoiNjc1NzA5YzFhMThjYjg2OTVhZmQ5MTU2Iiwic2NvcGVzIjpbImFwaV9yZWFkIl0sInZlcnNpb24iOjF9.9eDPF25L0SRXhujBE_5AYaevptn80f405k2v5Yeg_Wk';
-
-  try {
-    const res = await fetch(`${url}`, { headers: { Authorization: `Bearer ${TOKEN}` } });
-    if (!res.ok) {
-      throw new Error(`fetch error: ${res.status} ${res.statusText}`);
-    }
-    const data = await res.json();
-    return data;
-  } catch (error) {
-    return Promise.reject(error);
-  }
+async function fetchData(url: string, config = {}) {
+  return fetchDataWithConfig({
+    url,
+    config: {
+      ...config,
+      token:
+        'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJjOGVkOTFhY2ZkMWY0NGQwNTk0ZDgxNzQ0MTBjMjkyNiIsIm5iZiI6MTczMzc1NzM3Ny4yMywic3ViIjoiNjc1NzA5YzFhMThjYjg2OTVhZmQ5MTU2Iiwic2NvcGVzIjpbImFwaV9yZWFkIl0sInZlcnNpb24iOjF9.9eDPF25L0SRXhujBE_5AYaevptn80f405k2v5Yeg_Wk',
+    },
+  });
 }

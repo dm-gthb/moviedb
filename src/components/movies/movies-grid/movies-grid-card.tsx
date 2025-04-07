@@ -1,7 +1,7 @@
 import { Link, useLocation } from 'react-router';
 import { MovieItem } from '../../../services/movies/movies.types.service';
-import { MovieListItemData } from '../../../services/list-items/list-items.types';
-import { useSearchParamsWithMoviesFilterDefaults } from '../../../services/movies/movies-filter.service';
+import { MovieListItemData } from '../../../services/list-items/list-items.types.service';
+import { useSearchParamsWithMoviesFilterDefaults } from '../../../services/movies/movies.filter.service';
 import { ListItemButtons } from '../list-item-buttons/list-item-buttons';
 import { genresMap } from '../../../services/movies/movies.constants.service';
 import { MoviePoster } from '../movie-poster/movie-poster';

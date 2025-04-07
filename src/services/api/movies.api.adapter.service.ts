@@ -3,7 +3,7 @@ import {
   ServerMovieDetails,
   ServerMovieItem,
   ServerPerson,
-} from './api.types.service';
+} from './movies.api.types.service';
 import {
   MovieItem,
   MovieDetails,

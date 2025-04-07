@@ -11,40 +11,32 @@ import {
   addMovieToWatchList,
   deleteMovieFromList,
   getMovieListItems,
-} from '../services/list-items/list-items.service';
+} from '../services/api/list-items.api.service';
 import {
-  MovieListItemData,
   MovieListItems,
-} from '../services/list-items/list-items.types';
+  MovieListItemType,
+} from '../services/list-items/list-items.types.service';
+import { useAuth } from '../services/auth/auth-context.service';
+import {
+  AddMovieToListBaseParams,
+  DeleteMovieFromListParams,
+} from '../services/api/list-items.api.types.service';
 
-export const movieListItemsOptions = () =>
+export const movieListItemOptions = (token = '', userId = '') =>
   queryOptions({
     queryKey: ['movieListItems'],
-    queryFn: () => getMovieListItems(),
+    queryFn: () => getMovieListItems({ token, userId }),
   });
 
-const onErrorDefaultOptions = () => ({
-  onError: () => {
-    alert('There was an error. Please try again.');
-  },
-});
-
-const invalidateQueriesOptions = (queryClient: QueryClient) => ({
-  onSuccess: () => {
-    return queryClient.invalidateQueries(movieListItemsOptions());
-  },
-});
-
 export function useMovieListItems() {
-  return useQuery(movieListItemsOptions());
+  const { user } = useAuth();
+  return useQuery(movieListItemOptions(user?.idToken, user?.localId));
 }
 
 export function useAddFavoriteMutation() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: ({ movie }: { movie: MovieListItemData }) => {
-      return addMovieToFavorites({ movie });
-    },
+    mutationFn: (params: AddMovieToListBaseParams) => addMovieToFavorites(params),
     ...invalidateQueriesOptions(queryClient),
     ...onErrorDefaultOptions(),
   });
@@ -53,15 +45,13 @@ export function useAddFavoriteMutation() {
 export function useAddToWatchlistMutation() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: ({ movie }: { movie: MovieListItemData }) => {
-      return addMovieToWatchList({ movie });
-    },
+    mutationFn: (params: AddMovieToListBaseParams) => addMovieToWatchList(params),
     ...invalidateQueriesOptions(queryClient),
     ...onErrorDefaultOptions(),
   });
 }
 
-export function useDeleteFavoriteMutation() {
+export function useDeleteFromFavoritesMutation() {
   return useDeleteListItemMutation({ type: 'favorites' });
 }
 
@@ -69,10 +59,25 @@ export function useDeleteFromWatchlistMutation() {
   return useDeleteListItemMutation({ type: 'watchlist' });
 }
 
-function useDeleteListItemMutation({ type }: { type: 'watchlist' | 'favorites' }) {
+function onErrorDefaultOptions() {
+  return {
+    onError: () => {
+      alert('There was an error. Please try again.');
+    },
+  };
+}
+
+function invalidateQueriesOptions(queryClient: QueryClient) {
+  return {
+    onSuccess: () => {
+      return queryClient.invalidateQueries(movieListItemOptions());
+    },
+  };
+}
+
+function useDeleteListItemMutation({ type }: { type: MovieListItemType }) {
   return useListItemOptimisticMutation({
-    mutationFn: ({ listItemId }: { listItemId: string }) =>
-      deleteMovieFromList(listItemId),
+    mutationFn: (params: DeleteMovieFromListParams) => deleteMovieFromList(params),
     updater: (
       prevItems: MovieListItems | undefined,
       itemToDelete: { listItemId: string },
@@ -101,16 +106,16 @@ type OptimisticProps<
   updater: (input: TQueryFnData | undefined, onMutateArgs: TVariables) => TQueryFnData;
 };
 
-export const useListItemOptimisticMutation = <TData = unknown, TVariables = void>({
+function useListItemOptimisticMutation<TData = unknown, TVariables = void>({
   mutationFn,
   updater,
-}: OptimisticProps<TData, TVariables>) => {
+}: OptimisticProps<TData, TVariables>) {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn,
     onMutate: async (...args) => {
-      const queryKey = movieListItemsOptions().queryKey;
+      const queryKey = movieListItemOptions().queryKey;
       await queryClient.cancelQueries({ queryKey });
       const snapshot = queryClient.getQueryData(queryKey);
       queryClient.setQueryData(queryKey, (old) => updater(old, ...args));
@@ -124,7 +129,7 @@ export const useListItemOptimisticMutation = <TData = unknown, TVariables = void
       alert('There was an error. Please try again.');
     },
     onSettled: () => {
-      return queryClient.invalidateQueries(movieListItemsOptions());
+      return queryClient.invalidateQueries(movieListItemOptions());
     },
   });
-};
+}

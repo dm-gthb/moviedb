@@ -16,6 +16,7 @@ export function PersonLink({
   const queryClient = useQueryClient();
   const prefetchPerson = (id: number, profilePath: string | null) => {
     queryClient.prefetchQuery(personQueries.person(id.toString()));
+    queryClient.prefetchQuery(personQueries.movieCredits(id.toString()));
     prefetchPersonImage(profilePath);
   };
 

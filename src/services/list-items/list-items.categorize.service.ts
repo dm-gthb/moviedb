@@ -2,10 +2,7 @@ import { MovieListItem, MovieListItems } from './list-items.types.service';
 
 export function getCategorizedListItems(listItems: MovieListItem[]): MovieListItems {
   const categorizedListItems = listItems.reduce(
-    (
-      result: { favorites: MovieListItem[]; watchlist: MovieListItem[] },
-      listItem: MovieListItem,
-    ) => {
+    (result: MovieListItems, listItem: MovieListItem) => {
       if (listItem.type === 'favorites') {
         result.favorites.push(listItem);
       }

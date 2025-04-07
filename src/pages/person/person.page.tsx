@@ -4,6 +4,7 @@ import { createProfileSrc } from '../../services/image/image.service';
 import { formatDate } from '../../services/movies/movies.utils.service';
 import { MoviesGrid } from '../../components/movies/movies-grid/movies-grid';
 import { MovieItem } from '../../services/movies/movies.types.service';
+import { ModalImageGallery } from '../../components/shared/image-gallery/image-gallery';
 
 export function PersonPage() {
   const { id } = useParams();
@@ -21,8 +22,19 @@ export function PersonPage() {
       <div className="mx-auto max-w-7xl px-8 pb-10 pt-2">
         <div className="mb-10 flex items-start gap-8">
           {profilePath && (
-            <div className="mt-1 hidden aspect-[2/3] w-[210px] max-w-[25%] shrink-0 overflow-hidden rounded-lg bg-gray-100 shadow-md sm:block dark:bg-gray-700">
+            <div className="relative mt-1 hidden aspect-[2/3] w-[210px] max-w-[25%] shrink-0 overflow-hidden rounded bg-gray-100 shadow-md transition-transform hover:scale-105 sm:block dark:bg-gray-700">
               <img src={createProfileSrc(profilePath)} alt={name} />
+              {profilePath && (
+                <ModalImageGallery
+                  galleryTitle={`${name} photo`}
+                  srcList={[createProfileSrc(profilePath)]}
+                  trigger={
+                    <button className="absolute inset-0 h-full w-full">
+                      <span className="sr-only">Show {name} image</span>
+                    </button>
+                  }
+                />
+              )}
             </div>
           )}
           <div>
@@ -66,15 +78,7 @@ function getMoviesWithoutDublicates(movies: MovieItem[]) {
       }
     })
     .sort((a, b) => {
-      if (a.popularity && b.popularity) {
-        return b.popularity - a.popularity;
-      }
-
-      if (a.voteCount && b.voteCount) {
-        return b.voteCount - a.voteCount;
-      }
-
-      return 0;
+      return new Date(a.releaseDate) > new Date(b.releaseDate) ? -1 : 1;
     });
 }
 

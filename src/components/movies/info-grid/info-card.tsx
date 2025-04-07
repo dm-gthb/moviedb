@@ -23,9 +23,14 @@ export function CardSection({ title, children }: { title: string; children: Reac
   );
 }
 
-export function CardLink({ to, className, children }: LinkProps) {
+export function CardLink({ to, className, children, onMouseEnter, onFocus }: LinkProps) {
   return (
-    <Link to={to} className={`${linkClassname} ${className}`}>
+    <Link
+      to={to}
+      className={`${linkClassname} ${className}`}
+      onMouseEnter={onMouseEnter}
+      onFocus={onFocus}
+    >
       {children}
     </Link>
   );

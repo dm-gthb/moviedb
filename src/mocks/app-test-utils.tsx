@@ -2,8 +2,8 @@ import { render, waitForElementToBeRemoved, screen } from '@testing-library/reac
 import { ReactElement } from 'react';
 import { BrowserRouter } from 'react-router';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { AuthProvider } from '../components/auth/auth-provider/auth-provider';
-import { ThemeProvider } from '../components/shared/theme/theme-provider/theme-provider';
+import { AuthProvider } from '../components/app-providers/auth-provider/auth-provider';
+import { ThemeProvider } from '../components/app-providers/theme-provider/theme-provider';
 
 const createTestQueryClient = () =>
   new QueryClient({

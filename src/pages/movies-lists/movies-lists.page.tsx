@@ -5,7 +5,7 @@ import {
   TabTrigger,
   TabPanels,
   TabPanel,
-} from '../../components/shared/tabs/tabs';
+} from '../../components/ui/tabs/tabs';
 
 export function MoviesLists() {
   const tabClassName =

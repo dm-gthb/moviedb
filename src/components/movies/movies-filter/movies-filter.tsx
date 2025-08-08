@@ -4,14 +4,13 @@ import {
   selectData,
   updateSearchParamsWithSelectValue,
 } from '../../../services/movies/movies.filter.service';
-import { Select } from '../../shared/select/select';
+import { Select } from '../../ui/forms/select/select';
+import { TextButton } from '../../ui/buttons/text-button/text-button';
 
 export function MoviesFilter() {
   const [searchParams, setSearchParams] = useSearchParams();
-  const filterElementClassname = 'w-max p-4 shrink-0 rounded border-2 capitalize';
-
   return (
-    <div className="-mx-8 flex flex-row items-center gap-4 overflow-x-auto px-8">
+    <div className="-mx-8 flex flex-row items-stretch gap-4 overflow-x-auto px-8">
       {selectData.map(([selectName, options]) => (
         <Select
           key={selectName}
@@ -27,7 +26,6 @@ export function MoviesFilter() {
               return prev;
             });
           }}
-          className={`${filterElementClassname} flex items-center gap-2`}
         >
           {options.map(({ title, value }) => (
             <option key={title} value={value}>
@@ -36,12 +34,12 @@ export function MoviesFilter() {
           ))}
         </Select>
       ))}
-      <button
-        className={`${filterElementClassname} border-transparent transition-colors hover:bg-gray-200 hover:dark:bg-gray-800`}
+      <TextButton
+        className="shrink-0"
         onClick={() => setSearchParams(new URLSearchParams())}
       >
         Reset Filters
-      </button>
+      </TextButton>
     </div>
   );
 }

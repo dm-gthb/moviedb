@@ -1,7 +1,7 @@
 import { useActionState, useState } from 'react';
 import { AuthData } from '../../../services/auth/auth.types.service';
 import { getErrorMessage } from '../../../services/utils.service';
-import { AuthFormError } from './auth-form-error';
+import { FormField } from '../../ui/forms/form-field/form-field';
 import { PasswordVisibilityToggler } from './password-visibility-toggler';
 import { SubmitButton } from './submit-button';
 
@@ -39,49 +39,43 @@ function AuthForm(props: AuthFormProps) {
     { data: { email: '', password: '' }, isError: false, errorMessage: '' },
   );
 
-  const classNames = {
-    input: 'p-3 border-2 rounded dark:bg-transparent disabled:text-gray-400',
-    formGroup: 'flex flex-col gap-1 mb-4 last-of-type:mb-6',
-  };
+  const formErrors = formState?.isError ? [formState.errorMessage] : undefined;
 
   return (
     <form action={formAction}>
       <fieldset disabled={isPending}>
-        <div className={classNames.formGroup}>
-          <label htmlFor="email">Email</label>
-          <input
-            id="email"
-            type="email"
-            name="email"
-            autoComplete="email"
-            className={classNames.input}
-            defaultValue={formState?.data.email}
-            autoFocus
-            required
-          />
-        </div>
-        <div className={classNames.formGroup}>
-          <label htmlFor="password">Password</label>
-          <div className="relative">
-            <input
-              id="password"
-              type={isPasswordVisible ? 'text' : 'password'}
-              name="password"
-              minLength={PASSWORD_MIN_LENGTH}
-              autoComplete={type === 'signup' ? 'new-password' : 'current-password'}
-              className={`${classNames.input} w-full pr-11`}
-              defaultValue={formState?.data.password}
-              required
-            />
+        <FormField
+          labelProps={{ children: 'Email' }}
+          inputProps={{
+            type: 'email',
+            name: 'email',
+            autoComplete: 'email',
+            defaultValue: formState?.data.email,
+            autoFocus: true,
+            required: true,
+          }}
+          errors={formErrors}
+        />
+        <FormField
+          labelProps={{ children: 'Password' }}
+          inputProps={{
+            type: isPasswordVisible ? 'text' : 'password',
+            name: 'password',
+            minLength: PASSWORD_MIN_LENGTH,
+            autoComplete: type === 'signup' ? 'new-password' : 'current-password',
+            defaultValue: formState?.data.password,
+            required: true,
+            disabled: isPending,
+          }}
+          endAdornment={
             <PasswordVisibilityToggler
               isVisible={isPasswordVisible}
-              onClick={() => setIsPasswordVisible(!isPasswordVisible)}
+              onClick={() => setIsPasswordVisible((v) => !v)}
               isDisabled={isPending}
             />
-          </div>
-        </div>
+          }
+        />
       </fieldset>
-      {formState?.isError && <AuthFormError errorMessage={formState.errorMessage} />}
       <SubmitButton type={type} isDisabled={isPending} />
     </form>
   );

@@ -8,7 +8,7 @@ import {
 import * as userDataService from '../../mocks/data-services/user';
 import * as movieDataService from '../../mocks/data-services/movies';
 import * as creditsDataService from '../../mocks/data-services/credits';
-import App from '../../app/app';
+import App from '../../app';
 import { renderWithProviders } from '../../mocks/app-test-utils';
 import {
   formatBudget,

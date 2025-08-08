@@ -4,8 +4,8 @@ import { getAllCrew } from '../../services/movies/movies.categorize.service';
 import { createBackdropSrc } from '../../services/image/image.service';
 import { appRoute } from '../../services/router.service';
 import { genresMap } from '../../services/movies/movies.constants.service';
-import { FullCastCard } from '../../components/movies/info-grid/full-cast-card';
-import { FullCrewCard } from '../../components/movies/info-grid/full-crew-card';
+import { MovieCastCard } from '../../components/movies/movie-cast/movie-cast-card';
+import { MovieCrewCard } from '../../components/movies/movie-cast/movie-crew-card';
 
 export function CastPage() {
   const { movieId } = useParams();
@@ -61,8 +61,8 @@ export function CastPage() {
         <section className="mx-auto max-w-7xl p-8">
           <h2 className="sr-only">Cast and Crew</h2>
           <div className="grid gap-8 lg:auto-cols-[minmax(0,1fr)] lg:grid-flow-col">
-            <FullCastCard cast={cast} />
-            <FullCrewCard allCrew={allCrew} />
+            <MovieCastCard cast={cast} />
+            <MovieCrewCard allCrew={allCrew} />
           </div>
         </section>
       </div>

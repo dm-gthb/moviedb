@@ -2,7 +2,7 @@ import { Link, useLocation } from 'react-router';
 import { MovieItem } from '../../../services/movies/movies.types.service';
 import { MovieListItemData } from '../../../services/list-items/list-items.types.service';
 import { useSearchParamsWithMoviesFilterDefaults } from '../../../services/movies/movies.filter.service';
-import { ListItemButtons } from '../list-item-buttons/list-item-buttons';
+import { MovieListItemButtons } from '../movie-list-item-buttons/movie-list-item-buttons';
 import { genresMap } from '../../../services/movies/movies.constants.service';
 import { MoviePoster } from '../movie-poster/movie-poster';
 import { movieQueries } from '../../../queries/movies.queries';
@@ -38,7 +38,7 @@ export function MovieCard({ movie }: { movie: MovieItem | MovieListItemData }) {
               <span>{releaseDate?.slice(0, 4)}</span>
               <span className="overflow-ellipsis">{getFirstGenreName(genreIds)}</span>
             </div>
-            <ListItemButtons movie={movie} />
+            <MovieListItemButtons movie={movie} />
           </div>
         </div>
       </Link>

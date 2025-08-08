@@ -1,18 +1,19 @@
 import { useEffect } from 'react';
 import { useLocation, useParams } from 'react-router';
 import { useMovieDetails, useMovieImages } from '../../queries/movies.queries';
-import { ListItemButtons } from '../../components/movies/list-item-buttons/list-item-buttons';
+import { MovieListItemButtons } from '../../components/movies/movie-list-item-buttons/movie-list-item-buttons';
 import { MoviePoster } from '../../components/movies/movie-poster/movie-poster';
 import { genresMap } from '../../services/movies/movies.constants.service';
-import { InfoGrid } from '../../components/movies/info-grid/info-grid';
+import { MovieInfoGrid } from '../../components/movies/movie-info-grid/movie-info-grid';
 import { getCategorizedMovieData } from '../../services/movies/movies.categorize.service';
 import {
   createBackdropSrc,
   createPosterSrc,
   prefetchBackdropImage,
 } from '../../services/image/image.service';
-import { ModalImageGallery } from '../../components/shared/image-gallery/image-gallery';
+import { ModalImageGallery } from '../../components/ui/image-gallery/image-gallery';
 import { PhotoIcon } from '@heroicons/react/24/outline';
+import { CircularIconButton } from '../../components/ui/buttons/circular-icon-button/circular-icon-button';
 
 export function MoviePage() {
   const { id: paramsId } = useParams();
@@ -88,7 +89,7 @@ export function MoviePage() {
                   </div>
                 </div>
                 <div className="flex gap-3">
-                  <ListItemButtons movie={movie.data} size="large" />
+                  <MovieListItemButtons movie={movie.data} variant="circular" />
                   {backdropPath && (
                     <ModalImageGallery
                       galleryTitle={`${title} movie images`}
@@ -96,10 +97,10 @@ export function MoviePage() {
                         createBackdropSrc(filePath),
                       )}
                       trigger={
-                        <button className="flex shrink-0 rounded-full bg-gray-800 p-3.5 transition hover:scale-105 hover:bg-gray-700">
-                          <PhotoIcon width={24} height={24} />
-                          <span className="sr-only">Open movie image gallery</span>
-                        </button>
+                        <CircularIconButton
+                          icon={PhotoIcon}
+                          label="Open movie image gallery"
+                        />
                       }
                     />
                   )}
@@ -111,7 +112,7 @@ export function MoviePage() {
         </div>
         <section className="mx-auto max-w-7xl p-8">
           <h2 className="sr-only">Movie Details</h2>
-          <InfoGrid isLoading={isPendingDetails} dataItems={categorizedMovieData} />
+          <MovieInfoGrid isLoading={isPendingDetails} dataItems={categorizedMovieData} />
         </section>
       </>
     );
@@ -121,13 +122,13 @@ export function MoviePage() {
 function LoadingPage() {
   return (
     <>
-      <div className="animate-pulse bg-gray-100 py-20 shadow xl:py-24 dark:bg-gray-800">
+      <div className="animate-pulse bg-gray-100 py-20 shadow dark:bg-gray-800 xl:py-24">
         <div className="relative z-30 mx-auto max-w-7xl px-8 text-gray-50">
           <div className="aspect-[2/3] w-[180px] md:w-[250px]" />
         </div>
       </div>
       <div className="mx-auto max-w-7xl p-8">
-        <InfoGrid isLoading />
+        <MovieInfoGrid isLoading />
       </div>
     </>
   );

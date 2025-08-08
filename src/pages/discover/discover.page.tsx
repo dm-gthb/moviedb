@@ -3,7 +3,7 @@ import { MoviesFilter } from '../../components/movies/movies-filter/movies-filte
 import { MoviesGrid } from '../../components/movies/movies-grid/movies-grid';
 import { useFilteredMovies } from '../../queries/movies.queries';
 import { useIntersectionObserver } from '../../services/use-intersection-observer.service';
-import { Spinner } from '../../components/shared/spinner/spinner';
+import { Spinner } from '../../components/ui/spinner/spinner';
 
 export function DiscoverPage() {
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isPending } =

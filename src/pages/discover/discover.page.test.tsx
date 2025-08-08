@@ -2,7 +2,7 @@ import { screen } from '@testing-library/react';
 import { buildMovieItemWithDetails } from '../../mocks/generate';
 import * as movieDataService from '../../mocks/data-services/movies';
 import { renderWithProviders } from '../../mocks/app-test-utils';
-import App from '../../app/app';
+import App from '../../app';
 
 test('renders movie cards', async () => {
   const movies = new Array(10).fill('').map(buildMovieItemWithDetails);

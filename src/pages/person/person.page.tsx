@@ -4,7 +4,7 @@ import { createProfileSrc } from '../../services/image/image.service';
 import { formatDate } from '../../services/movies/movies.utils.service';
 import { MoviesGrid } from '../../components/movies/movies-grid/movies-grid';
 import { MovieItem } from '../../services/movies/movies.types.service';
-import { ModalImageGallery } from '../../components/shared/image-gallery/image-gallery';
+import { ModalImageGallery } from '../../components/ui/image-gallery/image-gallery';
 
 export function PersonPage() {
   const { id } = useParams();

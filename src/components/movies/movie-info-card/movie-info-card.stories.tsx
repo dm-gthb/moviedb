@@ -5,7 +5,7 @@ import { MovieTechCard } from '../movie-info-grid/movie-tech-card';
 import { Card, CardSection, CardAnchor, LoadingCard } from './movie-info-card';
 
 const meta: Meta = {
-  title: 'Movies/InfoCard',
+  title: 'Movies/MovieInfoCard',
   component: Card,
   parameters: {
     layout: 'padded',

@@ -3,7 +3,7 @@ import { AppProviders } from '../../app-providers/app-providers';
 import { MovieInfoGrid } from './movie-info-grid';
 
 const meta: Meta<typeof MovieInfoGrid> = {
-  title: 'Movies/InfoGrid',
+  title: 'Movies/MovieInfoGrid',
   component: MovieInfoGrid,
   parameters: {
     layout: 'padded',

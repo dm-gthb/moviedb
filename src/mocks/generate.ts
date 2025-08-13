@@ -6,6 +6,7 @@ import {
   MovieDetails,
   MovieItem,
 } from './types/movie';
+import { PersonMovieCredit } from '../services/movies/movies.types.service';
 
 export function buildUserAuthData() {
   return {
@@ -89,4 +90,42 @@ export function buildMovieCredits(): MovieCredits {
 
 export function buildMovieRecommendations(): MovieItem[] {
   return new Array(5).fill('').map(buildMovieItem);
+}
+
+export function buildPersonMovieCreditClient(
+  overrides?: Partial<PersonMovieCredit>,
+): PersonMovieCredit {
+  return {
+    id: faker.number.int(),
+    title: faker.lorem.word() + faker.number.int(),
+    releaseDate: faker.date.recent().toISOString().split('T')[0],
+    backdropPath: '/' + faker.system.commonFileName('jpg'),
+    overview: faker.lorem.paragraph(),
+    posterPath: '/' + faker.system.commonFileName('jpg'),
+    genreIds: [faker.helpers.objectKey(genresMap)],
+    originalLanguage: faker.location.language().alpha2,
+    originalTitle: faker.lorem.word() + faker.number.int(),
+    popularity: faker.number.float({ fractionDigits: 2 }),
+    voteAverage: faker.number.float({ fractionDigits: 3 }),
+    voteCount: faker.number.int(),
+    ...overrides,
+  };
+}
+
+export function buildPersonDataClient({
+  knownForDepartment,
+}: {
+  knownForDepartment: string;
+}) {
+  return { knownForDepartment };
+}
+
+export function buildPersonMovieCreditsClient(overrides?: {
+  cast?: PersonMovieCredit[];
+  crew?: PersonMovieCredit[];
+}) {
+  return {
+    cast: overrides?.cast || [],
+    crew: overrides?.crew || [],
+  };
 }

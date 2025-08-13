@@ -3,7 +3,7 @@
 **MovieDB** is a movie library web app that uses data from [TMDB](https://developer.themoviedb.org/docs/getting-started).
 
 **Demo**: [https://moviedb-lib.netlify.app/](https://moviedb-lib.netlify.app/)  
-**Storybook**: [https://6896e90dec8d2722c7feedea-tloyifgvcb.chromatic.com/](https://6896e90dec8d2722c7feedea-tloyifgvcb.chromatic.com/)
+**Storybook**: [https://6896e90dec8d2722c7feedea-neyubusqij.chromatic.com/](https://6896e90dec8d2722c7feedea-neyubusqij.chromatic.com/)
 
 - Browse movies by genre, release date, popularity, and more
 - Find movies by title

@@ -6,6 +6,24 @@
   .overflow-ellipsis {
     @apply overflow-hidden text-ellipsis whitespace-nowrap;
   }
+
+  .person-movie-credit:hover + .person-movie-credit {
+    @apply border-t border-transparent dark:border-gray-900;
+  }
+
+  .person-movie-credit:hover {
+    @apply border-t border-gray-200 dark:border-gray-900;
+  }
+}
+
+@layer utilities {
+  .hide-scrollbar {
+    -ms-overflow-style: none; /* IE/Edge legacy */
+    scrollbar-width: none; /* Firefox */
+  }
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none; /* Chrome/Safari */
+  }
 }
 
 body {

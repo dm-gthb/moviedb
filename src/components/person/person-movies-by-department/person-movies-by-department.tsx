@@ -5,7 +5,10 @@ import { PersonMovieCredit } from '../../../services/movies/movies.types.service
 import { appRoute } from '../../../services/router.service';
 import { PrefetchLink } from '../../ui/prefetch-link/prefetch-link';
 import { movieQueries } from '../../../queries/movies.queries';
-import { prefetchBackdropImage } from '../../../services/image/image.service';
+import {
+  prefetchBackdropImage,
+  prefetchPosterImage,
+} from '../../../services/image/image.service';
 
 export function PersonMoviesByDepartment({
   departmentMovies,
@@ -22,6 +25,9 @@ export function PersonMoviesByDepartment({
     queryClient.prefetchQuery(movieQueries.credits(movie.id.toString()));
     if (movie.backdropPath) {
       prefetchBackdropImage(movie.backdropPath);
+    }
+    if (movie.posterPath) {
+      prefetchPosterImage(movie.posterPath);
     }
   };
 

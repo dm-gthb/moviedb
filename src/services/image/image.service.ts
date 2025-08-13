@@ -41,6 +41,12 @@ export function prefetchBackdropImage(backdropPath: string | null) {
   }
 }
 
+export function prefetchPosterImage(posterPath: string | null) {
+  if (posterPath) {
+    prefetchImage(createPosterSrc(posterPath));
+  }
+}
+
 export function prefetchPersonImage(profilePath: string | null) {
   if (profilePath) {
     prefetchImage(createProfileSrc(profilePath));

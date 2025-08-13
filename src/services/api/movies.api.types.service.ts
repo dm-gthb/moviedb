@@ -2,8 +2,9 @@ import {
   MovieCredits,
   MovieDetails,
   MovieItem,
-  PersonDetails,
+  PersonMovieCredit,
 } from '../movies/movies.types.service';
+import { PersonDetails } from '../person/person.types.service';
 
 export type GetMoviesResponse = {
   page: number;
@@ -26,7 +27,10 @@ export type GetMovieImagesResponse = {
 
 export type GetPersonDetailsResponse = PersonDetails;
 
-export type GetPersonMovieCreditsResponse = { cast: MovieItem[]; crew: MovieItem[] };
+export type GetPersonMovieCreditsResponse = {
+  cast: PersonMovieCredit[];
+  crew: PersonMovieCredit[];
+};
 
 export type ServerPerson = {
   adult: boolean;
@@ -47,6 +51,13 @@ export type ServerPerson = {
 
 export type ServerMovieItem = ServerBaseMovieData & {
   genre_ids: number[];
+};
+
+export type ServerPersonMovieCredit = ServerBaseMovieData & {
+  genre_ids: number[];
+  department?: string;
+  character?: string;
+  job?: string;
 };
 
 export type ServerMovieDetails = ServerBaseMovieData & ServerAdditionalMovieData;

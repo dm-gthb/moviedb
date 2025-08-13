@@ -1,4 +1,5 @@
-import { Crew, MovieCredits, MovieDetails, PersonBase } from './movies.types.service';
+import { Crew, MovieCredits, MovieDetails } from './movies.types.service';
+import { PersonBase } from '../person/person.types.service';
 import {
   formatBudget,
   formatCountryList,

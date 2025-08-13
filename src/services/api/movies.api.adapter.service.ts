@@ -3,13 +3,15 @@ import {
   ServerMovieDetails,
   ServerMovieItem,
   ServerPerson,
+  ServerPersonMovieCredit,
 } from './movies.api.types.service';
 import {
   MovieItem,
   MovieDetails,
   MovieCredits,
-  PersonDetails,
+  PersonMovieCredit,
 } from '../movies/movies.types.service';
+import { PersonDetails } from '../person/person.types.service';
 
 export function transformMovieItemServerData(movie: ServerMovieItem): MovieItem {
   return {
@@ -107,5 +109,16 @@ export function transformImageServerData(image: { file_path: string }): {
 } {
   return {
     filePath: image.file_path,
+  };
+}
+
+export function transformPersonMovieCreditServerData(
+  item: ServerPersonMovieCredit,
+): PersonMovieCredit {
+  return {
+    ...transformMovieItemServerData(item),
+    department: item.department,
+    character: item.character,
+    job: item.job,
   };
 }

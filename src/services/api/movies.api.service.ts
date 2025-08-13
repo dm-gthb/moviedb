@@ -6,6 +6,7 @@ import {
   transformMovieDetailsServerData,
   transformMovieItemServerData,
   transformPersonServerData,
+  transformPersonMovieCreditServerData,
 } from './movies.api.adapter.service';
 import {
   GetMovieCreditsResponse,
@@ -92,8 +93,8 @@ export async function getPersonMovieCredits({
 }): Promise<GetPersonMovieCreditsResponse> {
   const rowData = await fetchData(`${endpoints.getPersonMovieCredits(personId)}`);
   return {
-    cast: rowData.cast.map(transformMovieItemServerData),
-    crew: rowData.crew.map(transformMovieItemServerData),
+    cast: rowData.cast.map(transformPersonMovieCreditServerData),
+    crew: rowData.crew.map(transformPersonMovieCreditServerData),
   };
 }
 

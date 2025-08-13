@@ -1,3 +1,5 @@
+import { PersonBase } from '../person/person.types.service';
+
 export type MovieItem = {
   backdropPath: string | null;
   id: number;
@@ -43,21 +45,8 @@ export type MovieCredits = {
   crew: Crew[];
 };
 
-export type PersonBase = {
-  gender: number;
-  id: number;
-  knownForDepartment: string;
-  name: string;
-  popularity: number;
-  profilePath: string | null;
-};
-
-export type PersonDetails = PersonBase & {
-  alsoKnownsAs: string[];
-  biography: string;
-  birthday: string;
-  deathday: string;
-  homepage: null | string;
-  imdbId: string;
-  placeOfBirth: string;
+export type PersonMovieCredit = MovieItem & {
+  department?: string;
+  character?: string;
+  job?: string;
 };

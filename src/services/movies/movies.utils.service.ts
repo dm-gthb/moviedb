@@ -1,5 +1,6 @@
 import { MovieListItemData } from '../list-items/list-items.types.service';
-import { MovieDetails, MovieItem, PersonBase } from './movies.types.service';
+import { MovieDetails, MovieItem } from './movies.types.service';
+import { PersonBase } from '../person/person.types.service';
 
 export const getListItemMovie = (
   movie: MovieItem | MovieDetails | MovieListItemData,

@@ -18,11 +18,6 @@ export function PersonPage() {
     const { profilePath, name, biography, birthday, placeOfBirth, deathday } =
       person.data;
 
-    if (credits.isSuccess) {
-      const moviesByDepartment = groupMoviesByDepartment(person.data, credits.data);
-      console.log(moviesByDepartment);
-    }
-
     return (
       <div className="mx-auto max-w-7xl px-8 pb-10 pt-2">
         <div className="mb-10 flex items-start gap-8">

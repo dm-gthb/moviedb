@@ -2,9 +2,9 @@ import { useParams } from 'react-router';
 import { usePersonAndMovieCredits } from '../../queries/person.queries';
 import { createProfileSrc } from '../../services/image/image.service';
 import { formatDate } from '../../services/movies/movies.utils.service';
-import { MoviesGrid } from '../../components/movies/movies-grid/movies-grid';
-import { MovieItem } from '../../services/movies/movies.types.service';
 import { ModalImageGallery } from '../../components/ui/image-gallery/image-gallery';
+import { groupMoviesByDepartment } from '../../services/person/person-movies.categorize.service';
+import { PersonMoviesByDepartment } from '../../components/person/person-movies-by-department/person-movies-by-department';
 
 export function PersonPage() {
   const { id } = useParams();
@@ -17,6 +17,11 @@ export function PersonPage() {
   if (person.isSuccess) {
     const { profilePath, name, biography, birthday, placeOfBirth, deathday } =
       person.data;
+
+    if (credits.isSuccess) {
+      const moviesByDepartment = groupMoviesByDepartment(person.data, credits.data);
+      console.log(moviesByDepartment);
+    }
 
     return (
       <div className="mx-auto max-w-7xl px-8 pb-10 pt-2">
@@ -37,49 +42,34 @@ export function PersonPage() {
               )}
             </div>
           )}
-          <div>
+          <div className="min-w-0 grow">
             <h1 className="mb-3 text-4xl font-bold md:text-5xl">{name}</h1>
             {birthday && <p>Birthdate: {formatDate(birthday)}</p>}
             {placeOfBirth && <p>Birthplace: {placeOfBirth}</p>}
             {deathday && <p>Day of Death: {formatDate(deathday)}</p>}
-            <h3 className="mb-2 mt-5 text-2xl font-bold md:text-3xl">Biography</h3>
-            <p>{biography ? biography : `No biography found for ${name}.`}</p>
+
+            <section className="mb-10">
+              <h3 className="mb-2 mt-5 text-2xl font-bold md:text-3xl">Biography</h3>
+              <p>{biography ? biography : `No biography found for ${name}.`}</p>
+            </section>
+
+            <section>
+              <h3 className="text-2xl font-bold md:text-3xl">Credits</h3>
+              {credits.isSuccess && (
+                <PersonMoviesByDepartment
+                  departmentMovies={groupMoviesByDepartment(person.data, credits.data)}
+                />
+              )}
+              {credits.isSuccess &&
+                [...credits.data.cast, ...credits.data.crew].length === 0 && (
+                  <p>no data found</p>
+                )}
+            </section>
           </div>
         </div>
-
-        <section>
-          <h3 className="mb-5 text-2xl font-bold md:text-3xl">Known For</h3>
-          {credits.isPending && <MoviesGrid isPending />}
-          {credits.isSuccess && (
-            <MoviesGrid
-              movies={getMoviesWithoutDublicates([
-                ...credits.data.crew,
-                ...credits.data.cast,
-              ])}
-            />
-          )}
-          {credits.isSuccess &&
-            [...credits.data.cast, ...credits.data.crew].length === 0 && (
-              <p>no data found</p>
-            )}
-        </section>
       </div>
     );
   }
-}
-
-function getMoviesWithoutDublicates(movies: MovieItem[]) {
-  const uniqIds = new Set();
-  return movies
-    .filter((movie) => {
-      if (!uniqIds.has(movie.id)) {
-        uniqIds.add(movie.id);
-        return movie;
-      }
-    })
-    .sort((a, b) => {
-      return new Date(a.releaseDate) > new Date(b.releaseDate) ? -1 : 1;
-    });
 }
 
 function LoadingPage() {

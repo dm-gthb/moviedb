@@ -5,8 +5,10 @@ import {
   MovieCredits,
   MovieDetails,
   MovieItem,
+  PersonMovieCredit,
 } from './types/movie';
-import { PersonMovieCredit } from '../services/movies/movies.types.service';
+import { PersonDetails } from './types/person';
+import { PersonMovieCredit as PersonMovieCreditClient } from '../services/movies/movies.types.service';
 
 export function buildUserAuthData() {
   return {
@@ -93,8 +95,8 @@ export function buildMovieRecommendations(): MovieItem[] {
 }
 
 export function buildPersonMovieCreditClient(
-  overrides?: Partial<PersonMovieCredit>,
-): PersonMovieCredit {
+  overrides?: Partial<PersonMovieCreditClient>,
+): PersonMovieCreditClient {
   return {
     id: faker.number.int(),
     title: faker.lorem.word() + faker.number.int(),
@@ -121,6 +123,45 @@ export function buildPersonDataClient({
 }
 
 export function buildPersonMovieCreditsClient(overrides?: {
+  cast?: PersonMovieCreditClient[];
+  crew?: PersonMovieCreditClient[];
+}) {
+  return {
+    cast: overrides?.cast || [],
+    crew: overrides?.crew || [],
+  };
+}
+
+export function buildPerson(overrides?: Partial<PersonDetails>): PersonDetails {
+  return {
+    also_known_as: [faker.person.fullName(), faker.person.fullName()],
+    biography: faker.lorem.paragraph(),
+    birthday: faker.date.past({ years: 50 }).toISOString().split('T')[0],
+    deathday: '',
+    gender: faker.number.int({ min: 1, max: 2 }),
+    homepage: null,
+    id: faker.number.int(),
+    imdb_id: `nm${faker.number.int({ min: 1000000, max: 9999999 })}`,
+    known_for_department: faker.commerce.department(),
+    name: faker.person.fullName(),
+    place_of_birth: faker.location.city(),
+    popularity: faker.number.float({ fractionDigits: 2 }),
+    profile_path: '/' + faker.system.commonFileName('jpg'),
+    ...overrides,
+  };
+}
+
+export function buildPersonMovieCredit(
+  overrides?: Partial<PersonMovieCredit>,
+): PersonMovieCredit {
+  const base = buildMovieItem();
+  return {
+    ...base,
+    ...overrides,
+  };
+}
+
+export function buildPersonMovieCredits(overrides?: {
   cast?: PersonMovieCredit[];
   crew?: PersonMovieCredit[];
 }) {

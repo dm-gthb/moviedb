@@ -135,21 +135,14 @@ function DepartmentMovies({
                   {movie.title}
                 </h4>
                 <div className="text-sm text-gray-500 dark:text-gray-500">
-                  {movie.releaseDate
-                    ? new Date(movie.releaseDate).getFullYear()
-                    : 'Unknown'}
+                  {movie.releaseDate && new Date(movie.releaseDate).getFullYear()}
                 </div>
               </div>
               {label ? (
-                <div className="mt-1 text-sm text-gray-600 dark:text-gray-400">
-                  {department === 'Acting' ? (
-                    <span>
-                      as <span className="capitalize">{label}</span>
-                    </span>
-                  ) : (
-                    <span className="capitalize">{label}</span>
-                  )}
-                </div>
+                <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
+                  {department === 'Acting' ? 'as ' : ''}
+                  <span className="capitalize">{label}</span>
+                </p>
               ) : null}
             </PrefetchLink>
           </div>

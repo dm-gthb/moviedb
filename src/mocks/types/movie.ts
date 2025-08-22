@@ -1,3 +1,5 @@
+import { PersonBase } from './person';
+
 export type BaseMovieData = {
   adult: boolean;
   backdrop_path: string | null;
@@ -32,53 +34,26 @@ export type AdditionalMovieData = {
 
 export type MovieDetails = BaseMovieData & AdditionalMovieData;
 
-export type Cast = {
-  adult: boolean;
-  gender: number;
-  id: number;
-  known_for_department: string;
-  name: string;
-  original_name: string;
-  popularity: number;
-  profile_path: string | null;
-  cast_id: number;
-  character: string;
-  credit_id: string;
-  order: number;
-};
-
-export type Crew = {
-  adult: boolean;
-  gender: number;
-  id: number;
-  known_for_department: string;
-  name: string;
-  original_name: string;
-  popularity: number;
-  profile_path: string | null;
-  credit_id: string;
-  department: string;
-  job: string;
-};
-
 export type MovieCredits = {
-  cast: Cast[];
-  crew: Crew[];
+  cast: Array<
+    PersonBase & {
+      cast_id: number;
+      character: string;
+      credit_id: string;
+      order: number;
+    }
+  >;
+  crew: Array<
+    PersonBase & {
+      credit_id: string;
+      department: string;
+      job: string;
+    }
+  >;
 };
 
-export type Person = {
-  adult: boolean;
-  also_known_as: string[];
-  biography: string;
-  birthday: string;
-  deathday: string;
-  gender: number;
-  homepage: null | string;
-  id: number;
-  imdb_id: string;
-  known_for_department: string;
-  name: string;
-  place_of_birth: string;
-  popularity: number;
-  profile_path: string;
+export type PersonMovieCredit = MovieItem & {
+  department?: string;
+  character?: string;
+  job?: string;
 };

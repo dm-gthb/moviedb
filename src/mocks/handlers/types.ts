@@ -1,5 +1,6 @@
 import { FirestoreMovieListItem } from '../types/list-item';
-import { MovieCredits, MovieDetails, MovieItem } from '../types/movie';
+import { MovieCredits, MovieDetails, MovieItem, PersonMovieCredit } from '../types/movie';
+import { PersonDetails } from '../types/person';
 import { AuthData, AuthenticatedUser } from '../types/user';
 
 export type GetMovieItemsResponseBody = {
@@ -39,3 +40,10 @@ export type DeleteListItemResponseBody = {
 export type AuthRequestBody = AuthData;
 
 export type AuthResponseBody = AuthenticatedUser;
+
+export type GetPersonMovieCreditsResponseBody = {
+  cast: PersonMovieCredit[];
+  crew: PersonMovieCredit[];
+};
+
+export type GetPersonDetailsResponseBody = PersonDetails;

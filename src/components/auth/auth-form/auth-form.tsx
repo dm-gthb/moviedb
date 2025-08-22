@@ -27,7 +27,7 @@ export function SignupForm({ onSubmit }: { onSubmit: AuthFormProps['onSubmit'] }
   return <AuthForm type="signup" onSubmit={onSubmit} />;
 }
 
-function AuthForm(props: AuthFormProps) {
+export function AuthForm(props: AuthFormProps) {
   const { type, onSubmit } = props;
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 

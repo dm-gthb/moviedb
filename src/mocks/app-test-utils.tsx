@@ -14,11 +14,21 @@ const createTestQueryClient = () =>
     },
   });
 
-export const waitForLoadingToFinish = async () =>
-  await waitForElementToBeRemoved(() => [
+export const waitForLoadingToFinish = async () => {
+  const getLoadingElements = () => [
     ...screen.queryAllByLabelText(/loading/i),
     ...screen.queryAllByText(/loading/i),
-  ]);
+  ];
+
+  const initialLoadingElements = [
+    ...screen.queryAllByLabelText(/loading/i),
+    ...screen.queryAllByText(/loading/i),
+  ];
+
+  if (initialLoadingElements.length > 0) {
+    await waitForElementToBeRemoved(getLoadingElements);
+  }
+};
 
 export const renderWithProviders = async (
   ui: ReactElement,

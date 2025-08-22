@@ -5,13 +5,21 @@ export const tokenKey = '__moviedb_auth_token__';
 export const userIdKey = '__moviedb_auth_userId__';
 
 export const login = async (authData: AuthData) => {
-  const response = await api.login(authData);
-  return handleUserResponse(response);
+  try {
+    const response = await api.login(authData);
+    return handleUserResponse(response);
+  } catch {
+    throw new Error('Authentication failed. Please try again.');
+  }
 };
 
 export const register = async (authData: AuthData) => {
-  const response = await api.register(authData);
-  return handleUserResponse(response);
+  try {
+    const response = await api.register(authData);
+    return handleUserResponse(response);
+  } catch {
+    throw new Error('Sign up failed. Please try again.');
+  }
 };
 
 export const logout = () => {

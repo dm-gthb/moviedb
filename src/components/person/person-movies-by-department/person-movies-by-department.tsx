@@ -135,7 +135,9 @@ function DepartmentMovies({
                   {movie.title}
                 </h4>
                 <div className="text-sm text-gray-500 dark:text-gray-500">
-                  {movie.releaseDate && new Date(movie.releaseDate).getFullYear()}
+                  {movie.releaseDate
+                    ? new Date(movie.releaseDate).getFullYear()
+                    : 'Unknown'}
                 </div>
               </div>
               {label ? (

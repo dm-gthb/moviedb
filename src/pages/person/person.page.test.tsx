@@ -81,3 +81,23 @@ test('renders a simple list (no tabs) when only one department exists', async ()
   expect(screen.getByRole('link', { name: /movie 1/i })).toBeInTheDocument();
   expect(screen.getByRole('link', { name: /movie 2/i })).toBeInTheDocument();
 });
+
+test('renders "Unknown" when movie has no release date', async () => {
+  const person = buildPerson({ id: 123, known_for_department: 'Acting' });
+  await personDataService.create(person);
+
+  const movieWithoutReleaseDate = buildPersonMovieCredit({
+    title: 'Movie Without Date',
+    character: 'Hero',
+    release_date: undefined,
+  });
+
+  await personDataService.createCredits(
+    buildPersonMovieCredits({ cast: [movieWithoutReleaseDate], crew: [] }),
+  );
+
+  await renderWithProviders(<App />, { route: `/person/${person.id}` });
+
+  const movieLink = screen.getByRole('link', { name: /movie without date/i });
+  expect(within(movieLink).getByText('Unknown')).toBeInTheDocument();
+});
